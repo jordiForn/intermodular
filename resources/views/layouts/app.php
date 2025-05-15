@@ -1,26 +1,30 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Variable: $title -->
-    <title> <?= $title ?? 'Vota Películas' ?> </title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?= BASE_URL . '/css/app.css'; ?>">
+    <title>Jardineria - <?= $title ?? 'Botiga Online' ?></title>
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/styles.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/css/tooltip.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script>
+        // Set authentication status for JavaScript
+        var isLoggedIn = <?= json_encode(Auth::check()) ?>;
+        var isAdmin = <?= json_encode(Auth::check() && Auth::role() === 'admin') ?>;
+    </script>
 </head>
 <body>
-
-    <?php require __DIR__ . '/partials/header.php'; ?>
-
-    <main class="flex-grow-1 mt-2 mb-2">
-        <!-- Variable: $content -->
+    <?php include __DIR__ . '/partials/header.php'; ?>
+    
+    <main>
         <?= $content ?>
     </main>
-
-    <?php require __DIR__ . '/partials/footer.php'; ?>
-
+    
+    <?php include __DIR__ . '/partials/footer.php'; ?>
+    
+    <script src="<?= BASE_URL ?>/js/cart.js"></script>
+    <script src="<?= BASE_URL ?>/js/ui.js"></script>
+    <script src="<?= BASE_URL ?>/js/tooltip.js"></script>
+    <script src="<?= BASE_URL ?>/js/main.js"></script>
 </body>
 </html>
