@@ -31,15 +31,23 @@ function updateTooltip() {
  * Adds a product to the cart
  * @param {string} name - Product name
  * @param {number} price - Product price
+ * @param {number} id - Product ID
+ * @param {number} stock - Product stock
  */
-function addToCart(name, price) {
+function addToCart(name, price, id, stock) {
   try {
-    const existingItem = cart.find((item) => item.name === name);
+    const existingItem = cart.find((item) => item.id === id);
 
     if (existingItem) {
-      existingItem.quantity += 1;
+      // Check if adding more would exceed stock
+      if (existingItem.quantity < stock) {
+        existingItem.quantity += 1;
+      } else {
+        alert(`No hi ha més estoc disponible de ${name}.`);
+        return;
+      }
     } else {
-      cart.push({ name, price, quantity: 1 });
+      cart.push({ id, name, price, quantity: 1 });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));

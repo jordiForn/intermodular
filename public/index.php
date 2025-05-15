@@ -1,12 +1,11 @@
 <?php
-require_once __DIR__ . '/../../bootstrap/bootstrap.php';
-require_once __DIR__ . '/../../app/Http/Controllers/ProducteController.php';
+
+require_once __DIR__ . '/../bootstrap/bootstrap.php';
 
 use App\Core\ErrorHandler;
-use App\Http\Controllers\ProducteController;
 
 try {
-    (new ProducteController())->index();
+    view('home.index');
 } catch (Throwable $e) {
     ErrorHandler::handle($e);
 }
