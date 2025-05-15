@@ -111,3 +111,27 @@ function previousUrl(): string
 {
     return $_SERVER['HTTP_REFERER'] ?? HOME;
 }
+
+/**
+ * Genera una URL para una imagen, verificando si existe.
+ * Si la imagen no existe, devuelve una imagen de placeholder.
+ * 
+ * @param string|null $imageName Nombre del archivo de imagen
+ * @param int $width Ancho del placeholder si la imagen no existe
+ * @param int $height Alto del placeholder si la imagen no existe
+ * @return string URL de la imagen
+ */
+function imageUrl(?string $imageName, int $width = 300, int $height = 300): string
+{
+    if (empty($imageName)) {
+        return "/placeholder.svg?height={$height}&width={$width}";
+    }
+    
+    $imagePath = __DIR__ . '/../../public/images/' . $imageName;
+    
+    if (file_exists($imagePath)) {
+        return BASE_URL . '/images/' . $imageName;
+    }
+    
+    return "/placeholder.svg?height={$height}&width={$width}";
+}
