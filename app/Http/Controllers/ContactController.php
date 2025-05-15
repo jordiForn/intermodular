@@ -23,10 +23,7 @@ class ContactController {
         $userId = Auth::id();
         $client = Client::findOrFail($userId);
         
-        // Validate input
-        if (empty(trim($request->notes))) {
-            back()->with('error', 'El missatge no pot estar buit')->send();
-        }
+        // Validation is now handled by ContactValidator
         
         // Actualizar consulta del cliente
         $currentConsulta = $client->consulta ?? '';
