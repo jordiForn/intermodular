@@ -9,28 +9,28 @@ class Auth {
 
     public static function attempt(array $credentials): bool
     {
-        $username = $credentials['email'] ?? '';
+        $nomLogin = $credentials['nom_login'] ?? '';
         $password = $credentials['contrasena'] ?? '';
         
-        // Try to find user by email
-        $user = User::findByEmail($username);
+        // Find user by nom_login
+        $client = Client::where('nom_login', $nomLogin)->first();
         
-        // If not found by email, try username
-        if (!$user) {
-            $user = User::findByUsername($username);
+        if (!$client) {
+            return false;
         }
-    
+        
+        $user = User::find($client->user_id);
+        
         if ($user && password_verify($password, $user->password)) {
-            // Get the client associated with this user
-            $client = $user->client();
-            
+            // Set session data
             session()->set('user', [
                 'id' => $user->id,
                 'username' => $user->username,
                 'email' => $user->email,
                 'role' => $user->role,
-                'client_id' => $client ? $client->id : null,
-                'nom' => $client ? $client->nom : null,
+                'client_id' => $client->id,
+                'nom' => $client->nom,
+                'nom_login' => $client->nom_login,
             ]);
             return true;
         }

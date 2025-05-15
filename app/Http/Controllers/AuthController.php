@@ -17,7 +17,7 @@ class AuthController {
     public function login(Request $request)
     {
         $credentials = [
-            'email' => $request->email,
+            'nom_login' => $request->nom_login,
             'contrasena' => $request->contrasena,
         ];
     
@@ -28,7 +28,7 @@ class AuthController {
         }
 
         back()->with('error', 'Credencials incorrectes')->withInput([
-            'email' => $request->email
+            'nom_login' => $request->nom_login
         ])->send();
     }
 
@@ -41,7 +41,7 @@ class AuthController {
     {
         // Create user
         $user = new User();
-        $user->username = trim($request->nom_login);
+        $user->username = trim($request->nom_login); // Use nom_login for username as well
         $user->email = trim($request->email);
         $user->password = password_hash($request->contrasena, PASSWORD_DEFAULT);
         $user->role = 'user';
@@ -53,6 +53,7 @@ class AuthController {
         $client->nom = trim($request->nom);
         $client->cognom = trim($request->cognom ?? '');
         $client->tlf = trim($request->tlf ?? '');
+        $client->nom_login = trim($request->nom_login); // Ensure nom_login is set
         $client->save();
 
         // Log the user in
@@ -63,6 +64,7 @@ class AuthController {
             'role' => $user->role,
             'client_id' => $client->id,
             'nom' => $client->nom,
+            'nom_login' => $client->nom_login,
         ]);
 
         redirect('/productes/index.php')->with('success', "¡Benvingut, {$client->nom}!")->send();

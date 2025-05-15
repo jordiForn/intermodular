@@ -10,27 +10,26 @@ class LoginValidator
     {
         $errors = [];
 
-        $username = $request->username ?? '';
-        $password = $request->password ?? '';
+        $nomLogin = $request->nom_login ?? '';
+        $contrasena = $request->contrasena ?? '';
 
-        if (empty($username)) {
-            $errors['username'] = 'El nom d\'usuari és obligatori.';
+        $nomLoginValid = trim($nomLogin) !== '';
+        $contrasenaValid = strlen($contrasena) > 7 &&
+            preg_match('/[a-z]/', $contrasena) &&
+            preg_match('/[A-Z]/', $contrasena) &&
+            preg_match('/[\W]/', $contrasena);
+    
+        if (!$nomLoginValid) {
+            $errors['nom_login'] = 'El nom d\'usuari és obligatori';
         }
 
-        $password_valid = strlen($password) > 7 &&
-            preg_match('/[a-z]/', $password) &&
-            preg_match('/[A-Z]/', $password) &&
-            preg_match('/[\W]/', $password);
-
-        if (empty($password)) {
-            $errors['password'] = 'La contrasenya és obligatòria.';
-        } elseif (!$password_valid) {
-            $errors['password'] = 'La contrasenya ha de tenir almenys 8 caràcters, una majúscula, una minúscula i un caràcter especial.';
+        if (!$contrasenaValid) {
+            $errors['contrasena'] = 'La contrasenya ha de tenir almenys 8 caràcters, una majúscula, una minúscula i un caràcter especial.';
         }
 
         if ($errors) {
             back()->withErrors($errors)->withInput([
-                'username' => $request->username,
+                'nom_login' => $request->nom_login,
             ])->send();
         }
     }

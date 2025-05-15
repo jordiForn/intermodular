@@ -105,4 +105,9 @@ class Client extends Model
         
         return implode(', ', $parts);
     }
+
+    public static function findByNomLogin(string $nomLogin): ?self
+    {
+        return self::where('nom_login', $nomLogin)->first();
+    }
 }
