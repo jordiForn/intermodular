@@ -137,7 +137,8 @@ class ComandaController {
         
         if (!empty($errors)) {
             back()->withErrors($errors)->withInput([
-                'direccio_enviament' => $request->direccio_enviament
+                'direccio_enviament' => $request->direccio_enviament,
+                'notes' => $request->notes
             ])->send();
         }
         
@@ -147,6 +148,12 @@ class ComandaController {
         $comanda->total = $request->total;
         $comanda->estat = 'Pendent';
         $comanda->direccio_enviament = $request->direccio_enviament;
+        
+        // Add notes if provided
+        if (!empty($request->notes)) {
+            $comanda->notes = $request->notes;
+        }
+        
         $comanda->save();
         
         // Process cart items
