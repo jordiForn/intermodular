@@ -22,10 +22,14 @@ class AuthController {
         ];
     
         if (Auth::attempt($credentials)) {
-            redirect('/productes/index.php')->send();
+            // Get redirect URL if it exists
+            $redirectTo = session()->getFlash('redirect_to', '/productes/index.php');
+            redirect($redirectTo)->with('success', 'Has iniciat sessió correctament')->send();
         }
 
-        back()->with('error', 'Credencials incorrectes')->send();
+        back()->with('error', 'Credencials incorrectes')->withInput([
+            'email' => $request->email
+        ])->send();
     }
 
     public function showRegisterForm(): void
@@ -66,6 +70,6 @@ class AuthController {
 
     public function logout(){
         Auth::logout();
-        redirect('/auth/show-login.php')->send();
+        redirect('/auth/show-login.php')->with('success', 'Has tancat la sessió correctament')->send();
     }
 }
