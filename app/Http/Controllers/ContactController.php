@@ -4,31 +4,37 @@ namespace App\Http\Controllers;
 use App\Core\Request;
 use App\Core\Auth;
 use App\Models\Client;
+use App\Http\Middlewares\Middleware;
 
 class ContactController {
     public function showForm()
     {
-        // Verificar si el usuario está autenticado
-        if (!Auth::check()) {
-            redirect('/auth/show-login.php')->with('error', 'Debes iniciar sesión para contactar')->send();
-        }
+        // Use middleware for authentication instead of direct check
+        Middleware::auth();
         
         view('contact.form');
     }
     
     public function store(Request $request)
     {
-        // Verificar si el usuario está autenticado
-        if (!Auth::check()) {
-            redirect('/auth/show-login.php')->with('error', 'Debes iniciar sesión para contactar')->send();
-        }
+        // Use middleware for authentication instead of direct check
+        Middleware::auth();
         
         $userId = Auth::id();
         $client = Client::findOrFail($userId);
         
+        // Validate input
+        if (empty(trim($request->notes))) {
+            back()->with('error', 'El missatge no pot estar buit')->send();
+        }
+        
         // Actualizar consulta del cliente
         $currentConsulta = $client->consulta ?? '';
-        $client->consulta = $currentConsulta . '| ' . $request->notes;
+        $newConsulta = empty($currentConsulta) ? 
+            $request->notes : 
+            $currentConsulta . ' | ' . $request->notes;
+            
+        $client->consulta = $newConsulta;
         $client->save();
         
         redirect('/index.php')->with('success', 'Contacte enviat amb èxit')->send();
