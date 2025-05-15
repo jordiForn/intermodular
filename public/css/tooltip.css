@@ -1,0 +1,104 @@
+/* Tooltip styles for Add to Cart buttons */
+.product-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background-color: var(--color-highlight);
+  color: var(--color-white);
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  width: 220px;
+  pointer-events: auto;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.product-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Arrow pointing to the button */
+.product-tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 8px 8px 0;
+  border-style: solid;
+  border-color: var(--color-highlight) transparent transparent;
+}
+
+/* For tooltips positioned below the button */
+.product-tooltip.bottom::after {
+  bottom: auto;
+  top: -8px;
+  border-width: 0 8px 8px;
+  border-color: transparent transparent var(--color-highlight);
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 6px;
+}
+
+.tooltip-header h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.tooltip-price {
+  font-weight: bold;
+  color: var(--color-accent);
+}
+
+.tooltip-body {
+  font-size: 14px;
+}
+
+.tooltip-stock {
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.tooltip-message {
+  font-weight: bold;
+  margin-top: 6px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-tooltip {
+    width: 180px;
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .tooltip-header h4 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* On very small screens, position tooltip in center of screen */
+  .product-tooltip {
+    position: fixed;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 80%;
+    max-width: 250px;
+    z-index: 2000;
+  }
+
+  .product-tooltip::after {
+    display: none;
+  }
+}
