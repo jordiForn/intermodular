@@ -1,7 +1,10 @@
+
 <?php
 declare(strict_types=1);
 
 namespace App\Core;
+
+use App\Http\Middlewares\MiddlewareRegistry;
 
 class Request
 {
@@ -15,6 +18,9 @@ class Request
         $this->data = array_merge($_GET, $_POST);
         $this->files = $_FILES;
         $this->server = $_SERVER;
+        
+        // Apply global middleware
+        MiddlewareRegistry::applyGlobalMiddleware($this);
     }
 
     public function __get(string $key): mixed
@@ -61,5 +67,16 @@ class Request
         $instance->files = $files;
         $instance->server = $server;
         return $instance;
+    }
+    
+    /**
+     * Apply middleware to this request
+     * 
+     * @param array $middleware Array of middleware aliases and parameters
+     * @return Response|null The response object if middleware generates one
+     */
+    public function middleware(array $middleware): ?Response
+    {
+        return MiddlewareRegistry::apply($this, $middleware);
     }
 }
