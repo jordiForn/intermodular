@@ -20,8 +20,8 @@ class ContactController {
         // Use middleware for authentication instead of direct check
         Middleware::auth();
         
-        $userId = Auth::id();
-        $client = Client::findOrFail($userId);
+        $clientId = Auth::clientId();
+        $client = Client::findOrFail($clientId);
         
         // Validation is now handled by ContactValidator
         

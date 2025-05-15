@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Core\Request;
 use App\Core\Auth;
+use App\Models\User;
 use App\Models\Client;
 
 class AuthController {
@@ -34,21 +35,33 @@ class AuthController {
 
     public function register(Request $request)
     {
+        // Create user
+        $user = new User();
+        $user->username = trim($request->nom_login);
+        $user->email = trim($request->email);
+        $user->password = password_hash($request->contrasena, PASSWORD_DEFAULT);
+        $user->role = 'user';
+        $user->save();
+
+        // Create client profile
         $client = new Client();
+        $client->user_id = $user->id;
         $client->nom = trim($request->nom);
-        $client->email = trim($request->email);
-        $client->contrasena = password_hash($request->contrasena, PASSWORD_DEFAULT);
-        $client->rol = 'user';
+        $client->cognom = trim($request->cognom ?? '');
+        $client->tlf = trim($request->tlf ?? '');
         $client->save();
 
+        // Log the user in
         session()->set('user', [
-            'id' => $client->id,
+            'id' => $user->id,
+            'username' => $user->username,
+            'email' => $user->email,
+            'role' => $user->role,
+            'client_id' => $client->id,
             'nom' => $client->nom,
-            'email' => $client->email,
-            'rol' => $client->rol,
         ]);
 
-        redirect('/productes/index.php')->with('success', "¡Benvingut, $client->nom!")->send();
+        redirect('/productes/index.php')->with('success', "¡Benvingut, {$client->nom}!")->send();
     }
 
     public function logout(){
