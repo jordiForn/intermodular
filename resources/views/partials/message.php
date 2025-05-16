@@ -1,44 +1,35 @@
 <?php
-/**
- * Flash message partial
- * Displays session flash messages with appropriate styling
- */
-
-// Define all supported message types with their corresponding Bootstrap classes
+// Define message types and their corresponding Bootstrap alert classes
 $messageTypes = [
-    'error' => 'danger',
-    'success' => 'success',
-    'warning' => 'warning',
-    'info' => 'info'
+    'success' => 'alert-success',
+    'error' => 'alert-danger',
+    'warning' => 'alert-warning',
+    'info' => 'alert-info'
 ];
 
-// Loop through all message types
-foreach ($messageTypes as $type => $alertClass):
-    // Get flash message for this type
-    $flashMessage = session()->getFlash($type);
-    
-    // Display message if it exists
-    if ($flashMessage):
-        // Handle both string and array messages
-        if (is_array($flashMessage)):
-?>
-        <div class="alert alert-<?= $alertClass ?> alert-dismissible fade show" role="alert">
-            <ul class="mb-0">
-                <?php foreach ($flashMessage as $message): ?>
-                    <li><?= htmlspecialchars($message) ?></li>
-                <?php endforeach; ?>
-            </ul>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-<?php
-        else:
-?>
-        <div class="alert alert-<?= $alertClass ?> alert-dismissible fade show" role="alert">
-            <?= htmlspecialchars($flashMessage) ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-<?php
-        endif;
-    endif;
-endforeach;
-?>
+// Check if session function/helper exists
+if (function_exists('session')) {
+    // Loop through each message type
+    foreach ($messageTypes as $type => $alertClass) {
+        // Get flash messages from session
+        $messages = session()->getFlash($type);
+        
+        // If messages exist (can be string or array)
+        if (!empty($messages)) {
+            // Convert string to array for consistent handling
+            if (is_string($messages)) {
+                $messages = [$messages];
+            }
+            
+            // Display each message with appropriate styling
+            foreach ($messages as $message) {
+                if (!empty($message)) {
+                    echo '<div class="alert ' . $alertClass . ' alert-dismissible fade show" role="alert">';
+                    echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+                    echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    echo '</div>';
+                }
+            }
+        }
+    }
+}
