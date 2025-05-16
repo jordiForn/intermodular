@@ -6,4 +6,39 @@ Class "Auth" not found
 #0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
 #1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
 #2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}Class "Auth" not found
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}[2025-05-16 16:42:55] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
 #3 {main}
+
+[2025-05-16 16:44:03] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-16 16:44:22] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-16 16:44:25] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+

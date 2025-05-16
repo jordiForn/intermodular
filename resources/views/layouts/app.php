@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
         // Set authentication status for JavaScript
-        var isLoggedIn = <?= json_encode(Auth::check()) ?>;
-        var isAdmin = <?= json_encode(Auth::check() && Auth::role() === 'admin') ?>;
+        var isLoggedIn = <?= json_encode(\App\Core\Auth::check()) ?>;
+        var isAdmin = <?= json_encode(\App\Core\Auth::check() && \App\Core\Auth::role() === 'admin') ?>;
         // Make BASE_URL available to JavaScript
         var BASE_URL = <?= json_encode(BASE_URL) ?>;
     </script>

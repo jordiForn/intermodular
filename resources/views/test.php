@@ -42,6 +42,13 @@
                 <?= htmlspecialchars($message) ?>
             </div>
         <?php endif; ?>
+
+        <div class="test-view">
+            <h2>Test View</h2>
+            <p><?php echo htmlspecialchars($message ?? 'No message provided'); ?></p>
+            <p>This is a simple test view to verify that the view rendering system is working correctly.</p>
+            <p>Current time: <?php echo date('Y-m-d H:i:s'); ?></p>
+        </div>
     </div>
 </body>
 </html>
