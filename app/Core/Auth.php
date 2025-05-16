@@ -2,65 +2,119 @@
 declare(strict_types=1);
 
 namespace App\Core;
+
 use App\Models\User;
-use App\Models\Client;
 
-class Auth {
-
+class Auth
+{
+    private static ?User $user = null;
+    private static bool $initialized = false;
+    
+    public static function initialize(): void
+    {
+        if (self::$initialized) {
+            return;
+        }
+        
+        self::$initialized = true;
+        
+        if (session()->has('user_id')) {
+            $userId = session()->get('user_id');
+            self::$user = User::find($userId);
+            
+            // If user not found, clear session
+            if (!self::$user) {
+                session()->forget('user_id');
+            }
+        }
+    }
+    
     public static function attempt(array $credentials): bool
     {
-        $nomLogin = $credentials['nom_login'] ?? '';
-        $password = $credentials['contrasena'] ?? '';
+        // Check if we're using the legacy system (client table)
+        if (isset($credentials['nom_login'])) {
+            $username = $credentials['nom_login'];
+            $password = $credentials['contrasena'];
+            
+            // Try to find user by username in users table
+            $user = User::findByUsername($username);
+            
+            if (!$user) {
+                return false;
+            }
+            
+            // Verify password
+            if (!password_verify($password, $user->password)) {
+                return false;
+            }
+            
+            // Login user
+            self::login($user);
+            
+            return true;
+        }
         
-        // Find user by nom_login
-        $client = Client::where('nom_login', $nomLogin)->first();
+        // Modern system (users table)
+        $username = $credentials['username'];
+        $password = $credentials['password'];
         
-        if (!$client) {
+        // Find user by username
+        $user = User::findByUsername($username);
+        
+        if (!$user) {
             return false;
         }
         
-        $user = User::find($client->user_id);
-        
-        if ($user && password_verify($password, $user->password)) {
-            // Set session data
-            session()->set('user', [
-                'id' => $user->id,
-                'username' => $user->username,
-                'email' => $user->email,
-                'role' => $user->role,
-                'client_id' => $client->id,
-                'nom' => $client->nom,
-                'nom_login' => $client->nom_login,
-            ]);
-            return true;
+        // Verify password
+        if (!password_verify($password, $user->password)) {
+            return false;
         }
-        return false;
-    }
-
-    public static function user(): ?array {
-        return session()->get('user');
-    }
-
-    public static function check(): bool {
-        return self::user() !== null;
-    }
-
-    public static function id(): ?int {
-        $user = self::user(); // Obtener el usuario una vez
-        return $user ? $user['id'] : null; // Verificar si no es null
+        
+        // Login user
+        self::login($user);
+        
+        return true;
     }
     
-    public static function clientId(): ?int {
-        $user = self::user();
-        return $user ? $user['client_id'] : null;
+    public static function login(User $user): void
+    {
+        self::$user = $user;
+        session()->put('user_id', $user->id);
     }
     
-    public static function role(): ?string {
-        $user = self::user(); // Obtener el usuario una vez
-        return $user ? $user['role'] : null; // Verificar si no es null
+    public static function logout(): void
+    {
+        self::$user = null;
+        session()->forget('user_id');
     }
-
-    public static function logout(): void {
-        session()->invalidate();
+    
+    public static function check(): bool
+    {
+        self::initialize();
+        return self::$user !== null;
+    }
+    
+    public static function user(): ?User
+    {
+        self::initialize();
+        return self::$user;
+    }
+    
+    public static function id(): ?int
+    {
+        self::initialize();
+        return self::$user ? self::$user->id : null;
+    }
+    
+    public static function guest(): bool
+    {
+        return !self::check();
+    }
+    
+    // Helper method to check if user has admin role
+    public static function isAdmin(): bool
+    {
+        self::initialize();
+        return self::$user && self::$user->role === 'admin';
     }
 }

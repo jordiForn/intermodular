@@ -4,66 +4,83 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Core\Model;
-use App\Core\DB;
 use App\Core\QueryBuilder;
 
 class User extends Model
 {
     protected static string $table = 'users';
-    protected static array $fillable = ['username', 'email', 'password', 'role', 'created_at', 'updated_at'];
-    protected static array $relations = ['client'];
-
-    /** @override */
-    public function insert(): void
+    protected static string $primaryKey = 'id';
+    
+    public int $id;
+    public string $username;
+    public string $email;
+    public string $password;
+    public string $role;
+    public string $created_at;
+    public string $updated_at;
+    
+    /**
+     * Find a user by username
+     * 
+     * @param string $username The username to search for
+     * @return User|null The user if found, null otherwise
+     */
+    public static function findByUsername(string $username): ?User
     {
-        $this->created_at = date('Y-m-d H:i:s');
-        $this->updated_at = date('Y-m-d H:i:s');
-        
-        $sql = "INSERT INTO " . self::$table 
-            . " (username, email, password, role, created_at, updated_at)"
-            . " VALUES (?, ?, ?, ?, ?, ?)";
-        $params = [
-            $this->username, 
-            $this->email, 
-            $this->password, 
-            $this->role, 
-            $this->created_at, 
-            $this->updated_at
-        ];
-        $this->id = DB::insert($sql, $params);
+        return (new QueryBuilder(static::class))
+            ->where('username', '=', $username)
+            ->first();
     }
-
-    /** @override */
-    public function update(): void
+    
+    /**
+     * Find a user by email
+     * 
+     * @param string $email The email to search for
+     * @return User|null The user if found, null otherwise
+     */
+    public static function findByEmail(string $email): ?User
     {
-        $this->updated_at = date('Y-m-d H:i:s');
-        
-        $sql = "UPDATE " . self::$table 
-            . " SET username = ?, email = ?, password = ?, role = ?, updated_at = ?"
-            . " WHERE id = ?";
-        $params = [
-            $this->username, 
-            $this->email, 
-            $this->password, 
-            $this->role, 
-            $this->updated_at, 
-            $this->id
-        ];
-        DB::update($sql, $params);
+        return (new QueryBuilder(static::class))
+            ->where('email', '=', $email)
+            ->first();
     }
-
+    
+    /**
+     * Check if the user is an admin
+     * 
+     * @return bool True if the user is an admin, false otherwise
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+    
+    /**
+     * Get the client associated with this user
+     * 
+     * @return Client|null The client if found, null otherwise
+     */
     public function client(): ?Client
     {
-        return Client::where('user_id', $this->id)->first();
+        return Client::where('user_id', '=', $this->id)->first();
     }
-
-    public static function findByUsername(string $username): ?self
+    
+    /**
+     * Save the user to the database
+     * 
+     * @return bool True if the save was successful, false otherwise
+     */
+    public function save(): bool
     {
-        return self::where('username', $username)->first();
-    }
-
-    public static function findByEmail(string $email): ?self
-    {
-        return self::where('email', $email)->first();
+        if (isset($this->id) && $this->id > 0) {
+            // Update existing user
+            $this->updated_at = date('Y-m-d H:i:s');
+            return $this->update();
+        } else {
+            // Insert new user
+            $this->created_at = date('Y-m-d H:i:s');
+            $this->updated_at = date('Y-m-d H:i:s');
+            return $this->insert();
+        }
     }
 }

@@ -149,6 +149,36 @@ function previousUrl(): string
 }
 
 /**
+ * Generate a URL for a given path
+ * 
+ * @param string $path The path to generate a URL for
+ * @return string The full URL
+ */
+function url(string $path = ''): string
+{
+    $baseUrl = rtrim(BASE_URL, '/');
+    $path = ltrim($path, '/');
+    
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper url() called for: $path");
+    }
+    
+    return $baseUrl . ($path ? '/' . $path : '');
+}
+
+/**
+ * Get the old input value
+ * 
+ * @param string $key The input key
+ * @param mixed $default Default value if key doesn't exist
+ * @return mixed The old input value or default
+ */
+function old(string $key, mixed $default = ''): mixed
+{
+    return session()->getFlash('old', [])[$key] ?? $default;
+}
+
+/**
  * Genera una URL para una imagen, verificando si existe.
  * Si la imagen no existe, devuelve una imagen de placeholder.
  * 

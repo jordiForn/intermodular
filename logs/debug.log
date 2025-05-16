@@ -1,3 +1,3 @@
-=== Debug Log Started at 2025-05-16 17:57:00 ===
-[2025-05-16 17:57:00] [0.53ms] [0.41KB] [check-methods.php:2] Debug system initialized
-[2025-05-16 17:57:00] [6.28ms] [68.66KB] [check-methods.php:2] Bootstrap completed successfully
+=== Debug Log Started at 2025-05-16 19:07:56 ===
+[2025-05-16 19:07:56] [1.71ms] [0.41KB] [login.php:2] Debug system initialized
+[2025-05-16 19:07:56] [16.14ms] [72.04KB] [login.php:2] Bootstrap completed successfully
