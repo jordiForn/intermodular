@@ -9,7 +9,7 @@ use App\Core\QueryBuilder;
 
 class Client extends Model
 {
-    protected static string $table = 'clients';
+    protected static string $table = 'client';
     protected static array $fillable = ['user_id', 'nom', 'cognom', 'tlf', 'direccio', 'ciutat', 'codi_postal', 'provincia', 'pais', 'consulta', 'missatge', 'created_at', 'updated_at'];
     protected static array $relations = ['user', 'comandes'];
 

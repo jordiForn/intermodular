@@ -1,111 +1,165 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-require_once __DIR__ . '/../../Models/Client.php';
-require_once __DIR__ . '/../../Models/User.php';
-require_once __DIR__ . '/../../Models/Comanda.php';
-
+use App\Core\Auth;
 use App\Core\Request;
 use App\Models\Client;
-use App\Models\User;
-use App\Models\Comanda;
 
 class ClientController
 {
-    public function index()
+    public function index(): void
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
+        }
+        
         $clients = Client::all();
-        view('clients.index', compact('clients'));
+        view('clients.index', ['clients' => $clients]);
     }
-
-    public function show(string $id)
+    
+    public function show(int $id): void
     {
-        $client = Client::findOrFail($id);
-        view('clients.show', compact('client'));
+        // Check if user is admin or the client owner
+        if (!Auth::check() || (Auth::user()->role !== 'admin' && Auth::user()->client()->id !== $id)) {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
+        }
+        
+        $client = Client::find($id);
+        
+        if (!$client) {
+            http_error(404, 'Client no trobat.');
+            return;
+        }
+        
+        view('clients.show', ['client' => $client]);
     }
-
-    public function create()
+    
+    public function create(): void
     {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
+        }
+        
         view('clients.create');
     }
-
-    public function store(Request $request)
+    
+    public function store(Request $request): void
     {
-        // Create user first
-        $user = new User();
-        $user->username = $request->nom_login;
-        $user->email = $request->email;
-        $user->password = password_hash($request->contrasena, PASSWORD_DEFAULT);
-        $user->role = 'user';
-        $user->save();
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
+        }
         
-        // Then create client
+        // Validate request
+        $validator = new \App\Http\Validators\ClientValidator();
+        $validator->validate($request);
+        
+        // Create client
         $client = new Client();
-        $client->user_id = $user->id;
         $client->nom = $request->nom;
-        $client->cognom = $request->cognom;
-        $client->tlf = $request->tlf;
-        $client->consulta = $request->consulta;
-        $client->missatge = $request->missatge;
-        $client->save();
-
-        redirect('/clients/index.php')->with('success', 'Client inserit amb èxit')->send();
-    }
-
-    public function edit(string $id)
-    {
-        $client = Client::findOrFail($id);
-        $user = $client->user();
-        view('clients.edit', compact('client', 'user'));
-    }
-
-    public function update(Request $request)
-    {
-        $client = Client::findOrFail($request->id);
-        $user = $client->user();
+        $client->cognom = $request->cognom ?? '';
+        $client->email = $request->email;
+        $client->tlf = $request->tlf ?? '';
+        $client->nom_login = $request->nom_login;
+        $client->contrasena = password_hash($request->contrasena, PASSWORD_DEFAULT);
+        $client->insert();
         
-        // Update user data
-        $user->username = $request->nom_login;
-        $user->email = $request->email;
-        
-        if (!empty($request->contrasena)) {
-            $user->password = password_hash($request->contrasena, PASSWORD_DEFAULT);
+        // Redirect to clients index
+        session()->flash('success', 'Client creat correctament.');
+        redirect('/clients')->send();
+    }
+    
+    public function edit(int $id): void
+    {
+        // Check if user is admin or the client owner
+        if (!Auth::check() || (Auth::user()->role !== 'admin' && Auth::user()->client()->id !== $id)) {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
         }
         
-        $user->save();
+        $client = Client::find($id);
         
-        // Update client data
-        $client->nom = $request->nom;
-        $client->cognom = $request->cognom;
-        $client->tlf = $request->tlf;
-        $client->consulta = $request->consulta;
-        $client->missatge = $request->missatge;
-        $client->save();
-        
-        redirect('/clients/index.php')->with('success', 'Client modificat amb èxit')->send();
-    }
-
-    public function destroy(string $id)
-    {
-        $client = Client::findOrFail($id);
-        $comandes = $client->comandes;
-        
-        if(!empty($comandes)){
-            back()->with('error', 'No es pot eliminar un client que té comandes.')->send();
+        if (!$client) {
+            http_error(404, 'Client no trobat.');
+            return;
         }
         
-        // Get the user associated with this client
-        $user = $client->user();
+        view('clients.edit', ['client' => $client]);
+    }
+    
+    public function update(Request $request, int $id): void
+    {
+        // Check if user is admin or the client owner
+        if (!Auth::check() || (Auth::user()->role !== 'admin' && Auth::user()->client()->id !== $id)) {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
+        }
         
-        // Delete the client first (due to foreign key constraints)
+        $client = Client::find($id);
+        
+        if (!$client) {
+            http_error(404, 'Client no trobat.');
+            return;
+        }
+        
+        // Validate request
+        $validator = new \App\Http\Validators\ClientValidator();
+        $validator->validate($request, $id);
+        
+        // Update client
+        $client->nom = $request->nom;
+        $client->cognom = $request->cognom ?? '';
+        $client->email = $request->email;
+        $client->tlf = $request->tlf ?? '';
+        
+        // Only admin can update login credentials
+        if (Auth::user()->role === 'admin') {
+            $client->nom_login = $request->nom_login;
+            
+            if (!empty($request->contrasena)) {
+                $client->contrasena = password_hash($request->contrasena, PASSWORD_DEFAULT);
+            }
+        }
+        
+        $client->update();
+        
+        // Redirect back with success message
+        session()->flash('success', 'Client actualitzat correctament.');
+        
+        if (Auth::user()->role === 'admin') {
+            redirect('/clients')->send();
+        } else {
+            redirect('/profile')->send();
+        }
+    }
+    
+    public function destroy(int $id): void
+    {
+        // Check if user is admin
+        if (!Auth::check() || Auth::user()->role !== 'admin') {
+            http_error(403, 'No tens permís per accedir a aquesta pàgina.');
+            return;
+        }
+        
+        $client = Client::find($id);
+        
+        if (!$client) {
+            http_error(404, 'Client no trobat.');
+            return;
+        }
+        
         $client->delete();
         
-        // Then delete the user if it exists
-        if ($user) {
-            $user->delete();
-        }
-        
-        redirect('/clients/index.php')->with('success', 'Client eliminat amb èxit')->send();
+        // Redirect back with success message
+        session()->flash('success', 'Client eliminat correctament.');
+        redirect('/clients')->send();
     }
 }

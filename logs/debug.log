@@ -1,30 +1,3 @@
-=== Debug Log Started at 2025-05-16 17:07:20 ===
-[2025-05-16 17:07:20] [1.43ms] [0.41KB] [show-form.php:3] Debug system initialized
-[2025-05-16 17:07:20] [13.21ms] [67.4KB] [show-form.php:3] Bootstrap completed successfully
-[2025-05-16 17:07:20] [14.99ms] [73.35KB] [ContactController.php:12] Helper view() called for: contact.form
-[2025-05-16 17:07:20] [15.43ms] [73.37KB] [helpers.php:101] Starting view rendering for: contact.form
-[2025-05-16 17:07:20] [15.88ms] [73.86KB] [helpers.php:101] Previous URL stored: /intermodular/public/contact/show-form.php
-[2025-05-16 17:07:20] [16.57ms] [73.77KB] [helpers.php:101] Extracting data with keys: 
-[2025-05-16 17:07:20] [17.14ms] [74.23KB] [helpers.php:101] Loading view content: contact.form
-[2025-05-16 17:07:20] [17.51ms] [74.59KB] [Response.php:59] View Rendering [loadView]: contact.form | Context: {"data_keys":[],"memory":703248}
-[2025-05-16 17:07:20] [17.96ms] [74.23KB] [Response.php:63] Getting view path for: contact.form
-[2025-05-16 17:07:20] [18.3ms] [74.5KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-16 17:07:20] [18.57ms] [74.34KB] [Response.php:63] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-16 17:07:20] [18.9ms] [74.34KB] [Response.php:63] Converted view path: contact\form
-[2025-05-16 17:07:20] [19.86ms] [74.85KB] [Response.php:190] File Check: C:/xampp/htdocs/intermodular/resources/views/contact\form.php | Context: {"exists":true,"readable":true}
-[2025-05-16 17:07:20] [20.24ms] [74.48KB] [Response.php:63] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/contact\form.php
-[2025-05-16 17:07:20] [21.98ms] [74.37KB] [Response.php:29] View file path: C:/xampp/htdocs/intermodular/resources/views/contact\form.php
-[2025-05-16 17:07:20] [22.65ms] [74.66KB] [Response.php:29] Starting output buffering
-[2025-05-16 17:07:20] [23.14ms] [90.89KB] [Response.php:29] Including view file: C:/xampp/htdocs/intermodular/resources/views/contact\form.php
-[2025-05-16 17:07:20] [25.22ms] [83.09KB] [Response.php:29] View rendered successfully, content length: 3354
-[2025-05-16 17:07:20] [25.64ms] [82.97KB] [helpers.php:101] View content loaded successfully, length: 3354
-[2025-05-16 17:07:20] [26.21ms] [82.95KB] [Response.php:33] Getting view path for: layouts/app
-[2025-05-16 17:07:20] [26.69ms] [83.23KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-16 17:07:20] [27.03ms] [83.06KB] [Response.php:33] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-16 17:07:20] [27.67ms] [83.03KB] [Response.php:33] Converted view path: layouts/app
-[2025-05-16 17:07:20] [28.2ms] [83.54KB] [Response.php:190] File Check: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
-[2025-05-16 17:07:20] [28.58ms] [83.17KB] [Response.php:33] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
-[2025-05-16 17:07:20] [28.93ms] [83.09KB] [helpers.php:101] Using layout: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
-[2025-05-16 17:07:20] [29.41ms] [82.98KB] [helpers.php:101] Including layout file
-[2025-05-16 17:07:20] [30.11ms] [91.16KB] [helpers.php:101] Layout included successfully
-[2025-05-16 17:07:20] [30.32ms] [87.12KB] [ContactController.php:12] Helper view() completed successfully for: contact.form
+=== Debug Log Started at 2025-05-16 17:57:00 ===
+[2025-05-16 17:57:00] [0.53ms] [0.41KB] [check-methods.php:2] Debug system initialized
+[2025-05-16 17:57:00] [6.28ms] [68.66KB] [check-methods.php:2] Bootstrap completed successfully

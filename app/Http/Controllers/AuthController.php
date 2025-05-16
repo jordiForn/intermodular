@@ -12,11 +12,34 @@ use App\Models\Client;
 
 class AuthController {
 
+    /**
+     * Show the login form
+     */
     public function showLoginForm(): void
     {
-        view('auth.login');
+        try {
+            // Log the action
+            if (class_exists('\\App\\Core\\Debug')) {
+                Debug::log("Showing login form");
+            }
+            
+            view('auth.login');
+        } catch (\Throwable $e) {
+            // Log the exception
+            if (class_exists('\\App\\Core\\Debug')) {
+                Debug::log("Exception in showLoginForm: " . $e->getMessage());
+                Debug::log("Stack trace: " . $e->getTraceAsString());
+            }
+            
+            // Display error
+            http_response_code(500);
+            echo "Error loading login form: " . $e->getMessage();
+        }
     }
     
+    /**
+     * Process login attempt
+     */
     public function login(Request $request)
     {
         try {
@@ -51,7 +74,7 @@ class AuthController {
                 
                 // Log successful login
                 if (class_exists('\\App\\Core\\Debug')) {
-                    Debug::log("Login successful for user: " . $request->nom_login);
+                    Debug::log("Login successful for user: " . $request->nom_login . ", redirecting to: " . $redirectTo);
                 }
                 
                 redirect($redirectTo)->with('success', 'Has iniciat sessió correctament')->send();
@@ -81,11 +104,34 @@ class AuthController {
         }
     }
 
+    /**
+     * Show the registration form
+     */
     public function showRegisterForm(): void
     {
-        view('auth.register');
+        try {
+            // Log the action
+            if (class_exists('\\App\\Core\\Debug')) {
+                Debug::log("Showing register form");
+            }
+            
+            view('auth.register');
+        } catch (\Throwable $e) {
+            // Log the exception
+            if (class_exists('\\App\\Core\\Debug')) {
+                Debug::log("Exception in showRegisterForm: " . $e->getMessage());
+                Debug::log("Stack trace: " . $e->getTraceAsString());
+            }
+            
+            // Display error
+            http_response_code(500);
+            echo "Error loading registration form: " . $e->getMessage();
+        }
     }
 
+    /**
+     * Process registration
+     */
     public function register(Request $request)
     {
         try {
@@ -110,7 +156,7 @@ class AuthController {
             $user->role = 'user';
             $user->save();
 
-            // Create client profile
+            // Create client
             $client = new Client();
             $client->user_id = $user->id;
             $client->nom = trim($request->nom);
@@ -149,6 +195,9 @@ class AuthController {
         }
     }
 
+    /**
+     * Process logout
+     */
     public function logout(){
         Auth::logout();
         redirect('/auth/show-login.php')->with('success', 'Has tancat la sessió correctament')->send();

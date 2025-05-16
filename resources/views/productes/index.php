@@ -5,7 +5,7 @@
     <h1 class="mb-4">Catàleg de Productes</h1>
 
     <!-- Mostrar mensajes de error y éxito si existen -->
-    <?php include __DIR__ . '/../partials/messages.php'; ?>
+    <?php include __DIR__ . '/../partials/message.php'; ?>
 
     <div class="row">
         <?php foreach ($productes as $producte): ?>

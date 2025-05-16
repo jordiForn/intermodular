@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Validators;
 use App\Core\Request;
 use App\Models\Client;
+use App\Models\User;
 
 class RegisterValidator
 {
@@ -27,7 +28,7 @@ class RegisterValidator
         // Validación de nom_login
         if (trim($nomLogin) === '') {
             $errors['nom_login'] = 'El nom d\'usuari és obligatori.';
-        } elseif (Client::findByNomLogin($nomLogin)) {
+        } elseif (User::findByUsername($nomLogin)) {
             $errors['nom_login'] = 'Aquest nom d\'usuari ja està en ús.';
         }
 
@@ -36,7 +37,7 @@ class RegisterValidator
             $errors['email'] = 'Ha d\'introduir un email vàlid';
         }
 
-        if(Client::where('email', $email)->first()){
+        if(User::findByEmail($email)){
             $errors['email'] = 'Aquest correu ja està registrat.';
         }
 

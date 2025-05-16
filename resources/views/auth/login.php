@@ -8,7 +8,7 @@
                     <h4 class="mb-0">Iniciar sessió</h4>
                 </div>
                 <div class="card-body">
-                    <?php include __DIR__ . '/../partials/messages.php'; ?>
+                    <?php include __DIR__ . '/../partials/message.php'; ?>
                     <?php include __DIR__ . '/../partials/errors.php'; ?>
                     
                     <form action="<?= BASE_URL ?>/auth/login.php" method="POST">

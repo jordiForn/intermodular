@@ -4,7 +4,7 @@
     <h1 class="mb-4">El meu carret</h1>
 
     <!-- Mostrar mensajes de error y éxito si existen -->
-    <?php include __DIR__ . '/../partials/messages.php'; ?>
+    <?php include __DIR__ . '/../partials/message.php'; ?>
 
     <div class="row">
         <div class="col-md-8">

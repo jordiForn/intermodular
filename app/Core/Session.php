@@ -4,13 +4,38 @@ namespace App\Core;
 
 class Session {
 
+    private static bool $sessionStarted = false;
+
     /**
      * Inicia la sesión si no está ya iniciada.
      */
     public function __construct()
     {
+        $this->startSession();
+    }
+    
+    /**
+     * Start the session if it hasn't been started yet
+     */
+    private function startSession(): void
+    {
+        if (self::$sessionStarted) {
+            return;
+        }
+        
         if (session_status() === PHP_SESSION_NONE) {
-            session_start();
+            // Check if headers have already been sent
+            if (!headers_sent()) {
+                session_start();
+                self::$sessionStarted = true;
+            } else {
+                // Log the error but don't throw an exception
+                if (class_exists('\\App\\Core\\Debug')) {
+                    Debug::log("WARNING: Attempted to start session after headers were sent");
+                }
+            }
+        } else {
+            self::$sessionStarted = true;
         }
     }
 
@@ -18,6 +43,7 @@ class Session {
      * Obtiene un valor de la sesión
      */
     public function get(string $key, $default = null) {
+        $this->startSession();
         return $_SESSION[$key] ?? $default;
     }
 
@@ -25,6 +51,7 @@ class Session {
      * Establece un valor en la sesión
      */
     public function set(string $key, $value): void {
+        $this->startSession();
         $_SESSION[$key] = $value;
     }
 
@@ -32,13 +59,15 @@ class Session {
      * Verifica si existe una variable de sesión y es distinta de null
      */
     public function has(string $key): bool {
+        $this->startSession();
         return isset($_SESSION[$key]);
     }
 
-    /** 
+    /**
      * Elimina una variable de sesión
      */ 
     public function remove(string $key): void {
+        $this->startSession();
         unset($_SESSION[$key]);
     }
 
@@ -46,6 +75,7 @@ class Session {
      * Obtiene el valor de una variable de sesión flash y lo elimina.
      */
     public function getFlash(string $key, $default = null) {
+        $this->startSession();
         if (!isset($_SESSION['_flash'])) {
             return $default;
         }
@@ -58,6 +88,7 @@ class Session {
      * Establece un valor flash.
      */
     public function flash(string $key, $value): void {
+        $this->startSession();
         $_SESSION['_flash'][$key] = $value;
     }
 
@@ -65,6 +96,7 @@ class Session {
      * Verifica si existe un valor flash.
      */
     public function hasFlash(string $key): bool {
+        $this->startSession();
         return isset($_SESSION['_flash']) && array_key_exists($key, $_SESSION['_flash']);
     }
 
@@ -72,9 +104,17 @@ class Session {
     * Reinicia completamente la sesión actual.
     */
     public function invalidate(): void {
-        session_unset(); 
-        session_destroy();
-        session_start();
-        session_regenerate_id(true);
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_unset(); 
+            session_destroy();
+            self::$sessionStarted = false;
+            
+            // Only try to start a new session if headers haven't been sent
+            if (!headers_sent()) {
+                session_start();
+                session_regenerate_id(true);
+                self::$sessionStarted = true;
+            }
+        }
     }
 }
