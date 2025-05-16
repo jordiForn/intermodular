@@ -1,0 +1,9 @@
+Class "Auth" not found
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}Class "Auth" not found
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}

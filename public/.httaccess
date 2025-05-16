@@ -1,17 +1,34 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /Intermodular/public/
     
-    # Handle 404 errors
-    RewriteCond %{REQUEST_FILENAME} !-f
+    # Set the base for rewrites to the public directory
+    RewriteBase /intermodular/public/
+    
+    # Redirect trailing slashes
+    RewriteRule ^(.*)/$ $1 [L,R=301]
+    
+    # Handle front controller
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ 404.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
     
-    # Handle other error codes
-    ErrorDocument 403 /Intermodular/public/403.php
-    ErrorDocument 400 /Intermodular/public/400.php
-    ErrorDocument 500 /Intermodular/public/500.php
+    # Handle error documents
+    ErrorDocument 403 /intermodular/public/403.php
+    ErrorDocument 404 /intermodular/public/404.php
+    ErrorDocument 500 /intermodular/public/500.php
 </IfModule>
 
 # Prevent directory listing
+
 Options -Indexes
+
+# Set default character set
+
+AddDefaultCharset UTF-8
+
+# Enable PHP error display in development
+
+<IfModule mod_php7.c>
+    php_flag display_errors On
+    php_value error_reporting E_ALL
+</IfModule>

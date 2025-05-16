@@ -8,16 +8,45 @@ class ErrorHandler
 {
     public static function handle(Throwable $e)
     {
-        if (ENV === 'development') {
-            echo "<pre>";
-            echo "Error: {$e->getMessage()} \n";
-            echo "Archivo: {$e->getFile()} \n";
-            echo "Línea: {$e->getLine()} \n";
-            echo "Stacktrace: \n{$e->getTraceAsString()}";
-            echo "</pre>";
+        // Always log the error
+        $logPath = dirname(__DIR__, 2) . '/logs/error.log';
+        $logDir = dirname($logPath);
+        
+        // Create logs directory if it doesn't exist
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0755, true);
+        }
+        
+        error_log($e->getMessage() . "\n" . $e->getTraceAsString(), 3, $logPath);
+        
+        // In development, show detailed error information
+        if (defined('ENV') && ENV === 'development') {
+            echo "<div style='background-color: #f8d7da; color: #721c24; padding: 20px; margin: 20px; border-radius: 5px; border: 1px solid #f5c6cb;'>";
+            echo "<h1>Application Error</h1>";
+            echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+            echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . "</p>";
+            echo "<p><strong>Line:</strong> " . $e->getLine() . "</p>";
+            echo "<h2>Stack Trace:</h2>";
+            echo "<pre>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+            echo "</div>";
         } else {
-            error_log($e->getMessage(), 3, project_path('logs/error.log'));
-            view('errors/500');
+            // In production, show a user-friendly error page
+            http_response_code(500);
+            
+            // Check if view function exists before using it
+            if (function_exists('view')) {
+                try {
+                    view('errors/500');
+                } catch (Throwable $viewError) {
+                    // Fallback if view function fails
+                    echo "<h1>Server Error</h1>";
+                    echo "<p>We're sorry, but something went wrong on our end.</p>";
+                }
+            } else {
+                // Fallback if view function doesn't exist
+                echo "<h1>Server Error</h1>";
+                echo "<p>We're sorry, but something went wrong on our end.</p>";
+            }
         }
     }
 
@@ -34,7 +63,8 @@ class ErrorHandler
         
         // Log the error if it's server-side (5xx)
         if ($statusCode >= 500) {
-            error_log("HTTP Error $statusCode: $message", 3, project_path('logs/error.log'));
+            $logPath = dirname(__DIR__, 2) . '/logs/error.log';
+            error_log("HTTP Error $statusCode: $message", 3, $logPath);
         }
         
         // Map status codes to view files
@@ -54,7 +84,21 @@ class ErrorHandler
             $data['customMessage'] = $message;
         }
         
-        view($view, $data);
+        // Check if view function exists before using it
+        if (function_exists('view')) {
+            try {
+                view($view, $data);
+            } catch (Throwable $viewError) {
+                // Fallback if view function fails
+                echo "<h1>Error $statusCode</h1>";
+                echo "<p>" . ($message ?? "An error occurred.") . "</p>";
+            }
+        } else {
+            // Fallback if view function doesn't exist
+            echo "<h1>Error $statusCode</h1>";
+            echo "<p>" . ($message ?? "An error occurred.") . "</p>";
+        }
+        
         exit;
     }
 }
