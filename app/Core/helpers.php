@@ -135,3 +135,38 @@ function imageUrl(?string $imageName, int $width = 300, int $height = 300): stri
     
     return "/placeholder.svg?height={$height}&width={$width}";
 }
+
+/**
+ * Trigger an HTTP error with the specified status code
+ * 
+ * @param int $statusCode The HTTP status code
+ * @param string|null $message Optional custom message
+ * @return void
+ */
+function http_error(int $statusCode, ?string $message = null)
+{
+    \App\Core\ErrorHandler::handleHttpError($statusCode, $message);
+}
+
+/**
+ * Get the absolute path to a file in the project
+ * 
+ * @param string $path Relative path from project root
+ * @return string Absolute path
+ */
+function project_path(string $path = ''): string
+{
+    $rootDir = dirname(__DIR__, 2); // Go up two levels from app/Core
+    return $rootDir . ($path ? DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR) : '');
+}
+
+/**
+ * Get the URL for a public asset
+ * 
+ * @param string $path Path relative to the public directory
+ * @return string Full URL to the asset
+ */
+function asset(string $path): string
+{
+    return BASE_URL . '/' . ltrim($path, '/');
+}

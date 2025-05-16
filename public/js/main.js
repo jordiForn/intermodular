@@ -36,6 +36,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// Update any hardcoded paths to use the BASE_URL JavaScript variable
+document.addEventListener("DOMContentLoaded", () => {
+  // Ensure BASE_URL is available in JavaScript
+  if (typeof BASE_URL === "undefined") {
+    console.warn(
+      "BASE_URL is not defined. Some functionality may not work correctly."
+    );
+  }
+
+  // Initialize any components that need the base URL
+  initializeComponents();
+});
+
+function initializeComponents() {
+  // Any initialization code that needs BASE_URL
+}
+
 /**
  * Set authentication status - to be called from PHP
  * @param {boolean} loggedIn - Whether user is logged in

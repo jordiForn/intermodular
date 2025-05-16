@@ -1,33 +1,37 @@
 <?php
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/db.php';
+// Define the project root directory
+define('PROJECT_ROOT', dirname(__DIR__));
+
+// Load configuration files
+require_once PROJECT_ROOT . '/config/config.php';
+require_once PROJECT_ROOT . '/config/db.php';
 
 // Core classes
-require_once __DIR__ . '/../app/Core/Session.php';
-require_once __DIR__ . '/../app/Core/Request.php';
-require_once __DIR__ . '/../app/Core/Response.php';
-require_once __DIR__ . '/../app/Core/DB.php';
-require_once __DIR__ . '/../app/Core/Model.php';
-require_once __DIR__ . '/../app/Core/QueryBuilder.php';
-require_once __DIR__ . '/../app/Core/Auth.php';
-require_once __DIR__ . '/../app/Core/ErrorHandler.php';
-require_once __DIR__ . '/../app/Core/helpers.php';
+require_once PROJECT_ROOT . '/app/Core/Session.php';
+require_once PROJECT_ROOT . '/app/Core/Request.php';
+require_once PROJECT_ROOT . '/app/Core/Response.php';
+require_once PROJECT_ROOT . '/app/Core/DB.php';
+require_once PROJECT_ROOT . '/app/Core/Model.php';
+require_once PROJECT_ROOT . '/app/Core/QueryBuilder.php';
+require_once PROJECT_ROOT . '/app/Core/Auth.php';
+require_once PROJECT_ROOT . '/app/Core/ErrorHandler.php';
+require_once PROJECT_ROOT . '/app/Core/helpers.php';
 
 // Exceptions
-require_once __DIR__ . '/../app/Exceptions/ModelNotFoundException.php';
+require_once PROJECT_ROOT . '/app/Exceptions/ModelNotFoundException.php';
 
 // Middleware
-require_once __DIR__ . '/../app/Http/Middlewares/Middleware.php';
-require_once __DIR__ . '/../app/Http/Middlewares/MiddlewareHandler.php';
-require_once __DIR__ . '/../app/Http/Middlewares/MiddlewareRegistry.php';
+require_once PROJECT_ROOT . '/app/Http/Middlewares/Middleware.php';
+require_once PROJECT_ROOT . '/app/Http/Middlewares/MiddlewareHandler.php';
+require_once PROJECT_ROOT . '/app/Http/Middlewares/MiddlewareRegistry.php';
 
 // Models
-require_once __DIR__ . '/../app/Models/User.php';
-require_once __DIR__ . '/../app/Models/Client.php';
-require_once __DIR__ . '/../app/Models/Producte.php';
-require_once __DIR__ . '/../app/Models/Comanda.php';
-require_once __DIR__ . '/../app/Models/Servei.php';
+require_once PROJECT_ROOT . '/app/Models/User.php';
+require_once PROJECT_ROOT . '/app/Models/Client.php';
+require_once PROJECT_ROOT . '/app/Models/Producte.php';
+require_once PROJECT_ROOT . '/app/Models/Comanda.php';
+require_once PROJECT_ROOT . '/app/Models/Servei.php';
 
 // Load middleware bootstrap
-require_once __DIR__ . '/../app/bootstrap/middleware.php';
+require_once PROJECT_ROOT . '/app/bootstrap/middleware.php';

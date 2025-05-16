@@ -73,11 +73,10 @@ class Response
         }
     }
 
-
     private static function getViewPath(string $view): string
     {
         $ds = DIRECTORY_SEPARATOR;
-        $basePath = __DIR__ . "{$ds}..{$ds}..{$ds}resources{$ds}views{$ds}";
+        $basePath = project_path("resources{$ds}views{$ds}");
         $viewPath = str_replace('.', $ds, $view);
 
         $phpPath = $basePath . "{$viewPath}.php";

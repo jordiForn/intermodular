@@ -11,6 +11,8 @@
         // Set authentication status for JavaScript
         var isLoggedIn = <?= json_encode(Auth::check()) ?>;
         var isAdmin = <?= json_encode(Auth::check() && Auth::role() === 'admin') ?>;
+        // Make BASE_URL available to JavaScript
+        var BASE_URL = <?= json_encode(BASE_URL) ?>;
     </script>
 </head>
 <body>

@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /Intermodular/public/
+    
+    # Handle 404 errors
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ 404.php [L]
+    
+    # Handle other error codes
+    ErrorDocument 403 /Intermodular/public/403.php
+    ErrorDocument 400 /Intermodular/public/400.php
+    ErrorDocument 500 /Intermodular/public/500.php
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
