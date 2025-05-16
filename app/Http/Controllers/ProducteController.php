@@ -1,38 +1,28 @@
 <?php
+
 namespace App\Http\Controllers;
+
+require_once __DIR__ . '/../../Models/Producte.php';
 
 use App\Core\Request;
 use App\Models\Producte;
-use App\Http\Middlewares\Middleware;
 
-class ProducteController
-{
-    // Listado principal organizado por categorías
-    public function index(Request $request = null)
+class ProducteController {
+
+    public function index(Request $request)
     {
-        // Si hay paginación, mostrar productos paginados
-        if ($request && isset($request->page)) {
-            $page = $request->page ?? 1;
-            $productes = Producte::orderBy('nom')->paginate(6, $page);
-            $totalPages = ceil(Producte::count() / 6);
-            view('productes.index', compact('productes', 'page', 'totalPages'));
-            return;
-        }
+        $page = $request->page ?? 1;
 
-        // Por defecto, organizar por categorías
-        $productes = Producte::getAvailable();
-        $categories = [];
-        foreach ($productes as $producte) {
-            $categoria = $producte->categoria;
-            $categories[$categoria][] = $producte;
-        }
-        view('productes.index', compact('categories'));
+        $productes = Producte::orderBy('nom')->paginate(6, $page);
+        $totalPages = ceil(Producte::count() / 6);
+ 
+        view('productes.index', compact('productes', 'page', 'totalPages'));
     }
-
-    // Búsqueda de productos
+    
     public function search(Request $request)
     {
         $q = $request->q ?? '';
+    
         if (empty($q)) {
             return redirect("/productes/index.php")->send();
         }
@@ -40,129 +30,302 @@ class ProducteController
         $page = $request->page ?? 1;
         $segment = '%' . $q . '%';
 
-        $totalResults = Producte::where('nom', 'LIKE', $segment)->count();
+        $totalResults = count(Producte::where('nom', 'LIKE', $segment)->get());
         $productes = Producte::where('nom', 'LIKE', $segment)
                              ->limit(3)
                              ->offset(($page - 1) * 3)
                              ->get();
-
+    
         $totalPages = ceil($totalResults / 3);
-
+    
         view('productes.search', compact('productes', 'q', 'page', 'totalPages'));
     }
 
-    // Mostrar un producto
+    public function create()
+    {
+        view('productes.create');
+    }
+
+    public function store(Request $request)
+    {
+        $producte = new Producte();
+        $producte->nom = $request->nom;
+        $producte->descripcio = $request->descripcio;
+        $producte->preu = $request->preu;
+        $producte->estoc = $request->estoc;
+        $producte->categoria = $request->categoria;
+        $producte->imatge = $request->imatge;
+        $producte->detalls = $request->detalls;
+        $producte->save();
+        redirect('/productes/index.php')->with('success', 'Producte inserit amb èxit')->send();
+    }
+
     public function show(string $id)
     {
-        $producte = Producte::findOrFail((int)$id);
+        $producte = Producte::findOrFail($id);
         view('productes.show', compact('producte'));
     }
 
-    // Formulario de creación (solo admin)
-    public function create()
-    {
-        Middleware::role(['1']); // Solo admin
-        $categories = Producte::getCategories();
-        view('productes.create', compact('categories'));
-    }
-
-    // Guardar nuevo producto (solo admin)
-    public function store(Request $request)
-    {
-        Middleware::role(['1']); // Solo admin
-
-        $producte = new Producte();
-        $producte->nom = $request->nom ?? $request->name;
-        $producte->descripcio = $request->descripcio ?? $request->description;
-        $producte->preu = isset($request->preu) ? (float)$request->preu : (float)$request->price;
-        $producte->estoc = isset($request->estoc) ? (int)$request->estoc : (int)$request->stock;
-        $producte->categoria = $request->categoria ?? $request->category;
-        $producte->detalls = $request->detalls ?? null;
-
-        // Manejo seguro de la imagen
-        $file = $request->file('imatge') ?? $request->file('image');
-        if ($file && $file['error'] === 0) {
-            $fileName = time() . '_' . $file['name'];
-            move_uploaded_file($file['tmp_name'], __DIR__ . '/../../../public/images/' . $fileName);
-            $producte->imatge = $fileName;
-        } else {
-            $producte->imatge = 'default.jpg';
-        }
-
-        $producte->save();
-        redirect('/productes/index.php')->with('success', 'Producte afegit amb èxit')->send();
-    }
-
-    // Formulario de edición (solo admin)
     public function edit(string $id)
     {
-        Middleware::role(['1']); // Solo admin
-        $producte = Producte::findOrFail((int)$id);
-        $categories = Producte::getCategories();
-        view('productes.edit', compact('producte', 'categories'));
+        $producte = Producte::findOrFail($id);
+        view('productes.edit', compact('producte'));
     }
 
-    // Actualizar producto (solo admin)
     public function update(Request $request)
     {
-        Middleware::role(['1']); // Solo admin
-
-        $producte = Producte::findOrFail((int)$request->id);
+        $producte = Producte::findOrFail($request->id);
         $producte->nom = $request->nom;
         $producte->descripcio = $request->descripcio;
-        $producte->preu = (float)$request->preu;
-        $producte->estoc = (int)$request->estoc;
+        $producte->preu = $request->preu;
+        $producte->estoc = $request->estoc;
         $producte->categoria = $request->categoria;
-        $producte->detalls = $request->detalls ?? $producte->detalls;
-
-        // Manejo seguro de la imagen
-        $file = $request->file('imatge');
-        if ($file && $file['error'] === 0) {
-            $fileName = time() . '_' . $file['name'];
-            move_uploaded_file($file['tmp_name'], __DIR__ . '/../../../public/images/' . $fileName);
-            $producte->imatge = $fileName;
-        }
-
+        $producte->imatge = $request->imatge;
+        $producte->detalls = $request->detalls;
         $producte->save();
-        redirect('/productes/index.php')->with('success', 'Producte actualitzat amb èxit')->send();
+        redirect('/productes/index.php')->with('success', 'Producte modificat amb èxit')->send();
     }
 
-    // Eliminar producto (solo admin)
     public function destroy(string $id)
     {
-        Middleware::role(['1']); // Solo admin
-        $producte = Producte::findOrFail((int)$id);
+        $producte = Producte::findOrFail($id);
         $producte->delete();
         redirect('/productes/index.php')->with('success', 'Producte eliminat amb èxit')->send();
     }
 
-    // Listado de productos para edición por categoría (solo admin)
-    public function editList()
-    {
-        Middleware::role(['1']); // Solo admin
-        $categories = Producte::getCategories();
-        $category = request()->category ?? '';
-        $products = [];
-
-        if (!empty($category)) {
-            $products = Producte::getByCategory($category);
-        }
-
-        view('productes.edit-list', compact('categories', 'products', 'category'));
-    }
-
-    // Filtrar productos por categoría (paginado)
     public function byCategory(Request $request)
     {
         $categoria = $request->categoria ?? '';
+        
         if (empty($categoria)) {
             return redirect("/productes/index.php")->send();
         }
-
+        
         $page = $request->page ?? 1;
-        $productes = Producte::where('categoria', $categoria)->paginate(6, $page);
+        $productes = Producte::where('categoria', $categoria)
+                            ->paginate(6, $page);
+        
         $totalPages = ceil(Producte::where('categoria', $categoria)->count() / 6);
-
+        
         view('productes.category', compact('productes', 'categoria', 'page', 'totalPages'));
     }
+    
+    /**
+     * Display a list of products for batch editing
+     * 
+     * @param Request $request The request object
+     * @return void
+     */
+    public function editList(Request $request)
+    {
+        $page = $request->page ?? 1;
+        $perPage = 10; // More products per page for batch editing
+        
+        $categoria = $request->categoria ?? '';
+        $searchTerm = $request->search ?? '';
+        $sortBy = $request->sort_by ?? 'nom';
+        $sortOrder = $request->sort_order ?? 'ASC';
+        
+        // Start building the query
+        $query = Producte::orderBy($sortBy, $sortOrder);
+        
+        // Apply category filter if provided
+        if (!empty($categoria)) {
+            $query = $query->where('categoria', $categoria);
+        }
+        
+        // Apply search filter if provided
+        if (!empty($searchTerm)) {
+            $query = $query->where('nom', 'LIKE', "%$searchTerm%");
+        }
+        
+        // Get paginated results
+        $productes = $query->paginate($perPage, $page);
+        $totalPages = ceil($query->count() / $perPage);
+        
+        // Get unique categories for the filter dropdown
+        $categories = [];
+        $allProducts = Producte::all();
+        foreach ($allProducts as $product) {
+            if (!empty($product->categoria) && !in_array($product->categoria, $categories)) {
+                $categories[] = $product->categoria;
+            }
+        }
+        sort($categories);
+        
+        view('productes.edit-list', compact(
+            'productes', 
+            'page', 
+            'totalPages', 
+            'categories', 
+            'categoria', 
+            'searchTerm', 
+            'sortBy', 
+            'sortOrder'
+        ));
+    }
+    
+    /**
+     * Update multiple products at once
+     * 
+     * @param Request $request The request object
+     * @return void
+     */
+    public function updateBatch(Request $request)
+    {
+        $productIds = $request->product_ids ?? [];
+        $updates = $request->updates ?? [];
+        
+        if (empty($productIds) || empty($updates)) {
+            redirect('/productes/edit-list.php')
+                ->with('error', 'No s\'han seleccionat productes per actualitzar')
+                ->send();
+        }
+        
+        $updatedCount = 0;
+        
+        foreach ($productIds as $id) {
+            $producte = Producte::find($id);
+            if (!$producte) continue;
+            
+            $updated = false;
+            
+            // Only update fields that are included in the updates array
+            if (isset($updates['categoria']) && !empty($updates['categoria'])) {
+                $producte->categoria = $updates['categoria'];
+                $updated = true;
+            }
+            
+            if (isset($updates['estoc_adjust']) && is_numeric($updates['estoc_adjust'])) {
+                $adjustment = (int)$updates['estoc_adjust'];
+                $producte->estoc = max(0, $producte->estoc + $adjustment);
+                $updated = true;
+            }
+            
+            if (isset($updates['preu_adjust']) && is_numeric($updates['preu_adjust'])) {
+                $adjustment = (float)$updates['preu_adjust'];
+                if (isset($updates['preu_adjust_type']) && $updates['preu_adjust_type'] === 'percent') {
+                    // Percentage adjustment
+                    $producte->preu = $producte->preu * (1 + ($adjustment / 100));
+                } else {
+                    // Absolute adjustment
+                    $producte->preu = max(0, $producte->preu + $adjustment);
+                }
+                $updated = true;
+            }
+            
+            if ($updated) {
+                $producte->save();
+                $updatedCount++;
+            }
+        }
+        
+        redirect('/productes/edit-list.php')
+            ->with('success', "S'han actualitzat $updatedCount productes amb èxit")
+            ->send();
+    }
+
+/**
+ * Get product details via AJAX for inline editing
+ * 
+ * @param Request $request The request object containing the product ID
+ * @return void
+ */
+public function getProductDetails(Request $request)
+{
+    try {
+        $id = $request->id;
+        $producte = Producte::findOrFail($id);
+        
+        // Return JSON response with product details
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'product' => [
+                'id' => $producte->id,
+                'nom' => $producte->nom,
+                'descripcio' => $producte->descripcio,
+                'preu' => $producte->preu,
+                'estoc' => $producte->estoc,
+                'categoria' => $producte->categoria,
+                'imatge' => $producte->imatge,
+                'detalls' => $producte->detalls
+            ]
+        ]);
+        exit;
+    } catch (\Throwable $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error al obtenir els detalls del producte: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
+
+/**
+ * Update a single product via AJAX
+ * 
+ * @param Request $request The request object containing the product data
+ * @return void
+ */
+public function quickUpdate(Request $request)
+{
+    try {
+        // Validate CSRF token
+        if (empty($request->csrf_token) || $request->csrf_token !== session()->get('csrf_token')) {
+            throw new \Exception('Token CSRF no vàlid');
+        }
+        
+        $id = $request->id;
+        $producte = Producte::findOrFail($id);
+        
+        // Update only the fields that were provided
+        if (isset($request->nom)) {
+            $producte->nom = $request->nom;
+        }
+        
+        if (isset($request->descripcio)) {
+            $producte->descripcio = $request->descripcio;
+        }
+        
+        if (isset($request->preu) && is_numeric($request->preu)) {
+            $producte->preu = (float)$request->preu;
+        }
+        
+        if (isset($request->estoc) && is_numeric($request->estoc)) {
+            $producte->estoc = (int)$request->estoc;
+        }
+        
+        if (isset($request->categoria)) {
+            $producte->categoria = $request->categoria;
+        }
+        
+        // Save the changes
+        $producte->save();
+        
+        // Return success response
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => true,
+            'message' => 'Producte actualitzat correctament',
+            'product' => [
+                'id' => $producte->id,
+                'nom' => $producte->nom,
+                'descripcio' => $producte->descripcio,
+                'preu' => $producte->preu,
+                'estoc' => $producte->estoc,
+                'categoria' => $producte->categoria
+            ]
+        ]);
+        exit;
+    } catch (\Throwable $e) {
+        header('Content-Type: application/json');
+        echo json_encode([
+            'success' => false,
+            'message' => 'Error al actualitzar el producte: ' . $e->getMessage()
+        ]);
+        exit;
+    }
+}
 }
