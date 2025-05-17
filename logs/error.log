@@ -139,4 +139,21 @@ SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for sql111.infinity
 #0 C:\xampp\htdocs\intermodular\public\auth\login.php(27): App\Http\Validators\LoginValidator::validate(Object(App\Core\Request))
 #1 {main}Call to undefined method App\Core\Request::input()
 #0 C:\xampp\htdocs\intermodular\public\auth\login.php(27): App\Http\Validators\LoginValidator::validate(Object(App\Core\Request))
+#1 {main}[2025-05-17 11:33:09] ERROR: syntax error, unexpected string content "", expecting "-" or identifier or variable or number
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 25
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
 #1 {main}
+
+[2025-05-17 11:33:31] ERROR: syntax error, unexpected string content "", expecting "-" or identifier or variable or number
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 25
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
+#1 {main}
+
+[2025-05-17 11:33:40] ERROR: syntax error, unexpected string content "", expecting "-" or identifier or variable or number
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 25
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
+#1 {main}
+

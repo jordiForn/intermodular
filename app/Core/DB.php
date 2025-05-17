@@ -22,7 +22,7 @@ class DB
         if (self::$connection === null) {
             self::$config = require project_path('config/db.php');
             
-            $dsn = "mysql:host={self::$config['host']};dbname={self::$config['database']};charset=utf8mb4";
+            $dsn = "mysql:host=" . self::$config['host'] . ";dbname=" . self::$config['database'] . ";charset=utf8mb4";
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,

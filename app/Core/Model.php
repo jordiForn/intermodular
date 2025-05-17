@@ -145,7 +145,7 @@ class Model
         return $model;
     }
 
-    public function save(): void
+    public function save(): bool
     {
         if ($this->id === null) {
             $this->insert();

@@ -11,7 +11,7 @@ class Client extends Model
     protected static string $table = 'client';
     protected static string $primaryKey = 'id';
     
-    public int $id;
+    public ?int $id;
     public ?int $user_id;
     public ?string $nom;
     public ?string $cognom;

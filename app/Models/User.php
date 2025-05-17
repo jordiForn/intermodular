@@ -11,7 +11,7 @@ class User extends Model
     protected static string $table = 'users';
     protected static string $primaryKey = 'id';
     
-    public int $id;
+    public ?int $id;
     public string $username;
     public string $email;
     public string $password;
