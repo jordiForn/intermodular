@@ -157,3 +157,17 @@ Stack trace:
 #0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
 #1 {main}
 
+Unsupported operand types: string + int
+#0 D:\xampp\htdocs\Intermodular\app\Core\DB.php(120): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#1 D:\xampp\htdocs\Intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Models\User.php(32): App\Core\QueryBuilder->first()
+#3 D:\xampp\htdocs\Intermodular\app\Http\Validators\RegisterValidator.php(30): App\Models\User::findByUsername('Root')
+#4 D:\xampp\htdocs\Intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#5 {main}SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+#0 D:\xampp\htdocs\Intermodular\app\Core\DB.php(218): PDOStatement->bindValue('::username', 'Root', 2)
+#1 D:\xampp\htdocs\Intermodular\app\Core\DB.php(120): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Models\User.php(32): App\Core\QueryBuilder->first()
+#4 D:\xampp\htdocs\Intermodular\app\Http\Validators\RegisterValidator.php(30): App\Models\User::findByUsername('Root')
+#5 D:\xampp\htdocs\Intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#6 {main}

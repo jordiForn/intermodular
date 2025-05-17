@@ -202,15 +202,26 @@ class DB
     {
         $stmt = self::connection()->prepare($query);
         
-        foreach ($params as $i => $param) {
+        // Check if we're using named parameters (associative array) or positional parameters
+        $isNamedParams = !empty($params) && !array_is_list($params);
+        
+        foreach ($params as $key => $param) {
             $type = match (gettype($param)) {
                 'boolean' => PDO::PARAM_BOOL,
                 'integer' => PDO::PARAM_INT,
                 'NULL' => PDO::PARAM_NULL,
                 default => PDO::PARAM_STR,
             };
-            
-            $stmt->bindValue($i + 1, $param, $type);
+        
+            if ($isNamedParams) {
+                // For named parameters (associative array)
+                // Make sure the key has a colon prefix if it doesn't already
+                $paramName = (strpos($key, ':') === 0) ? $key : ':' . $key;
+                $stmt->bindValue($paramName, $param, $type);
+            } else {
+                // For positional parameters (indexed array)
+                $stmt->bindValue($key + 1, $param, $type);
+            }
         }
         
         return $stmt;

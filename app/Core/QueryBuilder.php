@@ -39,8 +39,10 @@ class QueryBuilder {
             $operator = $operator === "=" ? "IS" : "IS NOT";
             $this->whereClause .= "$prefix $column $operator NULL";
         } else if($this->namedPlaceholders){
-            $this->whereClause .= "$prefix $column $operator :$column";
-            $this->params[":$column"] = $value;
+            // Use a sanitized column name for the parameter to avoid SQL injection
+            $paramName = str_replace('.', '_', $column);
+            $this->whereClause .= "$prefix $column $operator :$paramName";
+            $this->params[":$paramName"] = $value;
         } else {
             $this->whereClause .= "$prefix $column $operator ?";
             $this->params[] = $value;
