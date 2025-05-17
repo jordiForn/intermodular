@@ -19,17 +19,13 @@ class AuthController {
    {
        try {
            // Log the action
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Showing login form");
-           }
+           Debug::log("Showing login form");
            
            view('auth.login');
        } catch (\Throwable $e) {
            // Log the exception
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Exception in showLoginForm: " . $e->getMessage());
-               Debug::log("Stack trace: " . $e->getTraceAsString());
-           }
+           Debug::log("Exception in showLoginForm: " . $e->getMessage());
+           Debug::log("Stack trace: " . $e->getTraceAsString());
            
            // Display error
            http_response_code(500);
@@ -47,9 +43,7 @@ class AuthController {
            $dbTest = DB::testConnection();
            if (!$dbTest['success']) {
                // Log the database connection error
-               if (class_exists('\\App\\Core\\Debug')) {
-                   Debug::log("Database connection error during login: " . $dbTest['message']);
-               }
+               Debug::log("Database connection error during login: " . $dbTest['message']);
                
                // Redirect with error message
                back()->with('error', 'Error de conexión a la base de datos: ' . $dbTest['message'])->withInput([
@@ -59,32 +53,26 @@ class AuthController {
            }
            
            $credentials = [
-               'username' => $request->nom_login,
-               'password' => $request->contrasena,
+               'nom_login' => $request->nom_login,
+               'contrasena' => $request->contrasena,
            ];
            
            // Log login attempt
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Login attempt for user: " . $request->nom_login);
-           }
+           Debug::log("Login attempt for user: " . $request->nom_login);
        
            if (Auth::attempt($credentials)) {
                // Get redirect URL if it exists
                $redirectTo = session()->getFlash('redirect_to', '/productes/index.php');
                
                // Log successful login
-               if (class_exists('\\App\\Core\\Debug')) {
-                   Debug::log("Login successful for user: " . $request->nom_login . ", redirecting to: " . $redirectTo);
-               }
+               Debug::log("Login successful for user: " . $request->nom_login . ", redirecting to: " . $redirectTo);
                
                redirect($redirectTo)->with('success', 'Has iniciat sessió correctament')->send();
                return;
            }
            
            // Log failed login
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Login failed for user: " . $request->nom_login . " - Invalid credentials");
-           }
+           Debug::log("Login failed for user: " . $request->nom_login . " - Invalid credentials");
 
            back()->with('error', 'Credencials incorrectes')->withInput([
                'nom_login' => $request->nom_login
@@ -92,10 +80,8 @@ class AuthController {
            
        } catch (\Throwable $e) {
            // Log the exception
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Exception during login: " . $e->getMessage());
-               Debug::log("Stack trace: " . $e->getTraceAsString());
-           }
+           Debug::log("Exception during login: " . $e->getMessage());
+           Debug::log("Stack trace: " . $e->getTraceAsString());
            
            // Redirect with error message
            back()->with('error', 'Error durante el inicio de sesión: ' . $e->getMessage())->withInput([
@@ -111,17 +97,13 @@ class AuthController {
    {
        try {
            // Log the action
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Showing register form");
-           }
+           Debug::log("Showing register form");
            
            view('auth.register');
        } catch (\Throwable $e) {
            // Log the exception
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Exception in showRegisterForm: " . $e->getMessage());
-               Debug::log("Stack trace: " . $e->getTraceAsString());
-           }
+           Debug::log("Exception in showRegisterForm: " . $e->getMessage());
+           Debug::log("Stack trace: " . $e->getTraceAsString());
            
            // Display error
            http_response_code(500);
@@ -149,7 +131,10 @@ class AuthController {
            }
            
            // Start transaction
-           DB::beginTransaction();
+           $inTransaction = DB::inTransaction();
+           if (!$inTransaction) {
+               DB::beginTransaction();
+           }
            
            try {
                // Create user
@@ -160,18 +145,15 @@ class AuthController {
                $user->role = 'user';
                $user->created_at = date('Y-m-d H:i:s');
                $user->updated_at = date('Y-m-d H:i:s');
-               $user->save();
+               $userSaved = $user->save();
                
-               // Get the inserted user ID
-               $userId = $user->id;
-               
-               if (!$userId) {
-                   throw new \Exception("Failed to get user ID after insertion");
+               if (!$userSaved || !$user->id) {
+                   throw new \Exception("Failed to save user");
                }
                
                // Create client
                $client = new Client();
-               $client->user_id = $userId;
+               $client->user_id = $user->id;
                $client->nom = trim($request->nom);
                $client->cognom = trim($request->cognom ?? '');
                $client->email = trim($request->email);
@@ -179,26 +161,38 @@ class AuthController {
                $client->nom_login = trim($request->nom_login);
                $client->contrasena = $request->contrasena; // Store plain password for legacy compatibility
                $client->rol = 0; // Regular user
-               $client->save();
+               
+               // Handle id_referit if it exists
+               if (isset($request->id_referit)) {
+                   $client->id_referit = (int)$request->id_referit;
+               }
+               
+               $clientSaved = $client->save();
+               
+               if (!$clientSaved) {
+                   throw new \Exception("Failed to save client");
+               }
                
                // Commit transaction
-               DB::commit();
+               if (!$inTransaction) {
+                   DB::commit();
+               }
                
                // Log the user in
                Auth::login($user);
                
                redirect('/productes/index.php')->with('success', "¡Benvingut, {$client->nom}!")->send();
            } catch (\Throwable $e) {
-               // Rollback transaction
-               DB::rollback();
+               // Rollback transaction if we started it
+               if (!$inTransaction && DB::inTransaction()) {
+                   DB::rollback();
+               }
                throw $e;
            }
        } catch (\Throwable $e) {
            // Log the exception
-           if (class_exists('\\App\\Core\\Debug')) {
-               Debug::log("Exception during registration: " . $e->getMessage());
-               Debug::log("Stack trace: " . $e->getTraceAsString());
-           }
+           Debug::log("Exception during registration: " . $e->getMessage());
+           Debug::log("Stack trace: " . $e->getTraceAsString());
            
            // Redirect with error message
            back()->with('error', 'Error durante el registro: ' . $e->getMessage())->withInput([

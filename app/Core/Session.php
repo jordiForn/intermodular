@@ -28,6 +28,10 @@ class Session {
             if (!headers_sent()) {
                 session_start();
                 self::$sessionStarted = true;
+                
+                if (class_exists('\\App\\Core\\Debug')) {
+                    Debug::log("Session started successfully");
+                }
             } else {
                 // Log the error but don't throw an exception
                 if (class_exists('\\App\\Core\\Debug')) {
@@ -36,6 +40,10 @@ class Session {
             }
         } else {
             self::$sessionStarted = true;
+            
+            if (class_exists('\\App\\Core\\Debug')) {
+                Debug::log("Session was already active");
+            }
         }
     }
 
@@ -53,6 +61,17 @@ class Session {
     public function set(string $key, $value): void {
         $this->startSession();
         $_SESSION[$key] = $value;
+        
+        if (class_exists('\\App\\Core\\Debug')) {
+            Debug::log("Session value set: $key");
+        }
+    }
+
+    /**
+     * Alias for set() to maintain compatibility
+     */
+    public function put(string $key, $value): void {
+        $this->set($key, $value);
     }
 
     /**
@@ -69,6 +88,17 @@ class Session {
     public function remove(string $key): void {
         $this->startSession();
         unset($_SESSION[$key]);
+        
+        if (class_exists('\\App\\Core\\Debug')) {
+            Debug::log("Session value removed: $key");
+        }
+    }
+
+    /**
+     * Alias for remove() to maintain compatibility
+     */
+    public function forget(string $key): void {
+        $this->remove($key);
     }
 
     /**
@@ -81,6 +111,11 @@ class Session {
         }
         $value = $_SESSION['_flash'][$key] ?? $default;
         unset($_SESSION['_flash'][$key]);
+        
+        if (class_exists('\\App\\Core\\Debug')) {
+            Debug::log("Flash value retrieved and removed: $key");
+        }
+        
         return $value;
     }
 
@@ -89,7 +124,14 @@ class Session {
      */
     public function flash(string $key, $value): void {
         $this->startSession();
+        if (!isset($_SESSION['_flash'])) {
+            $_SESSION['_flash'] = [];
+        }
         $_SESSION['_flash'][$key] = $value;
+        
+        if (class_exists('\\App\\Core\\Debug')) {
+            Debug::log("Flash value set: $key");
+        }
     }
 
     /**
@@ -109,12 +151,28 @@ class Session {
             session_destroy();
             self::$sessionStarted = false;
             
+            if (class_exists('\\App\\Core\\Debug')) {
+                Debug::log("Session invalidated");
+            }
+            
             // Only try to start a new session if headers haven't been sent
             if (!headers_sent()) {
                 session_start();
                 session_regenerate_id(true);
                 self::$sessionStarted = true;
+                
+                if (class_exists('\\App\\Core\\Debug')) {
+                    Debug::log("New session started after invalidation");
+                }
             }
         }
+    }
+    
+    /**
+     * Dump all session data for debugging
+     */
+    public function dump(): array {
+        $this->startSession();
+        return $_SESSION;
     }
 }

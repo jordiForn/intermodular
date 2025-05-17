@@ -83,4 +83,33 @@ class User extends Model
             return $this->insert();
         }
     }
+
+    public function insert(): bool
+{
+    $data = [
+        'username' => $this->username,
+        'email' => $this->email,
+        'password' => $this->password,
+        'role' => $this->role,
+        'created_at' => $this->created_at
+    ];
+
+    $this->id = \App\Core\DB::insert(static::$table, $data);
+    return $this->id !== null && $this->id > 0;
+}
+
+public function update(): bool
+{
+    $data = [
+        'username' => $this->username,
+        'email' => $this->email,
+        'password' => $this->password,
+        'role' => $this->role,
+        'updated_at' => $this->updated_at,
+    ];
+
+    $result = \App\Core\DB::update(static::$table, $data, ['id' => $this->id]);
+    return $result > 0;
+}
+
 }

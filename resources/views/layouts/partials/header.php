@@ -27,7 +27,7 @@
                     </a>
                 <?php else: ?>
                     <span class="me-2">
-                        <i class="fas fa-user"></i> <?= htmlspecialchars(Auth::user()['nom']) ?>
+                        <i class="fas fa-user"></i> <?= htmlspecialchars(Auth::user()->nom) ?>
                     </span>
                     <a href="<?= BASE_URL . '/auth/logout.php'; ?>" class="btn btn-outline-danger">
                         <i class="fas fa-sign-out-alt"></i> Logout

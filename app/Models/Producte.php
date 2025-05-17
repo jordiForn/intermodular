@@ -14,7 +14,7 @@ class Producte extends Model
     protected static array $relations = [];
 
     /** @override */
-    public function insert(): void
+    public function insert(): bool
     {
         $sql = "INSERT INTO " . self::$table 
             . " (nom, descripcio, preu, estoc, categoria, imatge, detalls)"
@@ -32,7 +32,7 @@ class Producte extends Model
     }
 
     /** @override */
-    public function update(): void
+    public function update(): bool
     {
         $sql = "UPDATE " . self::$table 
             . " SET nom = ?, descripcio = ?, preu = ?, estoc = ?, categoria = ?, imatge = ?, detalls = ?"

@@ -10,7 +10,7 @@
     <script>
         // Set authentication status for JavaScript
         var isLoggedIn = <?= json_encode(\App\Core\Auth::check()) ?>;
-        var isAdmin = <?= json_encode(\App\Core\Auth::check() && \App\Core\Auth::role() === 'admin') ?>;
+        var isAdmin = <?= json_encode(\App\Core\Auth::check() && \App\Core\Auth::isAdmin()) ?>;
         // Make BASE_URL available to JavaScript
         var BASE_URL = <?= json_encode(BASE_URL) ?>;
     </script>

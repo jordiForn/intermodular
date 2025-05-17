@@ -10,7 +10,7 @@ use PDOStatement;
 class DB
 {
     private static ?PDO $connection = null;
-    private static array $config = [];
+    private static bool $inTransaction = false;
     
     /**
      * Get the database connection
@@ -20,9 +20,9 @@ class DB
     public static function connection(): PDO
     {
         if (self::$connection === null) {
-            self::$config = require project_path('config/db.php');
+            $config = require project_path('config/db.php');
             
-            $dsn = "mysql:host=" . self::$config['host'] . ";dbname=" . self::$config['database'] . ";charset=utf8mb4";
+            $dsn = "mysql:host={$config['host']};dbname={$config['database']};charset=utf8mb4";
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -31,7 +31,7 @@ class DB
             ];
             
             try {
-                self::$connection = new PDO($dsn, self::$config['username'], self::$config['password'], $options);
+                self::$connection = new PDO($dsn, $config['username'], $config['password'], $options);
             } catch (PDOException $e) {
                 throw new PDOException($e->getMessage(), (int)$e->getCode());
             }
@@ -47,7 +47,12 @@ class DB
      */
     public static function beginTransaction(): bool
     {
-        return self::connection()->beginTransaction();
+        if (self::$inTransaction) {
+            return false;
+        }
+        
+        self::$inTransaction = self::connection()->beginTransaction();
+        return self::$inTransaction;
     }
     
     /**
@@ -57,7 +62,13 @@ class DB
      */
     public static function commit(): bool
     {
-        return self::connection()->commit();
+        if (!self::$inTransaction) {
+            return false;
+        }
+        
+        $result = self::connection()->commit();
+        self::$inTransaction = false;
+        return $result;
     }
     
     /**
@@ -67,7 +78,23 @@ class DB
      */
     public static function rollback(): bool
     {
-        return self::connection()->rollBack();
+        if (!self::$inTransaction) {
+            return false;
+        }
+        
+        $result = self::connection()->rollBack();
+        self::$inTransaction = false;
+        return $result;
+    }
+
+    /**
+     * Check if a transaction is currently active
+     * 
+     * @return bool True if a transaction is active, false otherwise
+     */
+    public static function inTransaction(): bool
+    {
+        return self::$inTransaction;
     }
     
     /**
@@ -202,25 +229,34 @@ class DB
     {
         $stmt = self::connection()->prepare($query);
         
-        // Check if we're using named parameters (associative array) or positional parameters
-        $isNamedParams = !empty($params) && !array_is_list($params);
+        // Check if params is an associative array
+        $isAssoc = array_keys($params) !== range(0, count($params) - 1);
         
-        foreach ($params as $key => $param) {
-            $type = match (gettype($param)) {
-                'boolean' => PDO::PARAM_BOOL,
-                'integer' => PDO::PARAM_INT,
-                'NULL' => PDO::PARAM_NULL,
-                default => PDO::PARAM_STR,
-            };
-        
-            if ($isNamedParams) {
-                // For named parameters (associative array)
-                // Make sure the key has a colon prefix if it doesn't already
+        if ($isAssoc) {
+            // Handle named parameters
+            foreach ($params as $key => $param) {
+                $type = match (gettype($param)) {
+                    'boolean' => PDO::PARAM_BOOL,
+                    'integer' => PDO::PARAM_INT,
+                    'NULL' => PDO::PARAM_NULL,
+                    default => PDO::PARAM_STR,
+                };
+                
+                // Ensure key has a colon prefix for named parameters
                 $paramName = (strpos($key, ':') === 0) ? $key : ':' . $key;
                 $stmt->bindValue($paramName, $param, $type);
-            } else {
-                // For positional parameters (indexed array)
-                $stmt->bindValue($key + 1, $param, $type);
+            }
+        } else {
+            // Handle positional parameters
+            foreach ($params as $i => $param) {
+                $type = match (gettype($param)) {
+                    'boolean' => PDO::PARAM_BOOL,
+                    'integer' => PDO::PARAM_INT,
+                    'NULL' => PDO::PARAM_NULL,
+                    default => PDO::PARAM_STR,
+                };
+                
+                $stmt->bindValue($i + 1, $param, $type);
             }
         }
         

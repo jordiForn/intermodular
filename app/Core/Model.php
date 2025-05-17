@@ -110,13 +110,13 @@ class Model
         return $qb->count();
     }
 
-    protected function insert(): void
+    protected function insert(): bool
     {
         // This method should be implemented by child classes
         throw new \RuntimeException("El método insert() debe ser implementado por la clase hija.");
     }
     
-    protected function update(): void
+    protected function update(): bool
     {
         // This method should be implemented by child classes
         throw new \RuntimeException("El método update() debe ser implementado por la clase hija.");
@@ -146,13 +146,13 @@ class Model
     }
 
     public function save(): bool
-    {
-        if ($this->id === null) {
-            $this->insert();
-        } else {
-            $this->update();
-        }
+{
+    if ($this->id === null) {
+        return $this->insert();
+    } else {
+        return $this->update();
     }
+}
 
     public function delete(): bool
     {

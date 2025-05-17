@@ -14,7 +14,7 @@ class Comanda extends Model
     protected static array $relations = ['client'];
 
     /** @override */
-    public function insert(): void
+    public function insert(): bool
     {
         if (!isset($this->data_comanda)) {
             $this->data_comanda = date('Y-m-d H:i:s');
@@ -34,7 +34,7 @@ class Comanda extends Model
     }
 
     /** @override */
-    public function update(): void
+    public function update(): bool
     {
         $sql = "UPDATE " . self::$table 
             . " SET client_id = ?, data_comanda = ?, total = ?, estat = ?, direccio_enviament = ?"

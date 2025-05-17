@@ -1,31 +1,51 @@
-=== Debug Log Started at 2025-05-17 12:59:20 ===
-[2025-05-17 12:59:20] [0.55ms] [0.41KB] [show-register.php:2] Debug system initialized
-[2025-05-17 12:59:20] [3.7ms] [67.19KB] [show-register.php:2] Bootstrap completed successfully
-[2025-05-17 12:59:20] [4.36ms] [91.63KB] [show-register.php:17] Showing register form
-[2025-05-17 12:59:20] [4.48ms] [91.69KB] [AuthController.php:118] Helper view() called for: auth.register
-[2025-05-17 12:59:20] [4.6ms] [91.7KB] [helpers.php:101] Starting view rendering for: auth.register
-[2025-05-17 12:59:20] [4.73ms] [92.27KB] [helpers.php:101] Previous URL stored: /intermodular/public/auth/show-register.php
-[2025-05-17 12:59:20] [4.86ms] [92.18KB] [helpers.php:101] Extracting data with keys: 
-[2025-05-17 12:59:20] [4.97ms] [92.64KB] [helpers.php:101] Loading view content: auth.register
-[2025-05-17 12:59:20] [5.08ms] [93.02KB] [Response.php:59] View Rendering [loadView]: auth.register | Context: {"data_keys":[],"memory":730288}
-[2025-05-17 12:59:20] [5.2ms] [92.64KB] [Response.php:63] Getting view path for: auth.register
-[2025-05-17 12:59:20] [5.37ms] [92.91KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-17 12:59:20] [5.51ms] [92.75KB] [Response.php:63] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-17 12:59:20] [5.62ms] [92.76KB] [Response.php:63] Converted view path: auth\register
-[2025-05-17 12:59:20] [5.76ms] [93.27KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/auth\register.php | Context: {"exists":true,"readable":true}
-[2025-05-17 12:59:20] [5.88ms] [92.9KB] [Response.php:63] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/auth\register.php
-[2025-05-17 12:59:20] [6.01ms] [92.78KB] [Response.php:29] View file path: D:/xampp/htdocs/Intermodular/resources/views/auth\register.php
-[2025-05-17 12:59:20] [6.13ms] [93.07KB] [Response.php:29] Starting output buffering
-[2025-05-17 12:59:20] [6.24ms] [109.3KB] [Response.php:29] Including view file: D:/xampp/htdocs/Intermodular/resources/views/auth\register.php
-[2025-05-17 12:59:20] [6.82ms] [108.66KB] [Response.php:29] View rendered successfully, content length: 5038
-[2025-05-17 12:59:20] [6.95ms] [107.78KB] [helpers.php:101] View content loaded successfully, length: 5038
-[2025-05-17 12:59:20] [7.07ms] [107.77KB] [Response.php:33] Getting view path for: layouts/app
-[2025-05-17 12:59:20] [7.19ms] [108.04KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-17 12:59:20] [7.31ms] [107.88KB] [Response.php:33] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-17 12:59:20] [7.42ms] [107.84KB] [Response.php:33] Converted view path: layouts/app
-[2025-05-17 12:59:20] [7.55ms] [108.35KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
-[2025-05-17 12:59:20] [7.67ms] [107.98KB] [Response.php:33] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
-[2025-05-17 12:59:20] [7.78ms] [107.91KB] [helpers.php:101] Using layout: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
-[2025-05-17 12:59:20] [7.92ms] [107.8KB] [helpers.php:101] Including layout file
-[2025-05-17 12:59:20] [8.5ms] [125.26KB] [helpers.php:101] Layout included successfully
-[2025-05-17 12:59:20] [8.63ms] [117.21KB] [AuthController.php:118] Helper view() completed successfully for: auth.register
+=== Debug Log Started at 2025-05-17 14:37:08 ===
+[2025-05-17 14:37:08] [0.56ms] [0.41KB] [index.php:3] Debug system initialized
+[2025-05-17 14:37:08] [4.02ms] [76.05KB] [index.php:3] Bootstrap completed successfully
+[2025-05-17 14:37:08] [5.16ms] [121.8KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
+[2025-05-17 14:37:08] [16.29ms] [167.3KB] [index.php:25] Executing paginate query for products, page: 1
+[2025-05-17 14:37:08] [17.1ms] [175.27KB] [index.php:25] Exception in ProducteController::index: Call to undefined method App\Core\DB::selectAssoc()
+[2025-05-17 14:37:08] [17.28ms] [175.52KB] [index.php:25] Stack trace: #0 D:\xampp\htdocs\Intermodular\app\Core\Model.php(110): App\Core\QueryBuilder->count()
+#1 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(38): App\Core\Model::count()
+#2 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#3 {main}
+[2025-05-17 14:37:08] [17.41ms] [175.58KB] [ProducteController.php:54] Helper view() called for: errors.500
+[2025-05-17 14:37:08] [17.53ms] [175.58KB] [helpers.php:101] Starting view rendering for: errors.500
+[2025-05-17 14:37:08] [17.74ms] [178.09KB] [Session.php:14] Session started successfully
+[2025-05-17 14:37:08] [17.87ms] [178.61KB] [Response.php:17] Flash value set: _previous_url
+[2025-05-17 14:37:08] [17.99ms] [178.65KB] [helpers.php:101] Previous URL stored: /intermodular/public/productes/index.php
+[2025-05-17 14:37:08] [18.1ms] [178.62KB] [helpers.php:101] Extracting data with keys: message
+[2025-05-17 14:37:08] [18.23ms] [178.65KB] [helpers.php:101] Loading view content: errors.500
+[2025-05-17 14:37:08] [18.34ms] [179.23KB] [Response.php:59] View Rendering [loadView]: errors.500 | Context: {"data_keys":["message"],"memory":834128}
+[2025-05-17 14:37:08] [18.47ms] [178.65KB] [Response.php:63] Getting view path for: errors.500
+[2025-05-17 14:37:08] [18.58ms] [178.92KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-17 14:37:08] [18.69ms] [178.76KB] [Response.php:63] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-17 14:37:08] [18.81ms] [178.76KB] [Response.php:63] Converted view path: errors\500
+[2025-05-17 14:37:08] [19.25ms] [179.26KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php | Context: {"exists":true,"readable":true}
+[2025-05-17 14:37:08] [19.38ms] [178.91KB] [Response.php:63] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php
+[2025-05-17 14:37:08] [19.5ms] [178.79KB] [Response.php:29] View file path: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php
+[2025-05-17 14:37:08] [19.61ms] [179.08KB] [Response.php:29] Starting output buffering
+[2025-05-17 14:37:08] [19.72ms] [195.31KB] [Response.php:29] Including view file: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php
+[2025-05-17 14:37:08] [19.95ms] [180.11KB] [Response.php:29] View rendered successfully, content length: 418
+[2025-05-17 14:37:08] [20.08ms] [179.98KB] [helpers.php:101] View content loaded successfully, length: 418
+[2025-05-17 14:37:08] [20.22ms] [179.97KB] [Response.php:33] Getting view path for: layouts/app
+[2025-05-17 14:37:08] [20.34ms] [180.24KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-17 14:37:08] [20.45ms] [180.08KB] [Response.php:33] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-17 14:37:08] [20.56ms] [180.05KB] [Response.php:33] Converted view path: layouts/app
+[2025-05-17 14:37:08] [20.69ms] [180.55KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
+[2025-05-17 14:37:08] [20.81ms] [180.19KB] [Response.php:33] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
+[2025-05-17 14:37:08] [20.92ms] [180.11KB] [helpers.php:101] Using layout: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
+[2025-05-17 14:37:08] [21.09ms] [180KB] [helpers.php:101] Including layout file
+[2025-05-17 14:37:08] [22.06ms] [191.35KB] [helpers.php:101] ERROR in view rendering: Call to undefined method App\Core\Auth::role()
+[2025-05-17 14:37:08] [22.21ms] [191.88KB] [helpers.php:101] Stack trace: #0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
+#4 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#5 {main}
+[2025-05-17 14:37:08] [22.33ms] [190.79KB] [ProducteController.php:54] ERROR in helper view(): Call to undefined method App\Core\Auth::role()
+[2025-05-17 14:37:08] [22.45ms] [191.32KB] [ProducteController.php:54] Stack trace: #0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
+#4 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#5 {main}

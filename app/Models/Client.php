@@ -4,32 +4,101 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Core\Model;
+use App\Core\DB;
 use App\Core\QueryBuilder;
 
 class Client extends Model
 {
     protected static string $table = 'client';
-    protected static string $primaryKey = 'id';
+    protected static array $fillable = [
+        'user_id', 'nom', 'cognom', 'email', 'tlf', 'consulta', 
+        'missatge', 'nom_login', 'contrasena', 'rol', 'id_referit'
+    ];
     
-    public ?int $id;
-    public ?int $user_id;
-    public ?string $nom;
-    public ?string $cognom;
-    public ?string $email;
-    public ?string $tlf;
-    public ?string $consulta;
-    public ?string $missatge;
-    public ?string $nom_login;
-    public ?string $contrasena;
+    
+    public ?int $id = null;
+    public ?int $user_id = null;
+    public ?string $nom = null;
+    public ?string $cognom = null;
+    public ?string $email = null;
+    public ?string $tlf = null;
+    public ?string $consulta = null;
+    public ?string $missatge = null;
+    public ?string $nom_login = null;
+    public ?string $contrasena = null;
     public int $rol = 0;
+    public ?int $id_referit = null;
+    
+    /**
+     * Insert a new client record
+     */
+    public function insert(): bool
+    {
+        $data = [
+            'user_id' => $this->user_id,
+            'nom' => $this->nom,
+            'cognom' => $this->cognom,
+            'email' => $this->email,
+            'tlf' => $this->tlf,
+            'nom_login' => $this->nom_login,
+            'contrasena' => $this->contrasena,
+            'rol' => $this->rol
+        ];
+        
+        // Add optional fields if they exist
+        if ($this->consulta !== null) {
+            $data['consulta'] = $this->consulta;
+        }
+        
+        if ($this->missatge !== null) {
+            $data['missatge'] = $this->missatge;
+        }
+        
+        if ($this->id_referit !== null) {
+            $data['id_referit'] = $this->id_referit;
+        }
+        
+        $this->id = DB::insert(static::$table, $data);
+        return $this->id !== null && $this->id > 0;
+    }
+    
+    /**
+     * Update an existing client record
+     */
+    public function update(): bool
+    {
+        $data = [
+            'user_id' => $this->user_id,
+            'nom' => $this->nom,
+            'cognom' => $this->cognom,
+            'email' => $this->email,
+            'tlf' => $this->tlf,
+            'nom_login' => $this->nom_login,
+            'contrasena' => $this->contrasena,
+            'rol' => $this->rol
+        ];
+        
+        // Add optional fields if they exist
+        if ($this->consulta !== null) {
+            $data['consulta'] = $this->consulta;
+        }
+        
+        if ($this->missatge !== null) {
+            $data['missatge'] = $this->missatge;
+        }
+        
+        if ($this->id_referit !== null) {
+            $data['id_referit'] = $this->id_referit;
+        }
+        
+        $result = DB::update(static::$table, $data, ['id' => $this->id]);
+        return $result > 0;
+    }
     
     /**
      * Find a client by user ID
-     * 
-     * @param int $userId The user ID to search for
-     * @return Client|null The client if found, null otherwise
      */
-    public static function findByUserId(int $userId): ?Client
+    public static function findByUserId(int $userId): ?self
     {
         return (new QueryBuilder(static::class))
             ->where('user_id', '=', $userId)
@@ -38,8 +107,6 @@ class Client extends Model
     
     /**
      * Get the user associated with this client
-     * 
-     * @return User|null The user if found, null otherwise
      */
     public function user(): ?User
     {
@@ -52,8 +119,6 @@ class Client extends Model
     
     /**
      * Get the full name of the client
-     * 
-     * @return string The full name
      */
     public function fullName(): string
     {
@@ -62,8 +127,6 @@ class Client extends Model
     
     /**
      * Check if the client is an admin
-     * 
-     * @return bool True if the client is an admin, false otherwise
      */
     public function isAdmin(): bool
     {
@@ -71,18 +134,15 @@ class Client extends Model
     }
     
     /**
-     * Save the client to the database
+     * Find a client by login name
      * 
-     * @return bool True if the save was successful, false otherwise
+     * @param string $nomLogin The login name to search for
+     * @return Client|null The client if found, null otherwise
      */
-    public function save(): bool
+    public static function findByNomLogin(string $nomLogin): ?Client
     {
-        if (isset($this->id) && $this->id > 0) {
-            // Update existing client
-            return $this->update();
-        } else {
-            // Insert new client
-            return $this->insert();
-        }
+        return (new QueryBuilder(static::class))
+            ->where('nom_login', '=', $nomLogin)
+            ->first();
     }
 }
