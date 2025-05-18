@@ -1,7 +1,5 @@
 <?php use App\Core\Auth; ?>
 <header class="bg-dark text-white pt-2 pb-0">
-    <!-- Bootstrap 5 CDN -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <div class="container-fluid">
         <div class="row align-items-center">
             <div class="col-3">

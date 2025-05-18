@@ -1,39 +1,87 @@
-=== Debug Log Started at 2025-05-18 09:20:06 ===
-[2025-05-18 09:20:06] [0.63ms] [0.41KB] [index.php:3] Debug system initialized
-[2025-05-18 09:20:06] [3.82ms] [76.05KB] [index.php:3] Bootstrap completed successfully
-[2025-05-18 09:20:06] [4.35ms] [121.8KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
-[2025-05-18 09:20:06] [27.79ms] [167.3KB] [index.php:25] Executing paginate query for products, page: 1
-[2025-05-18 09:20:06] [28.49ms] [175.27KB] [index.php:25] Exception in ProducteController::index: Call to undefined method App\Core\DB::selectAssoc()
-[2025-05-18 09:20:06] [28.65ms] [175.52KB] [index.php:25] Stack trace: #0 D:\xampp\htdocs\Intermodular\app\Core\Model.php(110): App\Core\QueryBuilder->count()
-#1 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(38): App\Core\Model::count()
-#2 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
-#3 {main}
-[2025-05-18 09:20:06] [28.78ms] [175.58KB] [ProducteController.php:54] Helper view() called for: errors.500
-[2025-05-18 09:20:06] [28.9ms] [175.58KB] [helpers.php:101] Starting view rendering for: errors.500
-[2025-05-18 09:20:06] [29.13ms] [177.72KB] [Session.php:14] Session started successfully
-[2025-05-18 09:20:06] [29.26ms] [178.25KB] [Response.php:17] Flash value set: _previous_url
-[2025-05-18 09:20:06] [29.38ms] [178.29KB] [helpers.php:101] Previous URL stored: /intermodular/public/productes/index.php
-[2025-05-18 09:20:06] [29.49ms] [178.26KB] [helpers.php:101] Extracting data with keys: message
-[2025-05-18 09:20:06] [29.63ms] [178.29KB] [helpers.php:101] Loading view content: errors.500
-[2025-05-18 09:20:06] [29.78ms] [178.87KB] [Response.php:59] View Rendering [loadView]: errors.500 | Context: {"data_keys":["message"],"memory":833568}
-[2025-05-18 09:20:06] [29.95ms] [178.29KB] [Response.php:63] Getting view path for: errors.500
-[2025-05-18 09:20:06] [30.16ms] [178.56KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-18 09:20:06] [30.33ms] [178.4KB] [Response.php:63] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-18 09:20:06] [30.52ms] [178.4KB] [Response.php:63] Converted view path: errors\500
-[2025-05-18 09:20:06] [30.71ms] [178.9KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php | Context: {"exists":true,"readable":true}
-[2025-05-18 09:20:06] [30.86ms] [178.55KB] [Response.php:63] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php
-[2025-05-18 09:20:06] [31.01ms] [178.43KB] [Response.php:29] View file path: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php
-[2025-05-18 09:20:06] [31.16ms] [178.72KB] [Response.php:29] Starting output buffering
-[2025-05-18 09:20:06] [31.28ms] [194.95KB] [Response.php:29] Including view file: D:/xampp/htdocs/Intermodular/resources/views/errors\500.php
-[2025-05-18 09:20:06] [31.58ms] [179.75KB] [Response.php:29] View rendered successfully, content length: 418
-[2025-05-18 09:20:06] [31.7ms] [179.63KB] [helpers.php:101] View content loaded successfully, length: 418
-[2025-05-18 09:20:06] [31.82ms] [179.61KB] [Response.php:33] Getting view path for: layouts/app
-[2025-05-18 09:20:06] [31.94ms] [179.88KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-18 09:20:06] [32.06ms] [179.72KB] [Response.php:33] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
-[2025-05-18 09:20:06] [32.18ms] [179.69KB] [Response.php:33] Converted view path: layouts/app
-[2025-05-18 09:20:06] [32.33ms] [180.2KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
-[2025-05-18 09:20:06] [32.46ms] [179.83KB] [Response.php:33] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
-[2025-05-18 09:20:06] [32.57ms] [179.75KB] [helpers.php:101] Using layout: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
-[2025-05-18 09:20:06] [32.74ms] [179.64KB] [helpers.php:101] Including layout file
-[2025-05-18 09:20:06] [33.26ms] [187.93KB] [helpers.php:101] Layout included successfully
-[2025-05-18 09:20:06] [33.38ms] [187.45KB] [ProducteController.php:54] Helper view() completed successfully for: errors.500
+=== Debug Log Started at 2025-05-18 09:48:48 ===
+[2025-05-18 09:48:48] [0.65ms] [0.41KB] [index.php:3] Debug system initialized
+[2025-05-18 09:48:48] [4.07ms] [76.09KB] [index.php:3] Bootstrap completed successfully
+[2025-05-18 09:48:48] [4.69ms] [121.84KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
+[2025-05-18 09:48:48] [19.71ms] [167.7KB] [index.php:25] Executing paginate query for products, page: 1
+[2025-05-18 09:48:48] [20.44ms] [173.8KB] [index.php:25] Query completed, found 6 products, total pages: 3
+[2025-05-18 09:48:48] [20.61ms] [174.16KB] [ProducteController.php:45] Helper view() called for: productes.index
+[2025-05-18 09:48:48] [20.74ms] [174.16KB] [helpers.php:101] Starting view rendering for: productes.index
+[2025-05-18 09:48:48] [20.98ms] [176.38KB] [Session.php:14] Session started successfully
+[2025-05-18 09:48:48] [21.12ms] [176.88KB] [Response.php:17] Flash value set: _previous_url
+[2025-05-18 09:48:48] [21.24ms] [176.92KB] [helpers.php:101] Previous URL stored: /intermodular/public/productes/index.php?page=1
+[2025-05-18 09:48:48] [21.36ms] [176.91KB] [helpers.php:101] Extracting data with keys: productes, page, totalPages
+[2025-05-18 09:48:48] [21.48ms] [177.29KB] [helpers.php:101] Loading view content: productes.index
+[2025-05-18 09:48:48] [21.59ms] [177.88KB] [Response.php:59] View Rendering [loadView]: productes.index | Context: {"data_keys":["productes","page","totalPages"],"memory":828928}
+[2025-05-18 09:48:48] [21.71ms] [177.29KB] [Response.php:63] Getting view path for: productes.index
+[2025-05-18 09:48:48] [21.84ms] [177.56KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-18 09:48:48] [21.95ms] [177.4KB] [Response.php:63] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-18 09:48:48] [22.06ms] [177.41KB] [Response.php:63] Converted view path: productes\index
+[2025-05-18 09:48:48] [22.2ms] [177.91KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/productes\index.php | Context: {"exists":true,"readable":true}
+[2025-05-18 09:48:48] [22.32ms] [177.55KB] [Response.php:63] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/productes\index.php
+[2025-05-18 09:48:48] [22.45ms] [177.43KB] [Response.php:29] View file path: D:/xampp/htdocs/Intermodular/resources/views/productes\index.php
+[2025-05-18 09:48:48] [22.56ms] [177.72KB] [Response.php:29] Starting output buffering
+[2025-05-18 09:48:48] [22.67ms] [193.95KB] [Response.php:29] Including view file: D:/xampp/htdocs/Intermodular/resources/views/productes\index.php
+[2025-05-18 09:48:48] [23.05ms] [200.55KB] [message.php:15] Flash value retrieved and removed: success
+[2025-05-18 09:48:48] [23.17ms] [200.55KB] [message.php:15] Flash value retrieved and removed: error
+[2025-05-18 09:48:48] [23.28ms] [200.55KB] [message.php:15] Flash value retrieved and removed: warning
+[2025-05-18 09:48:48] [23.39ms] [200.54KB] [message.php:15] Flash value retrieved and removed: info
+[2025-05-18 09:48:48] [23.68ms] [208.73KB] [_product_card.php:3] Helper imageUrl() called for: adob_eco.jpg
+[2025-05-18 09:48:48] [23.81ms] [208.99KB] [helpers.php:203] Helper project_path() called for: public/images/adob_eco.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/adob_eco.jpg
+[2025-05-18 09:48:48] [23.93ms] [208.84KB] [_product_card.php:3] Checking image path: D:/xampp/htdocs/Intermodular/public/images/adob_eco.jpg
+[2025-05-18 09:48:48] [24.11ms] [208.84KB] [_product_card.php:3] Image exists, returning URL: http://localhost/intermodular/public/images/adob_eco.jpg
+[2025-05-18 09:48:48] [24.3ms] [208.73KB] [_product_card.php:19] Helper imageUrl() called for: adob_eco.jpg
+[2025-05-18 09:48:48] [24.48ms] [208.99KB] [helpers.php:203] Helper project_path() called for: public/images/adob_eco.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/adob_eco.jpg
+[2025-05-18 09:48:48] [24.62ms] [208.84KB] [_product_card.php:19] Checking image path: D:/xampp/htdocs/Intermodular/public/images/adob_eco.jpg
+[2025-05-18 09:48:48] [24.81ms] [208.84KB] [_product_card.php:19] Image exists, returning URL: http://localhost/intermodular/public/images/adob_eco.jpg
+[2025-05-18 09:48:48] [25.1ms] [208.84KB] [_product_card.php:3] Helper imageUrl() called for: adob_floracio.jpg
+[2025-05-18 09:48:48] [25.22ms] [209.15KB] [helpers.php:203] Helper project_path() called for: public/images/adob_floracio.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/adob_floracio.jpg
+[2025-05-18 09:48:48] [25.34ms] [208.96KB] [_product_card.php:3] Checking image path: D:/xampp/htdocs/Intermodular/public/images/adob_floracio.jpg
+[2025-05-18 09:48:48] [25.47ms] [208.98KB] [_product_card.php:3] Image exists, returning URL: http://localhost/intermodular/public/images/adob_floracio.jpg
+[2025-05-18 09:48:48] [25.6ms] [208.84KB] [_product_card.php:19] Helper imageUrl() called for: adob_floracio.jpg
+[2025-05-18 09:48:48] [25.71ms] [209.15KB] [helpers.php:203] Helper project_path() called for: public/images/adob_floracio.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/adob_floracio.jpg
+[2025-05-18 09:48:48] [25.83ms] [208.96KB] [_product_card.php:19] Checking image path: D:/xampp/htdocs/Intermodular/public/images/adob_floracio.jpg
+[2025-05-18 09:48:48] [25.95ms] [208.98KB] [_product_card.php:19] Image exists, returning URL: http://localhost/intermodular/public/images/adob_floracio.jpg
+[2025-05-18 09:48:48] [26.2ms] [208.84KB] [_product_card.php:3] Helper imageUrl() called for: alfabrega.jpg
+[2025-05-18 09:48:48] [26.32ms] [209.12KB] [helpers.php:203] Helper project_path() called for: public/images/alfabrega.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/alfabrega.jpg
+[2025-05-18 09:48:48] [26.44ms] [208.96KB] [_product_card.php:3] Checking image path: D:/xampp/htdocs/Intermodular/public/images/alfabrega.jpg
+[2025-05-18 09:48:48] [26.57ms] [208.96KB] [_product_card.php:3] Image exists, returning URL: http://localhost/intermodular/public/images/alfabrega.jpg
+[2025-05-18 09:48:48] [26.69ms] [208.84KB] [_product_card.php:19] Helper imageUrl() called for: alfabrega.jpg
+[2025-05-18 09:48:48] [26.83ms] [209.12KB] [helpers.php:203] Helper project_path() called for: public/images/alfabrega.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/alfabrega.jpg
+[2025-05-18 09:48:48] [26.95ms] [208.96KB] [_product_card.php:19] Checking image path: D:/xampp/htdocs/Intermodular/public/images/alfabrega.jpg
+[2025-05-18 09:48:48] [27.08ms] [208.96KB] [_product_card.php:19] Image exists, returning URL: http://localhost/intermodular/public/images/alfabrega.jpg
+[2025-05-18 09:48:48] [27.31ms] [208.84KB] [_product_card.php:3] Helper imageUrl() called for: begonia.jpg
+[2025-05-18 09:48:48] [27.44ms] [209.1KB] [helpers.php:203] Helper project_path() called for: public/images/begonia.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/begonia.jpg
+[2025-05-18 09:48:48] [27.56ms] [208.95KB] [_product_card.php:3] Checking image path: D:/xampp/htdocs/Intermodular/public/images/begonia.jpg
+[2025-05-18 09:48:48] [27.69ms] [208.95KB] [_product_card.php:3] Image exists, returning URL: http://localhost/intermodular/public/images/begonia.jpg
+[2025-05-18 09:48:48] [27.81ms] [208.84KB] [_product_card.php:19] Helper imageUrl() called for: begonia.jpg
+[2025-05-18 09:48:48] [27.92ms] [209.1KB] [helpers.php:203] Helper project_path() called for: public/images/begonia.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/begonia.jpg
+[2025-05-18 09:48:48] [28.03ms] [208.95KB] [_product_card.php:19] Checking image path: D:/xampp/htdocs/Intermodular/public/images/begonia.jpg
+[2025-05-18 09:48:48] [28.16ms] [208.95KB] [_product_card.php:19] Image exists, returning URL: http://localhost/intermodular/public/images/begonia.jpg
+[2025-05-18 09:48:48] [28.38ms] [208.84KB] [_product_card.php:3] Helper imageUrl() called for: compost_eco.jpg
+[2025-05-18 09:48:48] [28.51ms] [209.12KB] [helpers.php:203] Helper project_path() called for: public/images/compost_eco.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/compost_eco.jpg
+[2025-05-18 09:48:48] [28.65ms] [208.96KB] [_product_card.php:3] Checking image path: D:/xampp/htdocs/Intermodular/public/images/compost_eco.jpg
+[2025-05-18 09:48:48] [28.78ms] [208.98KB] [_product_card.php:3] Image exists, returning URL: http://localhost/intermodular/public/images/compost_eco.jpg
+[2025-05-18 09:48:48] [28.9ms] [208.84KB] [_product_card.php:19] Helper imageUrl() called for: compost_eco.jpg
+[2025-05-18 09:48:48] [29.04ms] [209.12KB] [helpers.php:203] Helper project_path() called for: public/images/compost_eco.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/compost_eco.jpg
+[2025-05-18 09:48:48] [29.15ms] [208.96KB] [_product_card.php:19] Checking image path: D:/xampp/htdocs/Intermodular/public/images/compost_eco.jpg
+[2025-05-18 09:48:48] [29.28ms] [208.98KB] [_product_card.php:19] Image exists, returning URL: http://localhost/intermodular/public/images/compost_eco.jpg
+[2025-05-18 09:48:48] [29.52ms] [208.84KB] [_product_card.php:3] Helper imageUrl() called for: encisam.jpg
+[2025-05-18 09:48:48] [29.64ms] [209.1KB] [helpers.php:203] Helper project_path() called for: public/images/encisam.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/encisam.jpg
+[2025-05-18 09:48:48] [29.76ms] [208.95KB] [_product_card.php:3] Checking image path: D:/xampp/htdocs/Intermodular/public/images/encisam.jpg
+[2025-05-18 09:48:48] [29.89ms] [208.95KB] [_product_card.php:3] Image exists, returning URL: http://localhost/intermodular/public/images/encisam.jpg
+[2025-05-18 09:48:48] [30.02ms] [208.84KB] [_product_card.php:19] Helper imageUrl() called for: encisam.jpg
+[2025-05-18 09:48:48] [30.14ms] [209.1KB] [helpers.php:203] Helper project_path() called for: public/images/encisam.jpg, returning: D:/xampp/htdocs/Intermodular/public/images/encisam.jpg
+[2025-05-18 09:48:48] [30.25ms] [208.95KB] [_product_card.php:19] Checking image path: D:/xampp/htdocs/Intermodular/public/images/encisam.jpg
+[2025-05-18 09:48:48] [30.4ms] [208.95KB] [_product_card.php:19] Image exists, returning URL: http://localhost/intermodular/public/images/encisam.jpg
+[2025-05-18 09:48:48] [30.54ms] [189.88KB] [Response.php:29] View rendered successfully, content length: 5957
+[2025-05-18 09:48:48] [30.65ms] [189.11KB] [helpers.php:101] View content loaded successfully, length: 5957
+[2025-05-18 09:48:48] [30.77ms] [189.09KB] [Response.php:33] Getting view path for: layouts/app
+[2025-05-18 09:48:48] [30.9ms] [189.37KB] [Response.php:177] Helper project_path() called for: resources/views/, returning: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-18 09:48:48] [31.03ms] [189.2KB] [Response.php:33] Base path for views: D:/xampp/htdocs/Intermodular/resources/views/
+[2025-05-18 09:48:48] [31.14ms] [189.17KB] [Response.php:33] Converted view path: layouts/app
+[2025-05-18 09:48:48] [31.28ms] [189.68KB] [Response.php:190] File Check: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
+[2025-05-18 09:48:48] [31.4ms] [189.31KB] [Response.php:33] Found PHP view file: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
+[2025-05-18 09:48:48] [31.52ms] [189.23KB] [helpers.php:101] Using layout: D:/xampp/htdocs/Intermodular/resources/views/layouts/app.php
+[2025-05-18 09:48:48] [31.65ms] [189.13KB] [helpers.php:101] Including layout file
+[2025-05-18 09:48:48] [32.24ms] [205.8KB] [helpers.php:101] Layout included successfully
+[2025-05-18 09:48:48] [32.36ms] [197.77KB] [ProducteController.php:45] Helper view() completed successfully for: productes.index

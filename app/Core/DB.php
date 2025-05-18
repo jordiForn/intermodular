@@ -10,7 +10,7 @@ use PDOStatement;
 class DB
 {
     private static ?PDO $connection = null;
-    private static bool $inTransaction = false;
+    private static array $config = [];
     
     /**
      * Get the database connection
@@ -20,9 +20,9 @@ class DB
     public static function connection(): PDO
     {
         if (self::$connection === null) {
-            $config = require project_path('config/db.php');
+            self::$config = require project_path('config/db.php');
             
-            $dsn = "mysql:host={$config['host']};dbname={$config['database']};charset=utf8mb4";
+            $dsn = "mysql:host=" . self::$config['host'] . ";dbname=" . self::$config['database'] . ";charset=utf8mb4";
             
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -31,7 +31,7 @@ class DB
             ];
             
             try {
-                self::$connection = new PDO($dsn, $config['username'], $config['password'], $options);
+                self::$connection = new PDO($dsn, self::$config['username'], self::$config['password'], $options);
             } catch (PDOException $e) {
                 throw new PDOException($e->getMessage(), (int)$e->getCode());
             }
@@ -47,12 +47,7 @@ class DB
      */
     public static function beginTransaction(): bool
     {
-        if (self::$inTransaction) {
-            return false;
-        }
-        
-        self::$inTransaction = self::connection()->beginTransaction();
-        return self::$inTransaction;
+        return self::connection()->beginTransaction();
     }
     
     /**
@@ -62,13 +57,7 @@ class DB
      */
     public static function commit(): bool
     {
-        if (!self::$inTransaction) {
-            return false;
-        }
-        
-        $result = self::connection()->commit();
-        self::$inTransaction = false;
-        return $result;
+        return self::connection()->commit();
     }
     
     /**
@@ -78,23 +67,7 @@ class DB
      */
     public static function rollback(): bool
     {
-        if (!self::$inTransaction) {
-            return false;
-        }
-        
-        $result = self::connection()->rollBack();
-        self::$inTransaction = false;
-        return $result;
-    }
-
-    /**
-     * Check if a transaction is currently active
-     * 
-     * @return bool True if a transaction is active, false otherwise
-     */
-    public static function inTransaction(): bool
-    {
-        return self::$inTransaction;
+        return self::connection()->rollBack();
     }
     
     /**
@@ -132,6 +105,21 @@ class DB
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_CLASS, $class);
+    }
+    
+    /**
+     * Execute a select query and return results as associative array
+     * 
+     * @param string $query The SQL query
+     * @param array $params The query parameters
+     * @return array The query results as associative array
+     */
+    public static function selectAssoc(string $query, array $params = []): array
+    {
+        $stmt = self::prepare($query, $params);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     /**
@@ -230,7 +218,7 @@ class DB
         $stmt = self::connection()->prepare($query);
         
         // Check if params is an associative array
-        $isAssoc = array_keys($params) !== range(0, count($params) - 1);
+        $isAssoc = !empty($params) && array_keys($params) !== range(0, count($params) - 1);
         
         if ($isAssoc) {
             // Handle named parameters

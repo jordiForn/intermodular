@@ -2,7 +2,7 @@
 
 <div class="container mt-4">
     <!-- Mostrar mensajes de error y éxito si existen -->
-    <?php include __DIR__ . '/../partials/messages.php'; ?>
+    <?php include __DIR__ . '/../partials/message.php'; ?>
 
     <!-- Mostrar errores si existen -->
     <?php include __DIR__ . '/../partials/errors.php'; ?>

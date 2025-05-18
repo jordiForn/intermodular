@@ -126,6 +126,7 @@ class QueryBuilder {
     public function count(): int {
         $this->sql = "SELECT COUNT(*) AS total FROM " . $this->table;
         $this->build();
-        return DB::selectAssoc($this->sql, $this->params)[0]['total'];
+        $result = DB::selectAssoc($this->sql, $this->params);
+        return (int)($result[0]['total'] ?? 0);
     }
 }

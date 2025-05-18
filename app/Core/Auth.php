@@ -16,33 +16,6 @@ class Auth
         Debug::log("Auth::attempt called with credentials for: " . ($credentials['nom_login'] ?? $credentials['username'] ?? 'unknown'));
         
         try {
-            // Check if we're using legacy credentials (nom_login/contrasena)
-            if (isset($credentials['nom_login'])) {
-                $username = $credentials['nom_login'];
-                $password = $credentials['contrasena'];
-                
-                // Try to find user by username
-                $user = User::findByUsername($username);
-                
-                if (!$user) {
-                    Debug::log("User not found with username: $username");
-                    return false;
-                }
-                
-                // Verify password
-                if (!password_verify($password, $user->password)) {
-                    Debug::log("Password verification failed for user: $username");
-                    return false;
-                }
-                
-                // Login user
-                self::login($user);
-                Debug::log("User logged in successfully: $username");
-                
-                return true;
-            }
-            
-            // Modern credentials (username/password)
             $username = $credentials['username'];
             $password = $credentials['password'];
             
