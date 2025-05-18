@@ -9,7 +9,7 @@
                     <h4 class="mb-0">Contacta amb nosaltres</h4>
                 </div>
                 <div class="card-body">
-                    <?php include __DIR__ . '/../partials/messages.php'; ?>
+                    <?php include __DIR__ . '/../partials/message.php'; ?>
                     <?php include __DIR__ . '/../partials/errors.php'; ?>
                     
                     <p class="mb-4">Completa el formulari següent per enviar-nos la teva consulta. Ens posarem en contacte amb tu el més aviat possible.</p>
