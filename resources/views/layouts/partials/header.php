@@ -1,105 +1,73 @@
 <?php use App\Core\Auth; ?>
-<header class="bg-dark text-white pt-2 pb-0">
+<header class="bg-highlight fixed-top py-0" style="min-height: 150px;">
     <div class="container-fluid">
-        <div class="row align-items-center">
-            <div class="col-3">
-                <h3>Jardineria</h3>
-            </div>
-            <div class="col-6 d-flex justify-content-center">
-                <form action="<?= BASE_URL . '/productes/search.php'; ?>" method="get" class="d-flex w-100" style="max-width: 500px;">
-                    <input type="text" name="q" class="form-control me-2" placeholder="Buscar producte" value="<?= htmlspecialchars($q ?? ""); ?>">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
+            <div>
+    <h1 class="fw-bold mb-0" style="font-size:2.5rem;">
+        <a href="<?= BASE_URL . '/index.php'; ?>" class="text-white text-decoration-none d-inline-block" style="font-size: inherit;">
+            Tenda de Jardineria
+        </a>
+    </h1>
+</div>
 
-            <!-- Área de identificación y carrito -->
-            <div class="col-3 text-end">
-                <a href="<?= BASE_URL . '/comandes/cart.php'; ?>" class="btn btn-outline-light me-2 tooltip-container">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="tooltip-text">0 ítems - 0,00€</span>
+            
+            <!-- CONTENEDOR DE BOTONES A LA DERECHA -->
+            <div class="d-flex align-items-center ms-auto position-relative">
+                <!-- Botón lupa (abre búsqueda) -->
+                <button id="searchToggle" class="btn btn-link text-white fs-2 mx-3 p-0" type="button" title="Buscar">
+                    <i class="fas fa-search"></i>
+                </button>
+
+                <!-- Campo de búsqueda tipo dropdown -->
+                <form id="searchForm" action="<?= BASE_URL . '/productes/search.php'; ?>" method="get" class="position-absolute end-0 top-100 mt-2 bg-highlight p-2 rounded shadow d-none" style="min-width: 300px; z-index: 100;">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Buscar producte" value="<?= htmlspecialchars($q ?? ""); ?>">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Botón contacto (enviar mensaje) -->
+                <a href="<?= BASE_URL . '/contact/show-form.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Enviar mensaje">
+                    <i class="fas fa-envelope"></i>
                 </a>
-                
+
+                <!-- Botón usuario/login (Clients) -->
                 <?php if (!Auth::check()): ?>
-                    <a href="<?= BASE_URL . '/auth/show-login.php'; ?>" class="btn btn-outline-light">
-                        <i class="fas fa-sign-in-alt"></i> Login
+                    <a href="<?= BASE_URL . '/clients/index.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Clients">
+                        <i class="fas fa-user"></i>
                     </a>
                 <?php else: ?>
-                    <span class="me-2">
-                        <i class="fas fa-user"></i> <?= htmlspecialchars(Auth::user()->nom) ?>
-                    </span>
-                    <a href="<?= BASE_URL . '/auth/logout.php'; ?>" class="btn btn-outline-danger">
-                        <i class="fas fa-sign-out-alt"></i> Logout
+                    <a href="<?= BASE_URL . '/clients/index.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Clients">
+                        <i class="fas fa-user"></i>
                     </a>
                 <?php endif; ?>
+
+                <!-- Botón carrito -->
+                <a href="<?= BASE_URL . '/comandes/cart.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0 position-relative" title="Carret">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
             </div>
         </div>
-    </div>
 
-    <!-- Barra de navegación -->
-    <nav class="mt-2">
-        <ul class="nav">
-            <li class="nav-item">
-                <a
-                    class="nav-link <?= request()->routeIs('/productes/index.php') ? 'bg-white text-dark rounded-top' : 'text-white' ?>" 
-                    href="<?= BASE_URL . '/productes/index.php'; ?>">
-                    Productes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                    class="nav-link <?= request()->routeIs('/serveis/index.php') ? 'bg-white text-dark rounded-top' : 'text-white' ?>" 
-                    href="<?= BASE_URL . '/serveis/index.php'; ?>">
-                    Serveis
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                    class="nav-link <?= request()->routeIs('/clients/index.php') ? 'bg-white text-dark rounded-top' : 'text-white' ?>" 
-                    href="<?= BASE_URL . '/clients/index.php'; ?>">
-                    Clients
-                </a>
-            </li>
-            <li class="nav-item">
-                <a
-                    class="nav-link <?= request()->routeIs('/contact/show-form.php') ? 'bg-white text-dark rounded-top' : 'text-white' ?>" 
-                    href="<?= BASE_URL . '/contact/show-form.php'; ?>">
-                    Contacte
-                </a>
-            </li>
-            <?php if(Auth::check()): ?>
-                <li class="nav-item">
-                    <a 
-                        class="nav-link <?= request()->routeIs('/comandes/my-orders.php') ? 'bg-white text-dark rounded-top' : 'text-white' ?>"     
-                        href="<?= BASE_URL . '/comandes/my-orders.php'; ?>">
-                        Les meves comandes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a 
-                        class="nav-link <?= request()->routeIs('/comandes/cart.php') ? 'bg-white text-dark rounded-top' : 'text-white' ?>"     
-                        href="<?= BASE_URL . '/comandes/cart.php'; ?>">
-                        Carret
-                    </a>
-                </li>
-            <?php endif; ?>
-            <?php if(Auth::check() && Auth::role() === 'admin'): ?>
-                <li class="nav-item">
-                    <a 
-                        class="nav-link <?= request()->routeIs('/productes/create.php') ? 'bg-white text-dark rounded-top' : 'text-warning' ?>"     
-                        href="<?= BASE_URL . '/productes/create.php'; ?>">
-                        Crear producte
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a 
-                        class="nav-link <?= request()->routeIs('/clients/create.php') ? 'bg-white text-dark rounded-top' : 'text-warning' ?>"     
-                        href="<?= BASE_URL . '/clients/create.php'; ?>">
-                        Crear client
-                    </a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </nav>
+    <script>
+        // Mostrar/ocultar campo de búsqueda tipo dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchToggle = document.getElementById('searchToggle');
+            var searchForm = document.getElementById('searchForm');
+            document.addEventListener('click', function(e) {
+                if (searchForm && !searchForm.classList.contains('d-none') && !searchForm.contains(e.target) && e.target !== searchToggle) {
+                    searchForm.classList.add('d-none');
+                }
+            });
+            searchToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                searchForm.classList.toggle('d-none');
+                if (!searchForm.classList.contains('d-none')) {
+                    searchForm.querySelector('input').focus();
+                }
+            });
+        });
+    </script>
 </header>
+<div style="height: 150px;"></div>

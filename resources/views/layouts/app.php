@@ -18,10 +18,11 @@
         var BASE_URL = <?= json_encode(BASE_URL) ?>;
     </script>
 </head>
+
 <body>
     <?php include __DIR__ . '/partials/header.php'; ?>
     
-    <main>
+    <main class="container mt-5 pt-5">
         <?= $content ?>
     </main>
     

@@ -446,4 +446,11 @@ Call to undefined method App\Core\Auth::role()
 #2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
 #3 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
 #4 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
-#5 {main}
+#5 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}
