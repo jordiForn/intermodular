@@ -9,6 +9,7 @@ class QueryBuilder {
     private string $table;
     private string $whereClause = "";
     private string $orderByClause = "";
+    private string $orderByRawClause = "";
     private int $limit = 0;
     private int $offset = 0;
 
@@ -61,6 +62,11 @@ class QueryBuilder {
         return $this;
     }
 
+    public function orderByRaw(string $expression): self {
+        $this->orderByRawClause = " ORDER BY $expression";
+        return $this;
+    }
+
     public function limit(int $limit): self {
         $this->limit = $limit;
         return $this;
@@ -79,8 +85,10 @@ class QueryBuilder {
         if ($this->whereClause) {
             $this->sql .= $this->whereClause;
         }
-            
-        if ($this->orderByClause) {
+        // Si hay orderByRaw, tiene prioridad
+        if ($this->orderByRawClause) {
+            $this->sql .= $this->orderByRawClause;
+        } else if ($this->orderByClause) {
             $this->sql .= $this->orderByClause;
         }
             

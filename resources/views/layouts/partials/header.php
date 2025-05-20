@@ -1,16 +1,13 @@
 <?php use App\Core\Auth; ?>
-<header class="bg-highlight fixed-top py-0" style="min-height: 150px;">
-    <div class="container-fluid">
+<header class="bg-highlight fixed-top py-0">
+    <div class="container-fluid d-flex align-items-center justify-content-between" style="min-height: 150px;">
             <div>
-    <h1 class="fw-bold mb-0" style="font-size:2.5rem;">
-        <a href="<?= BASE_URL . '/index.php'; ?>" class="text-white text-decoration-none d-inline-block" style="font-size: inherit;">
-            Tenda de Jardineria
-        </a>
-    </h1>
-</div>
-
-            
-            <!-- CONTENEDOR DE BOTONES A LA DERECHA -->
+                <h1 class="fw-bold mb-0" style="font-size:2.5rem;">
+                    <a href="<?= BASE_URL . '/index.php'; ?>" class="text-white text-decoration-none d-inline-block" style="font-size: inherit;">
+                        Tenda de Jardineria
+                    </a>
+                </h1>
+            </div>
             <div class="d-flex align-items-center ms-auto position-relative">
                 <!-- Botón lupa (abre búsqueda) -->
                 <button id="searchToggle" class="btn btn-link text-white fs-2 mx-3 p-0" type="button" title="Buscar">
@@ -48,26 +45,26 @@
                     <i class="fas fa-shopping-cart"></i>
                 </a>
             </div>
-        </div>
 
-    <script>
-        // Mostrar/ocultar campo de búsqueda tipo dropdown
-        document.addEventListener('DOMContentLoaded', function() {
-            var searchToggle = document.getElementById('searchToggle');
-            var searchForm = document.getElementById('searchForm');
-            document.addEventListener('click', function(e) {
-                if (searchForm && !searchForm.classList.contains('d-none') && !searchForm.contains(e.target) && e.target !== searchToggle) {
-                    searchForm.classList.add('d-none');
-                }
+        <script>
+            // Mostrar/ocultar campo de búsqueda tipo dropdown
+            document.addEventListener('DOMContentLoaded', function() {
+                var searchToggle = document.getElementById('searchToggle');
+                var searchForm = document.getElementById('searchForm');
+                document.addEventListener('click', function(e) {
+                    if (searchForm && !searchForm.classList.contains('d-none') && !searchForm.contains(e.target) && e.target !== searchToggle) {
+                        searchForm.classList.add('d-none');
+                    }
+                });
+                searchToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    searchForm.classList.toggle('d-none');
+                    if (!searchForm.classList.contains('d-none')) {
+                        searchForm.querySelector('input').focus();
+                    }
+                });
             });
-            searchToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                searchForm.classList.toggle('d-none');
-                if (!searchForm.classList.contains('d-none')) {
-                    searchForm.querySelector('input').focus();
-                }
-            });
-        });
-    </script>
+        </script>
+    </div>
 </header>
-<div style="height: 150px;"></div>
+<div style="height: 50px;"></div>

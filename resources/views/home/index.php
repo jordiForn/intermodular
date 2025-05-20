@@ -1,91 +1,90 @@
-<div class="container mt-4">
-    <div class="jumbotron bg-light p-5 rounded">
-        <h1 class="display-4">Benvinguts a Jardineria</h1>
-        <p class="lead">La teva botiga online de jardineria amb els millors productes per al teu jardí.</p>
-        <hr class="my-4">
-        <p>Descobreix la nostra àmplia selecció de plantes, eines i productes per a la cura del teu jardí.</p>
-        <a class="btn btn-primary btn-lg" href="<?= BASE_URL ?>/productes/index.php" role="button">Veure productes</a>
-    </div>
+<?php
 
-    <h2 class="mt-5 mb-4">Productes destacats</h2>
-    
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="<?= imageUrl('alfabrega.jpg', 300, 200) ?>" class="card-img-top" alt="Alfabrega" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">Plantes aromàtiques</h5>
-                    <p class="card-text">Descobreix la nostra selecció de plantes aromàtiques per a la teva cuina i jardí.</p>
-                    <a href="<?= BASE_URL ?>/productes/category.php?categoria=Plantes+i+llavors" class="btn btn-outline-primary">Veure més</a>
+use App\Models\Producte;
+use App\Models\Servei;
+use App\Core\DB;
+use App\Core\QueryBuilder;
+
+$qb = new QueryBuilder(Producte::class);
+$qb->where('estoc', '>', 0);
+$qb->orderByRaw("CASE 
+    WHEN categoria = 'Plantes i llavors' THEN 1
+    WHEN categoria = 'Terra i adobs' THEN 2
+    WHEN categoria = 'Ferramentes' THEN 3
+    ELSE 4
+END, nom", '');
+$productes = $qb->get();
+
+$categories = [];
+foreach ($productes as $producte) {
+    $categories[$producte->categoria][] = $producte;
+}
+?>
+    <div class="container mt-5 pt-4">
+        <h2>Llista de Productes</h2>
+        <a href="#service-category">Busques serveis?</a>
+        <?php foreach ($categories as $categoria => $productes): ?>
+            <div class="product-category">
+                <button class="toggle-button"><?= htmlspecialchars($categoria) ?></button>
+                <div class="product-list">
+                    <?php foreach ($productes as $producte): ?>
+                        <a href="public/productes/show.php?id=<?= htmlspecialchars($producte->id) ?>" class="product-link">
+                            <div class="product-card">
+                                <img src="../public/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
+                                <h3><?= htmlspecialchars($producte->nom) ?></h3>
+                                <p><?= htmlspecialchars($producte->descripcio) ?></p>
+                                <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
+                                <p>Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
+                                <div class="tooltip-container">
+                                    <button onclick="addToCart('<?= addslashes($producte->nom) ?>', <?= $producte->preu ?>)">Afegir al Carret</button>
+                                    <span class="tooltip-text">0 ítems - 0,00€</span>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="<?= imageUrl('tomaca.jpg', 300, 200) ?>" class="card-img-top" alt="Tomaca" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">Hortalisses</h5>
-                    <p class="card-text">Cultiva les teves pròpies hortalisses ecològiques amb les nostres llavors i plantes.</p>
-                    <a href="<?= BASE_URL ?>/productes/category.php?categoria=Plantes+i+llavors" class="btn btn-outline-primary">Veure més</a>
-                </div>
+        <?php endforeach; ?>
+    </div>
+    <div class="container">
+        <div class="service-category" id="service-category">
+            <button class="toggle-button">🏡 Serveis per a jardins</button>
+            <div class="service-garden">
+                <?php
+                $serveisJardins = Servei::where('cat', 'jardins')->get();
+                if (count($serveisJardins) > 0) {
+                    foreach ($serveisJardins as $servei) {
+                        $nom = htmlspecialchars($servei->nom);
+                        $preu_base = number_format($servei->preu_base, 2, ",", ".");
+                        echo "<div class='service-card'>";
+                        echo "<h3>$nom</h3>";
+                        echo "<p class='price'>$preu_base €/h</p>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>No hi ha serveis disponibles per a jardins.</p>";
+                }
+                ?>
             </div>
         </div>
-        
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <img src="<?= imageUrl('terra_universal.jpg', 300, 200) ?>" class="card-img-top" alt="Terra Universal" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">Terra i adobs</h5>
-                    <p class="card-text">Tot el que necessites per a nodrir i cuidar les teves plantes de manera natural.</p>
-                    <a href="<?= BASE_URL ?>/productes/category.php?categoria=Terra+i+adobs" class="btn btn-outline-primary">Veure més</a>
-                </div>
+        <div class="service-category" id="service-category">
+            <button class="toggle-button">🏊 Serveis per a piscines</button>
+            <div class="service-pool">
+                <?php
+                $serveisPiscines = Servei::where('cat', 'piscines')->get();
+                if (count($serveisPiscines) > 0) {
+                    foreach ($serveisPiscines as $servei) {
+                        $nom = htmlspecialchars($servei->nom);
+                        $preu_base = number_format($servei->preu_base, 2, ",", ".");
+                        echo "<div class='service-card'>";
+                        echo "<h3>$nom</h3>";
+                        echo "<p class='price'>$preu_base €/h</p>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>No hi ha serveis disponibles per a piscines.</p>";
+                }
+                ?>
             </div>
         </div>
     </div>
-    
-    <h2 class="mt-5 mb-4">Categories</h2>
-    
-    <div class="row">
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body d-flex">
-                    <img src="<?= imageUrl('timó.jpg', 150, 150) ?>" alt="Plantes i llavors" class="me-3" style="width: 150px; height: 150px; object-fit: cover;">
-                    <div>
-                        <h3 class="card-title">Plantes i llavors</h3>
-                        <p class="card-text">Àmplia selecció de plantes aromàtiques, flors, hortalisses i llavors per al teu jardí.</p>
-                        <a href="<?= BASE_URL ?>/productes/category.php?categoria=Plantes+i+llavors" class="btn btn-primary">Explorar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body d-flex">
-                    <img src="<?= imageUrl('terra.jpg', 150, 150) ?>" alt="Terra i adobs" class="me-3" style="width: 150px; height: 150px; object-fit: cover;">
-                    <div>
-                        <h3 class="card-title">Terra i adobs</h3>
-                        <p class="card-text">Substrats, adobs i compost de qualitat per a garantir el creixement òptim de les teves plantes.</p>
-                        <a href="<?= BASE_URL ?>/productes/category.php?categoria=Terra+i+adobs" class="btn btn-primary">Explorar</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <h3>Sobre nosaltres</h3>
-            <p>Som una empresa familiar dedicada a la jardineria des de fa més de 20 anys. El nostre objectiu és oferir productes de qualitat i assessorament personalitzat per a que el teu jardí llueixi el millor possible.</p>
-            <p>Tots els nostres productes són seleccionats curosament per garantir la seva qualitat i respecte pel medi ambient.</p>
-        </div>
-        <div class="col-md-6">
-            <h3>Contacta'ns</h3>
-            <p><i class="fas fa-map-marker-alt"></i> Carrer Principal, 123, 08001 Barcelona</p>
-            <p><i class="fas fa-phone"></i> 93 123 45 67</p>
-            <p><i class="fas fa-envelope"></i> info@jardineria.com</p>
-            <a href="<?= BASE_URL ?>/contact/show-form.php" class="btn btn-success">Formulari de contacte</a>
-        </div>
-    </div>
-</div>

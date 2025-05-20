@@ -453,4 +453,39 @@ Call to undefined method App\Core\Auth::role()
 #0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
 #0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
 #0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
-#0 {main}
+#0 {main}[2025-05-20 20:33:56] ERROR: Call to undefined method App\Core\QueryBuilder::orderByRaw()
+File: C:\xampp\htdocs\intermodular\resources\views\home\index.php Line: 9
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-20 20:35:42] ERROR: La ordenación sólo puede ser ascendente (ASC) o descendente (DESC)
+File: C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php Line: 57
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\resources\views\home\index.php(12): App\Core\QueryBuilder->orderBy('CASE \r\n    WHEN...', '')
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#4 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#5 {main}
+
+[2025-05-20 20:41:26] ERROR: Class "QueryBuilder" not found
+File: C:\xampp\htdocs\intermodular\resources\views\home\index.php Line: 3
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-20 20:47:56] ERROR: syntax error, unexpected token "<", expecting end of file
+File: C:\xampp\htdocs\intermodular\resources\views\home\index.php Line: 23
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
