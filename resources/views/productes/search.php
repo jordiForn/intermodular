@@ -18,8 +18,8 @@
             <?php endforeach; ?>
         </div>
     
-         <!-- Paginación -->
-         <div class="d-flex justify-content-center align-items-center mt-4">
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center align-items-center mt-4">
             <?php if ($page > 1): ?>
                 <a href="?q=<?= urlencode($q) ?>&page=<?= $page - 1 ?>" class="text-decoration-none me-4">&laquo; Anterior</a>
             <?php endif; ?>

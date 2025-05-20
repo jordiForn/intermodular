@@ -489,3 +489,5 @@ Stack trace:
 #2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
 #3 {main}
 
+Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}

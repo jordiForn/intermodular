@@ -16,11 +16,12 @@
 
                 <!-- Campo de búsqueda tipo dropdown -->
                 <form id="searchForm" action="<?= BASE_URL . '/productes/search.php'; ?>" method="get" class="position-absolute end-0 top-100 mt-2 bg-highlight p-2 rounded shadow d-none" style="min-width: 300px; z-index: 100;">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="Buscar producte" value="<?= htmlspecialchars($q ?? ""); ?>">
+                    <div class="input-group position-relative">
+                        <input type="text" name="q" id="live-search-input" class="form-control" placeholder="Buscar producte" autocomplete="off" value="<?= htmlspecialchars($q ?? ""); ?>">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-search"></i>
                         </button>
+                        <div id="live-search-results" class="list-group position-absolute w-100" style="top: 100%; left: 0; z-index: 200;"></div>
                     </div>
                 </form>
 
@@ -64,6 +65,48 @@
                     }
                 });
             });
+
+            // Búsqueda en vivo
+            const searchInput = document.getElementById('live-search-input');
+            const resultsBox = document.getElementById('live-search-results');
+            let searchTimeout;
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    clearTimeout(searchTimeout);
+                    const query = this.value.trim();
+                    if (query.length < 2) {
+                        resultsBox.innerHTML = '';
+                        resultsBox.style.display = 'none';
+                        return;
+                    }
+                    searchTimeout = setTimeout(() => {
+                        fetch('<?= BASE_URL ?>/productes/search.php?q=' + encodeURIComponent(query))
+                            .then(res => res.json())
+                            .then(data => {
+                                if (Array.isArray(data) && data.length > 0) {
+                                    resultsBox.innerHTML = data.map(item =>
+                                        `<a href=\"<?= BASE_URL ?>/productes/show.php?id=${item.id}\" class=\"list-group-item list-group-item-action\">${item.nom}</a>`
+                                    ).join('');
+                                    resultsBox.style.display = 'block';
+                                } else {
+                                    resultsBox.innerHTML = '<div class="list-group-item">No s\'han trobat resultats</div>';
+                                    resultsBox.style.display = 'block';
+                                }
+                            })
+                            .catch(() => {
+                                resultsBox.innerHTML = '<div class="list-group-item">Error en la cerca</div>';
+                                resultsBox.style.display = 'block';
+                            });
+                    }, 250);
+                });
+                // Ocultar resultados al perder foco
+                searchInput.addEventListener('blur', function() {
+                    setTimeout(() => { resultsBox.style.display = 'none'; }, 200);
+                });
+                searchInput.addEventListener('focus', function() {
+                    if (resultsBox.innerHTML) resultsBox.style.display = 'block';
+                });
+            }
         </script>
     </div>
 </header>

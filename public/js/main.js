@@ -1,69 +1,108 @@
 /**
- * Main JavaScript file
- * Initializes all functionality and provides global access to modules
+ * Initialize cart functionality
  */
+function initializeCart() {
+  // Update cart count on page load
+  updateCartCount();
 
-// Define auth variables with default values
-// These should be set by the server in the actual page
-var isLoggedIn = false;
-var isAdmin = false;
+  // Initialize tooltips for cart buttons
+  initializeTooltips();
+
+  // Add event listeners to cart buttons
+  const addToCartButtons = document.querySelectorAll(
+    ".tooltip-container button"
+  );
+  addToCartButtons.forEach((button) => {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      const name = this.getAttribute("data-name");
+      const price = Number.parseFloat(this.getAttribute("data-price"));
+      const id = Number.parseInt(this.getAttribute("data-id"));
+      const stock = Number.parseInt(this.getAttribute("data-stock"));
+
+      addToCart(name, price, id, stock);
+    });
+  });
+}
 
 /**
- * Initialize the application when the DOM is fully loaded
+ * Update cart count in header
  */
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Jardineria application initialized");
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCountElement = document.getElementById("cart-count");
+  if (cartCountElement) {
+    cartCountElement.textContent = totalItems;
+  }
+}
 
-  // Initialize first product list as visible by default
-  const productLists = document.querySelectorAll(".product-list");
-  productLists.forEach((list, index) => {
-    list.style.display = index === 0 ? "flex" : "none";
-  });
+/**
+ * Initialize tooltips for cart buttons
+ */
+function initializeTooltips() {
+  const tooltipContainers = document.querySelectorAll(".tooltip-container");
+  tooltipContainers.forEach((container) => {
+    const button = container.querySelector("button");
+    const tooltip = container.querySelector(".tooltip-text");
 
-  // Set up event delegation for add to cart buttons
-  document.body.addEventListener("click", (event) => {
-    // Handle add to cart button clicks
-    if (event.target.classList.contains("add-to-cart")) {
-      const productName = event.target.getAttribute("data-name");
-      const productPrice = Number.parseFloat(
-        event.target.getAttribute("data-price")
-      );
+    if (button && tooltip) {
+      button.addEventListener("mouseover", () => {
+        // Get cart data from localStorage
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
 
-      if (productName && !isNaN(productPrice)) {
-        window.cartModule.addToCart(productName, productPrice);
-      }
+        // Update tooltip text
+        tooltip.textContent = `${totalItems} ítems - ${totalPrice.toFixed(2)}€`;
+      });
     }
   });
-});
-
-// Update any hardcoded paths to use the BASE_URL JavaScript variable
-document.addEventListener("DOMContentLoaded", () => {
-  // Ensure BASE_URL is available in JavaScript
-  if (typeof BASE_URL === "undefined") {
-    console.warn(
-      "BASE_URL is not defined. Some functionality may not work correctly."
-    );
-  }
-
-  // Initialize any components that need the base URL
-  initializeComponents();
-});
-
-function initializeComponents() {
-  // Any initialization code that needs BASE_URL
 }
 
 /**
- * Set authentication status - to be called from PHP
- * @param {boolean} loggedIn - Whether user is logged in
- * @param {boolean} admin - Whether user is an admin
+ * Add product to cart
  */
-function setAuthStatus(loggedIn, admin) {
-  isLoggedIn = loggedIn;
-  isAdmin = admin;
+function addToCart(name, price, id, stock) {
+  // Get existing cart or initialize empty array
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-  // Update UI based on new auth status
-  if (window.uiModule) {
-    window.uiModule.setupAuthUI(isLoggedIn, isAdmin);
+  // Check if product already in cart
+  const existingItem = cart.find((item) => item.id === id);
+
+  if (existingItem) {
+    // Don't exceed available stock
+    if (existingItem.quantity < stock) {
+      existingItem.quantity += 1;
+    } else {
+      alert("No hi ha més estoc disponible d'aquest producte");
+      return;
+    }
+  } else {
+    // Add new item
+    cart.push({
+      id: id,
+      name: name,
+      price: price,
+      quantity: 1,
+      stock: stock,
+    });
   }
+
+  // Save updated cart
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Update cart count
+  updateCartCount();
+
+  // Show success message
+  alert(`${name} afegit al carret!`);
 }
+
+// Initialize cart when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  initializeCart();
+});
