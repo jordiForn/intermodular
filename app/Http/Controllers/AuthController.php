@@ -53,20 +53,42 @@ class AuthController {
            }
            
            $credentials = [
-               'nom_login' => $request->nom_login,
-               'contrasena' => $request->contrasena,
+               'username' => $request->nom_login,
+               'password' => $request->contrasena,
            ];
            
            // Log login attempt
            Debug::log("Login attempt for user: " . $request->nom_login);
        
            if (Auth::attempt($credentials)) {
+               // Obtener el usuario autenticado
+               $user = Auth::user();
+               // Buscar el cliente asociado a este usuario
+               $client = null;
+               if ($user && isset($user->id)) {
+                   $client = \App\Models\Client::findByUserId($user->id);
+               }
+               // Guardar el nombre real en la sesión si existe
+               if ($client && $client->nom) {
+                   session()->set('nom_real', $client->nom);
+               } else if ($user) {
+                   session()->set('nom_real', $user->username);
+               }
                // Get redirect URL if it exists
-               $redirectTo = session()->getFlash('redirect_to', '/productes/index.php');
-               
+               $redirectTo = session()->getFlash('redirect_to');
+               Debug::log('Valor de $redirectTo antes de normalizar: ' . var_export($redirectTo, true));
+               if (!$redirectTo) {
+                   $redirectTo = '/'; // Usar solo la barra para ir a la home
+               }
+               // Normalizar la URL para evitar duplicados
+               if ($redirectTo === '/' || $redirectTo === '') {
+                   $redirectTo = BASE_URL . '/';
+               } else if (strpos($redirectTo, 'http') !== 0 && strpos($redirectTo, BASE_URL) !== 0) {
+                   $redirectTo = BASE_URL . $redirectTo;
+               }
+               Debug::log('Valor de $redirectTo después de normalizar: ' . var_export($redirectTo, true));
                // Log successful login
                Debug::log("Login successful for user: " . $request->nom_login . ", redirecting to: " . $redirectTo);
-               
                redirect($redirectTo)->with('success', 'Has iniciat sessió correctament')->send();
                return;
            }
@@ -181,7 +203,7 @@ class AuthController {
                // Log the user in
                Auth::login($user);
                
-               redirect('/productes/index.php')->with('success', "¡Benvingut, {$client->nom}!")->send();
+               redirect(BASE_URL)->with('success', "¡Benvingut, {$client->nom}!")->send();
            } catch (\Throwable $e) {
                // Rollback transaction if we started it
                if (!$inTransaction && DB::inTransaction()) {

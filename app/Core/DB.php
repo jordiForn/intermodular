@@ -71,6 +71,16 @@ class DB
     }
     
     /**
+     * Check if a transaction is currently active
+     * 
+     * @return bool True if a transaction is active, false otherwise
+     */
+    public static function inTransaction(): bool
+    {
+        return self::connection()->inTransaction();
+    }
+    
+    /**
      * Test the database connection
      * 
      * @return array Connection status

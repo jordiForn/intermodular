@@ -8,6 +8,12 @@
                     </a>
                 </h1>
             </div>
+            <!-- Saludo de bienvenida -->
+            <?php if (session()->get('nom_real')): ?>
+                <div class="mx-4">
+                    <span class="text-white fw-semibold" style="font-size:1.3rem;">Benvingut, <?= htmlspecialchars(session()->get('nom_real')) ?></span>
+                </div>
+            <?php endif; ?>
             <div class="d-flex align-items-center ms-auto position-relative">
                 <!-- Botón lupa (abre búsqueda) -->
                 <button id="searchToggle" class="btn btn-link text-white fs-2 mx-3 p-0" type="button" title="Buscar">
@@ -31,15 +37,9 @@
                 </a>
 
                 <!-- Botón usuario/login (Clients) -->
-                <?php if (!Auth::check()): ?>
-                    <a href="<?= BASE_URL . '/clients/index.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Clients">
-                        <i class="fas fa-user"></i>
-                    </a>
-                <?php else: ?>
-                    <a href="<?= BASE_URL . '/clients/index.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Clients">
-                        <i class="fas fa-user"></i>
-                    </a>
-                <?php endif; ?>
+                <a href="<?= BASE_URL . '/auth/show-login.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Iniciar sessió">
+                    <i class="fas fa-user"></i>
+                </a>
 
                 <!-- Botón carrito -->
                 <a href="<?= BASE_URL . '/comandes/cart.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0 position-relative" title="Carret">
@@ -82,7 +82,7 @@
                     searchTimeout = setTimeout(() => {
                         fetch('<?= BASE_URL ?>/productes/search.php?q=' + encodeURIComponent(query))
                             .then(res => res.json())
-                            .then(data => {
+                            .then data => {
                                 if (Array.isArray(data) && data.length > 0) {
                                     resultsBox.innerHTML = data.map(item =>
                                         `<a href=\"<?= BASE_URL ?>/productes/show.php?id=${item.id}\" class=\"list-group-item list-group-item-action\">${item.nom}</a>`

@@ -12,7 +12,7 @@ class Client extends Model
     protected static string $table = 'client';
     protected static array $fillable = [
         'user_id', 'nom', 'cognom', 'email', 'tlf', 'consulta', 
-        'missatge', 'nom_login', 'contrasena', 'rol', 'id_referit'
+        'missatge', 'nom_login', 'contrasena', 'rol', 'id_referit', 'id_referidor', 'id_fidelitat'
     ];
     
     
@@ -28,6 +28,8 @@ class Client extends Model
     public ?string $contrasena = null;
     public int $rol = 0;
     public ?int $id_referit = null;
+    public ?int $id_referidor = null;
+    public ?int $id_fidelitat = null;
     
     /**
      * Insert a new client record
@@ -56,6 +58,14 @@ class Client extends Model
         
         if ($this->id_referit !== null) {
             $data['id_referit'] = $this->id_referit;
+        }
+        
+        if ($this->id_referidor !== null) {
+            $data['id_referidor'] = $this->id_referidor;
+        }
+        
+        if ($this->id_fidelitat !== null) {
+            $data['id_fidelitat'] = $this->id_fidelitat;
         }
         
         $this->id = DB::insert(static::$table, $data);
@@ -89,6 +99,14 @@ class Client extends Model
         
         if ($this->id_referit !== null) {
             $data['id_referit'] = $this->id_referit;
+        }
+        
+        if ($this->id_referidor !== null) {
+            $data['id_referidor'] = $this->id_referidor;
+        }
+        
+        if ($this->id_fidelitat !== null) {
+            $data['id_fidelitat'] = $this->id_fidelitat;
         }
         
         $result = DB::update(static::$table, $data, ['id' => $this->id]);

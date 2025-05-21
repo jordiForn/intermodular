@@ -120,6 +120,10 @@ function redirect(string $url): Response
     if (class_exists('\\App\\Core\\Debug')) {
         \App\Core\Debug::log("Helper redirect() called for: $url");
     }
+    // Si la URL ya es absoluta, no anteponer BASE_URL
+    if (strpos($url, 'http') === 0) {
+        return (new \App\Core\Response())->redirectToAbsolute($url);
+    }
     return Response::redirect($url);
 }
 

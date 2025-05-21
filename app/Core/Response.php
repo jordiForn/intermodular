@@ -108,6 +108,17 @@ class Response
         return $response;
     }
 
+    public static function redirectToAbsolute(string $url): self
+    {
+        Debug::log("Redirecting to absolute URL: $url");
+        if (function_exists('session') && function_exists('request')) {
+            session()->flash('_previous_url', request()->url());
+        }
+        $response = new self();
+        $response->redirectTo = $url;
+        return $response;
+    }
+
     public static function back(): self
     {
         $previousUrl = HOME;
