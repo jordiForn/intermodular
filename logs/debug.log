@@ -1,36 +1,36 @@
-=== Debug Log Started at 2025-05-21 20:29:44 ===
-[2025-05-21 20:29:44] [1.13ms] [0.41KB] [index.php:18] Debug system initialized
-[2025-05-21 20:29:44] [7.46ms] [77.28KB] [index.php:18] Bootstrap completed successfully
-[2025-05-21 20:29:44] [7.7ms] [64.25KB] [unknown] Index.php: Bootstrap loaded successfully
-[2025-05-21 20:29:44] [7.94ms] [64.34KB] [unknown] Index.php: Rendering home view
-[2025-05-21 20:29:44] [8.14ms] [64.41KB] [index.php:41] Helper view() called for: home.index
-[2025-05-21 20:29:44] [8.33ms] [64.41KB] [helpers.php:101] Starting view rendering for: home.index
-[2025-05-21 20:29:44] [8.69ms] [66.73KB] [Session.php:14] Session started successfully
-[2025-05-21 20:29:44] [8.91ms] [67.27KB] [Response.php:17] Flash value set: _previous_url
-[2025-05-21 20:29:44] [9.1ms] [67.3KB] [helpers.php:101] Previous URL stored: /intermodular/public/
-[2025-05-21 20:29:44] [9.29ms] [67.22KB] [helpers.php:101] Extracting data with keys: 
-[2025-05-21 20:29:44] [9.47ms] [67.68KB] [helpers.php:101] Loading view content: home.index
-[2025-05-21 20:29:44] [9.67ms] [68.05KB] [Response.php:59] View Rendering [loadView]: home.index | Context: {"data_keys":[],"memory":753000}
-[2025-05-21 20:29:44] [9.88ms] [67.68KB] [Response.php:63] Getting view path for: home.index
-[2025-05-21 20:29:44] [10.07ms] [67.95KB] [Response.php:188] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-21 20:29:44] [10.25ms] [67.79KB] [Response.php:63] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-21 20:29:44] [10.43ms] [67.79KB] [Response.php:63] Converted view path: home\index
-[2025-05-21 20:29:44] [10.68ms] [68.29KB] [Response.php:201] File Check: C:/xampp/htdocs/intermodular/resources/views/home\index.php | Context: {"exists":true,"readable":true}
-[2025-05-21 20:29:44] [10.91ms] [67.94KB] [Response.php:63] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/home\index.php
-[2025-05-21 20:29:44] [11.09ms] [67.82KB] [Response.php:29] View file path: C:/xampp/htdocs/intermodular/resources/views/home\index.php
-[2025-05-21 20:29:44] [11.41ms] [68.11KB] [Response.php:29] Starting output buffering
-[2025-05-21 20:29:44] [11.68ms] [84.34KB] [Response.php:29] Including view file: C:/xampp/htdocs/intermodular/resources/views/home\index.php
-[2025-05-21 20:29:44] [12.53ms] [107.32KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: C:/xampp/htdocs/intermodular/config/db.php
-[2025-05-21 20:29:44] [15.99ms] [145.63KB] [Response.php:29] View rendered successfully, content length: 11952
-[2025-05-21 20:29:44] [16.31ms] [135.02KB] [helpers.php:101] View content loaded successfully, length: 11952
-[2025-05-21 20:29:44] [16.52ms] [135KB] [Response.php:33] Getting view path for: layouts/app
-[2025-05-21 20:29:44] [16.74ms] [135.27KB] [Response.php:188] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-21 20:29:44] [16.93ms] [135.11KB] [Response.php:33] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-21 20:29:44] [17.13ms] [135.08KB] [Response.php:33] Converted view path: layouts/app
-[2025-05-21 20:29:44] [17.43ms] [135.59KB] [Response.php:201] File Check: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
-[2025-05-21 20:29:44] [17.66ms] [135.22KB] [Response.php:33] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
-[2025-05-21 20:29:44] [17.87ms] [135.14KB] [helpers.php:101] Using layout: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
-[2025-05-21 20:29:44] [18.16ms] [135.03KB] [helpers.php:101] Including layout file
-[2025-05-21 20:29:44] [19.92ms] [161.91KB] [helpers.php:101] Layout included successfully
-[2025-05-21 20:29:44] [20.3ms] [149.86KB] [index.php:41] Helper view() completed successfully for: home.index
-[2025-05-21 20:29:44] [20.61ms] [149.78KB] [unknown] Index.php: View rendered successfully
+=== Debug Log Started at 2025-05-21 21:07:18 ===
+[2025-05-21 21:07:18] [1.04ms] [0.41KB] [index.php:18] Debug system initialized
+[2025-05-21 21:07:18] [7.73ms] [77.28KB] [index.php:18] Bootstrap completed successfully
+[2025-05-21 21:07:18] [7.97ms] [64.25KB] [unknown] Index.php: Bootstrap loaded successfully
+[2025-05-21 21:07:18] [8.39ms] [64.34KB] [unknown] Index.php: Rendering home view
+[2025-05-21 21:07:18] [8.59ms] [64.41KB] [index.php:41] Helper view() called for: home.index
+[2025-05-21 21:07:18] [8.8ms] [64.41KB] [helpers.php:101] Starting view rendering for: home.index
+[2025-05-21 21:07:18] [9.15ms] [66.57KB] [Session.php:14] Session started successfully
+[2025-05-21 21:07:18] [9.37ms] [67.12KB] [Response.php:17] Flash value set: _previous_url
+[2025-05-21 21:07:18] [9.55ms] [67.14KB] [helpers.php:101] Previous URL stored: /intermodular/public/index.php
+[2025-05-21 21:07:18] [9.73ms] [67.06KB] [helpers.php:101] Extracting data with keys: 
+[2025-05-21 21:07:18] [9.9ms] [67.52KB] [helpers.php:101] Loading view content: home.index
+[2025-05-21 21:07:18] [10.08ms] [67.89KB] [Response.php:59] View Rendering [loadView]: home.index | Context: {"data_keys":[],"memory":752824}
+[2025-05-21 21:07:18] [10.25ms] [67.52KB] [Response.php:63] Getting view path for: home.index
+[2025-05-21 21:07:18] [10.42ms] [67.8KB] [Response.php:188] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
+[2025-05-21 21:07:18] [10.6ms] [67.63KB] [Response.php:63] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
+[2025-05-21 21:07:18] [10.77ms] [67.63KB] [Response.php:63] Converted view path: home\index
+[2025-05-21 21:07:18] [11.66ms] [68.13KB] [Response.php:201] File Check: C:/xampp/htdocs/intermodular/resources/views/home\index.php | Context: {"exists":true,"readable":true}
+[2025-05-21 21:07:18] [12.12ms] [67.78KB] [Response.php:63] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/home\index.php
+[2025-05-21 21:07:18] [12.55ms] [67.66KB] [Response.php:29] View file path: C:/xampp/htdocs/intermodular/resources/views/home\index.php
+[2025-05-21 21:07:18] [12.98ms] [67.95KB] [Response.php:29] Starting output buffering
+[2025-05-21 21:07:18] [13.29ms] [84.19KB] [Response.php:29] Including view file: C:/xampp/htdocs/intermodular/resources/views/home\index.php
+[2025-05-21 21:07:18] [14.05ms] [107.43KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: C:/xampp/htdocs/intermodular/config/db.php
+[2025-05-21 21:07:18] [35.6ms] [149.73KB] [Response.php:29] View rendered successfully, content length: 13581
+[2025-05-21 21:07:18] [35.97ms] [139.13KB] [helpers.php:101] View content loaded successfully, length: 13581
+[2025-05-21 21:07:18] [36.18ms] [139.11KB] [Response.php:33] Getting view path for: layouts/app
+[2025-05-21 21:07:18] [36.41ms] [139.38KB] [Response.php:188] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
+[2025-05-21 21:07:18] [36.6ms] [139.22KB] [Response.php:33] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
+[2025-05-21 21:07:18] [36.79ms] [139.19KB] [Response.php:33] Converted view path: layouts/app
+[2025-05-21 21:07:18] [37.09ms] [139.7KB] [Response.php:201] File Check: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
+[2025-05-21 21:07:18] [37.33ms] [139.33KB] [Response.php:33] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
+[2025-05-21 21:07:18] [37.52ms] [139.25KB] [helpers.php:101] Using layout: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
+[2025-05-21 21:07:18] [37.78ms] [139.14KB] [helpers.php:101] Including layout file
+[2025-05-21 21:07:18] [38.88ms] [166.08KB] [helpers.php:101] Layout included successfully
+[2025-05-21 21:07:18] [39.26ms] [150.03KB] [index.php:41] Helper view() completed successfully for: home.index
+[2025-05-21 21:07:18] [39.56ms] [149.95KB] [unknown] Index.php: View rendered successfully

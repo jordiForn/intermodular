@@ -10,8 +10,8 @@
             </div>
             <!-- Saludo de bienvenida -->
             <?php if (session()->get('nom_real')): ?>
-                <div class="mx-4">
-                    <span class="text-white fw-semibold" style="font-size:1.3rem;">Benvingut, <?= htmlspecialchars(session()->get('nom_real')) ?></span>
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <span class="text-white fw-semibold" style="font-size:1.3rem;">¡Benvingut, <?= htmlspecialchars(session()->get('nom_real')) ?>!</span>
                 </div>
             <?php endif; ?>
             <div class="d-flex align-items-center ms-auto position-relative">

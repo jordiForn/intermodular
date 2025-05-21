@@ -490,4 +490,14 @@ Stack trace:
 #3 {main}
 
 Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}[2025-05-21 20:48:40] ERROR: Unsupported operand types: string + string
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\partials\header.php Line: 14
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\resources\views\layouts\app.php(23): include()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+Call to undefined method App\Http\Controllers\ComandaController::showCart()
 #0 {main}
