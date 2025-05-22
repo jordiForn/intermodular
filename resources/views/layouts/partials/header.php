@@ -9,7 +9,7 @@
                 </h1>
             </div>
             <!-- Saludo de bienvenida -->
-            <?php if (session()->get('nom_real')): ?>
+            <?php if (session()->get('user_id')): ?>
                 <div class="flex-grow-1 d-flex justify-content-center">
                     <span class="text-white fw-semibold" style="font-size:1.3rem;">¡Benvingut, <?= htmlspecialchars(session()->get('nom_real')) ?>!</span>
                 </div>
@@ -36,10 +36,18 @@
                     <i class="fas fa-envelope"></i>
                 </a>
 
-                <!-- Botón usuario/login (Clients) -->
-                <a href="<?= BASE_URL . '/auth/show-login.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Iniciar sessió">
-                    <i class="fas fa-user"></i>
-                </a>
+                <!-- Botón usuario/login o cerrar sesión -->
+                <?php if (session()->get('user_id')): ?>
+                    <!-- Botón cerrar sesión -->
+                    <a href="<?= BASE_URL . '/auth/logout.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Tancar sessió">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                <?php else: ?>
+                    <!-- Botón iniciar sesión -->
+                    <a href="<?= BASE_URL . '/auth/show-login.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0" title="Iniciar sessió">
+                        <i class="fas fa-user"></i>
+                    </a>
+                <?php endif; ?>
 
                 <!-- Botón carrito -->
                 <a href="<?= BASE_URL . '/comandes/cart.php'; ?>" class="btn btn-link text-white fs-2 mx-3 p-0 position-relative" title="Carret">
