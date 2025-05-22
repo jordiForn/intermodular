@@ -500,4 +500,11 @@ Stack trace:
 #4 {main}
 
 Call to undefined method App\Http\Controllers\ComandaController::showCart()
-#0 {main}
+#0 {main}[2025-05-22 12:14:40] ERROR: syntax error, unexpected token "<", expecting end of file
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 59
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+

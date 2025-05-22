@@ -9,10 +9,10 @@ $perPage = 9; // Show 9 products per page (3x3 grid)
 $offset = ($page - 1) * $perPage;
 
 // Get total count for pagination
-$totalProducts = Producte::count();
+$totalProducts = Producte::where('estoc', '>', 0)->count();
 $totalPages = ceil($totalProducts / $perPage);
 
-// Get products with ordering similar to home page
+// Get products with ordering
 $qb = new QueryBuilder(Producte::class);
 $qb->where('estoc', '>', 0);
 $qb->orderByRaw("CASE 
@@ -33,23 +33,33 @@ foreach ($productes as $producte) {
 
 <div class="container mt-5 pt-4">
     <h2>Llista de Productes</h2>
+    <a href="#service-category">Busques serveis?</a>
     
-    <?php include __DIR__ . '/../partials/message.php'; ?>
+    <?php if (session()->has('success')): ?>
+        <div class="alert alert-success mt-3">
+            <?= session()->get('success') ?>
+        </div>
+    <?php endif; ?>
     
     <?php foreach ($categories as $categoria => $productes): ?>
         <div class="product-category">
             <button class="toggle-button"><?= htmlspecialchars($categoria) ?></button>
-            <div class="product-list active">
+            <div class="product-list">
                 <?php foreach ($productes as $producte): ?>
-                    <a href="show.php?id=<?= htmlspecialchars($producte->id) ?>" class="product-link">
+                    <a href="public/productes/show.php?id=<?= htmlspecialchars($producte->id) ?>" class="product-link">
                         <div class="product-card">
-                            <img src="../public/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
+                            <img src="../../public/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
                             <h3><?= htmlspecialchars($producte->nom) ?></h3>
                             <p><?= htmlspecialchars(substr($producte->descripcio, 0, 100)) . (strlen($producte->descripcio) > 100 ? '...' : '') ?></p>
                             <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
                             <p>Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
                             <div class="tooltip-container">
-                                <button onclick="event.preventDefault(); addToCart('<?= addslashes($producte->nom) ?>', <?= $producte->preu ?>, <?= $producte->id ?>, <?= $producte->estoc ?>)">Afegir al Carret</button>
+                                <button 
+                                    data-name="<?= addslashes($producte->nom) ?>"
+                                    data-price="<?= $producte->preu ?>"
+                                    data-id="<?= $producte->id ?>"
+                                    data-stock="<?= $producte->estoc ?>"
+                                >Afegir al Carret</button>
                                 <span class="tooltip-text">0 ítems - 0,00€</span>
                             </div>
                         </div>
@@ -61,7 +71,7 @@ foreach ($productes as $producte) {
     
     <!-- Pagination -->
     <?php if ($totalPages > 1): ?>
-        <div class="pagination-container">
+        <div class="pagination-container text-center my-4">
             <?php if ($page > 1): ?>
                 <a href="?page=<?= $page - 1 ?>" class="btn btn-outline-success">&laquo; Anterior</a>
             <?php endif; ?>
@@ -73,7 +83,6 @@ foreach ($productes as $producte) {
             <?php endif; ?>
         </div>
     <?php endif; ?>
-</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

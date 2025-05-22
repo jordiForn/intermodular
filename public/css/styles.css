@@ -57,6 +57,14 @@ header h1 {
 header h1:hover {
   cursor: default;
 }
+header .btn-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  text-decoration: none;
+  padding-top: 2px;
+}
 header #admin-menu {
   display: none;
   background-color: #f9eccc;
@@ -399,8 +407,8 @@ table .delete-icon:hover {
   margin-bottom: 10px;
   font-weight: bold;
 }
-#edit-form input[type=text],
-#edit-form input[type=email] {
+#edit-form input[type="text"],
+#edit-form input[type="email"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;

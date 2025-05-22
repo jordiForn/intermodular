@@ -9,7 +9,7 @@
         <?php endif; ?>
     </h1>
     
-    <?php include __DIR__ . '/../partials/messages.php'; ?>
+    <?php include __DIR__ . '/../partials/message.php'; ?>
     
     <?php if (empty($serveis)): ?>
         <div class="alert alert-info">
