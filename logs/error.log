@@ -508,3 +508,8 @@ Stack trace:
 #2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
 #3 {main}
 
+Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\public\admin\index.php(12): App\Http\Middlewares\Middleware::role(Array)
+#1 {main}Class "RoleMiddleware" not found
+#0 {main}Class "RoleMiddleware" not found
+#0 {main}
