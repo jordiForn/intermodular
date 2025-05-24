@@ -22,7 +22,7 @@ $poolServices = Servei::where('cat', 'piscines')->limit(3)->get();
 ?>
 
 <!-- Hero Section -->
-<section class="bg-success bg-gradient py-5 mb-5">
+<section class="bg-success bg-gradient py-5 mb-5 mt-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 text-white">
@@ -62,7 +62,7 @@ $poolServices = Servei::where('cat', 'piscines')->limit(3)->get();
                         <div class="display-3 mb-3">🛠️</div>
                         <h3 class="card-title">Ferramentes</h3>
                         <p class="card-text">Eines professionals per al teu jardí</p>
-                        <a href="<?= BASE_URL ?>/productes/index.php#ferramentes" class="btn btn-success">Descobrir</a>
+                        <a href="<?= BASE_URL ?>/productes/index.php#ferramentes" class="btn btn-success">Pròximam</a>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@ $poolServices = Servei::where('cat', 'piscines')->limit(3)->get();
                         <div class="display-3 mb-3">🌍</div>
                         <h3 class="card-title">Terra i Adobs</h3>
                         <p class="card-text">Nutrients per a plantes saludables</p>
-                        <a href="<?= BASE_URL ?>/productes/index.php#terra" class="btn btn-success">Descobrir</a>
+                        <a href="<?= BASE_URL ?>/productes/index.php?page=2" class="btn btn-success">Descobrir</a>
                     </div>
                 </div>
             </div>
