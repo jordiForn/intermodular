@@ -7,7 +7,6 @@ $color-accent: #b5dda4;
 $color-white: white;
 $color-border: #754668;
 
-// Sobrescribe Bootstrap para tu web
 .bg-success,
 .btn-success,
 .badge.bg-success {
@@ -60,6 +59,86 @@ $color-border: #754668;
 .btn-outline-light:focus {
   background-color: $color-white !important;
   color: $color-highlight !important;
+}
+
+// Efectos para todos los botones personalizados
+.btn,
+.btn-success,
+.btn-outline-success,
+.btn-primary,
+.btn-outline-light,
+.btn-light {
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+// Botón principal (btn-primary)
+.btn-primary {
+  background-color: $color-highlight !important;
+  border-color: $color-highlight !important;
+  color: $color-white !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(117, 70, 104, 0.15);
+}
+
+// Botón éxito (btn-success)
+.btn-success {
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
+  color: $color-white !important;
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(77, 170, 87, 0.15);
+}
+
+// Botón outline-success
+.btn-outline-success {
+  color: $color-primary !important;
+  border-color: $color-primary !important;
+  background: transparent !important;
+}
+.btn-outline-success:hover,
+.btn-outline-success:focus {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+  border-color: $color-primary !important;
+  box-shadow: 0 0 0 0.2rem rgba(77, 170, 87, 0.15);
+}
+
+// Botón outline-light
+.btn-outline-light {
+  color: $color-white !important;
+  border-color: $color-white !important;
+  background: transparent !important;
+}
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: $color-white !important;
+  color: $color-highlight !important;
+  border-color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(249, 236, 204, 0.15);
+}
+
+// Botón light
+.btn-light {
+  background-color: $color-bg !important;
+  color: $color-highlight !important;
+  border-color: $color-bg !important;
+}
+.btn-light:hover,
+.btn-light:focus {
+  background-color: $color-accent !important;
+  color: $color-highlight !important;
+  border-color: $color-accent !important;
+  box-shadow: 0 0 0 0.2rem rgba(181, 221, 164, 0.15);
 }
 
 // Mixins
