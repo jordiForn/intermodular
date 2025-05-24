@@ -7,6 +7,61 @@ $color-accent: #b5dda4;
 $color-white: white;
 $color-border: #754668;
 
+// Sobrescribe Bootstrap para tu web
+.bg-success,
+.btn-success,
+.badge.bg-success {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+}
+.text-success,
+.btn-outline-success,
+.badge.text-bg-success {
+  color: $color-primary !important;
+  border-color: $color-primary !important;
+}
+.btn-outline-success {
+  background-color: transparent !important;
+}
+.bg-light {
+  background-color: $color-bg !important;
+}
+.bg-gradient {
+  background-image: linear-gradient(
+    90deg,
+    $color-primary 60%,
+    $color-secondary 100%
+  ) !important;
+}
+.bg-highlight {
+  background-color: $color-highlight !important;
+}
+.text-highlight {
+  color: $color-highlight !important;
+}
+.border-highlight {
+  border-color: $color-highlight !important;
+}
+.btn-primary {
+  background-color: $color-highlight !important;
+  border-color: $color-highlight !important;
+  color: $color-white !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+}
+.btn-outline-light {
+  border-color: $color-white !important;
+  color: $color-white !important;
+}
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: $color-white !important;
+  color: $color-highlight !important;
+}
+
 // Mixins
 @mixin button-style($bg-color, $hover-color) {
   background-color: $bg-color;

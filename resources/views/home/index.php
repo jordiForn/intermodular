@@ -4,205 +4,190 @@ use App\Models\Servei;
 use App\Core\DB;
 use App\Core\QueryBuilder;
 
-// Get pagination parameters
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$perPage = 9; // Show 9 products per page (3x3 grid)
-$offset = ($page - 1) * $perPage;
+// Get featured products (latest 6 products)
+$featuredProducts = Producte::where('estoc', '>', 0)
+    ->orderBy('id', 'DESC')
+    ->limit(6)
+    ->get();
 
-// Get total count for pagination
-$totalProducts = Producte::where('estoc', '>', 0)->count();
-$totalPages = ceil($totalProducts / $perPage);
+// Get seasonal products (plants and seeds)
+$seasonalProducts = Producte::where('categoria', 'Plantes i llavors')
+    ->where('estoc', '>', 0)
+    ->limit(4)
+    ->get();
 
-// Get products with ordering
-$qb = new QueryBuilder(Producte::class);
-$qb->where('estoc', '>', 0);
-$qb->orderByRaw("CASE 
-    WHEN categoria = 'Plantes i llavors' THEN 1
-    WHEN categoria = 'Terra i adobs' THEN 2
-    WHEN categoria = 'Ferramentes' THEN 3
-    ELSE 4
-END, nom", '');
-$qb->limit($perPage)->offset($offset);
-$productes = $qb->get();
-
-// Group products by category
-$categories = [];
-foreach ($productes as $producte) {
-    $categories[$producte->categoria][] = $producte;
-}
+// Get services
+$gardenServices = Servei::where('cat', 'jardins')->limit(3)->get();
+$poolServices = Servei::where('cat', 'piscines')->limit(3)->get();
 ?>
 
-<div class="container mt-5 pt-4">
-    <h2>Llista de Productes</h2>
-    <a href="#service-category">Busques serveis?</a>
-    
-    <?php if (session()->has('success')): ?>
-        <div class="alert alert-success mt-3">
-            <?= session()->get('success') ?>
-        </div>
-    <?php endif; ?>
-    
-    <?php foreach ($categories as $categoria => $productes): ?>
-        <div class="product-category">
-            <button class="toggle-button"><?= htmlspecialchars($categoria) ?></button>
-            <div class="product-list">
-                <?php foreach ($productes as $producte): ?>
-                    <a href="public/productes/show.php?id=<?= htmlspecialchars($producte->id) ?>" class="product-link">
-                        <div class="product-card">
-                            <img src="../public/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
-                            <h3><?= htmlspecialchars($producte->nom) ?></h3>
-                            <p><?= htmlspecialchars(substr($producte->descripcio, 0, 100)) . (strlen($producte->descripcio) > 100 ? '...' : '') ?></p>
-                            <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
-                            <p>Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
-                            <div class="tooltip-container">
-                                <button 
-                                    data-name="<?= addslashes($producte->nom) ?>"
-                                    data-price="<?= $producte->preu ?>"
-                                    data-id="<?= $producte->id ?>"
-                                    data-stock="<?= $producte->estoc ?>"
-                                >Afegir al Carret</button>
-                                <span class="tooltip-text">0 ítems - 0,00€</span>
-                            </div>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
+<!-- Hero Section -->
+<section class="bg-success bg-gradient py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-white">
+                <h1 class="display-4 fw-bold mb-3">Benvinguts a Intermodular</h1>
+                <p class="lead mb-2">El teu jardí perfecte comença aquí</p>
+                <p class="mb-4">Descobreix la nostra àmplia selecció de plantes, ferramentes i serveis professionals per crear l'espai verd dels teus somnis.</p>
+                <div class="mb-4">
+                    <a href="<?= BASE_URL ?>/productes/index.php" class="btn btn-primary btn-lg me-2">Explorar Productes</a>
+                    <a href="<?= BASE_URL ?>/serveis/index.php" class="btn btn-outline-light btn-lg">Veure Serveis</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <img src="<?= BASE_URL ?>/images/begonia.jpg" alt="Jardí beautiful" class="img-fluid rounded shadow">
             </div>
         </div>
-    <?php endforeach; ?>
-    
-    <!-- Pagination -->
-    <?php if ($totalPages > 1): ?>
-        <div class="pagination-container text-center my-4">
-            <?php if ($page > 1): ?>
-                <a href="?page=<?= $page - 1 ?>" class="btn btn-outline-success">&laquo; Anterior</a>
-            <?php endif; ?>
+    </div>
+</section>
 
-            <span class="mx-3">Pàgina <?= $page ?> de <?= $totalPages ?></span>
-
-            <?php if ($page < $totalPages): ?>
-                <a href="?page=<?= $page + 1 ?>" class="btn btn-outline-success">Següent &raquo;</a>
-            <?php endif; ?>
-        </div>
-    <?php endif; ?>
-    
-    <div class="service-category" id="service-category">
-        <button class="toggle-button">🏡 Serveis per a jardins</button>
-        <div class="service-garden">
-            <?php
-            $serveisJardins = Servei::where('cat', 'jardins')->get();
-            if (count($serveisJardins) > 0) {
-                foreach ($serveisJardins as $servei) {
-                    $nom = htmlspecialchars($servei->nom);
-                    $preu_base = number_format($servei->preu_base, 2, ",", ".");
-                    echo "<div class='service-card'>";
-                    echo "<h3>$nom</h3>";
-                    echo "<p class='price'>$preu_base €/h</p>";
-                    echo "</div>";
-                }
-            } else {
-                echo "<p>No hi ha serveis disponibles per a jardins.</p>";
-            }
-            ?>
+<!-- Featured Categories -->
+<section class="py-5 bg-light mb-5 mt-5">
+    <div class="container">
+        <h2 class="text-center mb-5 text-success fw-bold">Categories Destacades</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="display-3 mb-3">🌱</div>
+                        <h3 class="card-title">Plantes i Llavors</h3>
+                        <p class="card-text">Varietat de plantes per a tots els gustos</p>
+                        <a href="<?= BASE_URL ?>/productes/index.php#plantes" class="btn btn-success">Descobrir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="display-3 mb-3">🛠️</div>
+                        <h3 class="card-title">Ferramentes</h3>
+                        <p class="card-text">Eines professionals per al teu jardí</p>
+                        <a href="<?= BASE_URL ?>/productes/index.php#ferramentes" class="btn btn-success">Descobrir</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center shadow-sm">
+                    <div class="card-body">
+                        <div class="display-3 mb-3">🌍</div>
+                        <h3 class="card-title">Terra i Adobs</h3>
+                        <p class="card-text">Nutrients per a plantes saludables</p>
+                        <a href="<?= BASE_URL ?>/productes/index.php#terra" class="btn btn-success">Descobrir</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="service-category">
-        <button class="toggle-button">🏊 Serveis per a piscines</button>
-        <div class="service-pool">
-            <?php
-            $serveisPiscines = Servei::where('cat', 'piscines')->get();
-            if (count($serveisPiscines) > 0) {
-                foreach ($serveisPiscines as $servei) {
-                    $nom = htmlspecialchars($servei->nom);
-                    $preu_base = number_format($servei->preu_base, 2, ",", ".");
-                    echo "<div class='service-card'>";
-                    echo "<h3>$nom</h3>";
-                    echo "<p class='price'>$preu_base €/h</p>";
-                    echo "</div>";
-                }
-            } else {
-                echo "<p>No hi ha serveis disponibles per a piscines.</p>";
-            }
-            ?>
+</section>
+
+<!-- Seasonal Promotion -->
+<section class="py-5 bg-white mb-5 mt-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <span class="badge bg-success mb-3">Oferta de Temporada</span>
+                <h2 class="fw-bold">Primavera al teu Jardí</h2>
+                <p>Aprofita els nostres descomptes especials en plantes de temporada. Transforma el teu espai amb les millors varietats de primavera.</p>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Enviament gratuït en comandes +50€</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Garantia de qualitat</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Assessorament expert</li>
+                </ul>
+                <a href="<?= BASE_URL ?>/productes/index.php" class="btn btn-outline-success">Veure Ofertes</a>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="<?= BASE_URL ?>/images/gerani.jpg" alt="Plantes de temporada" class="img-fluid rounded shadow">
+            </div>
         </div>
     </div>
-</div>
+</section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButtons = document.querySelectorAll('.toggle-button');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const productList = this.nextElementSibling;
-                productList.classList.toggle('active');
-            });
-            
-            // Activate the first category by default
-            if (button === toggleButtons[0]) {
-                button.nextElementSibling.classList.add('active');
-            }
-        });
-        
-        // Initialize tooltips
-        initializeTooltips();
-    });
-    
-    function initializeTooltips() {
-        const tooltipContainers = document.querySelectorAll('.tooltip-container');
-        tooltipContainers.forEach(container => {
-            const button = container.querySelector('button');
-            const tooltip = container.querySelector('.tooltip-text');
-            
-            button.addEventListener('mouseover', function() {
-                // Get cart data from localStorage
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-                const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                
-                // Update tooltip text
-                tooltip.textContent = `${totalItems} ítems - ${totalPrice.toFixed(2)}€`;
-            });
-        });
-    }
-    
-    function addToCart(name, price, id, stock) {
-        event.preventDefault();
-        
-        // Get existing cart or initialize empty array
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        // Check if product already in cart
-        const existingItem = cart.find(item => item.id === id);
-        
-        if (existingItem) {
-            // Don't exceed available stock
-            if (existingItem.quantity < stock) {
-                existingItem.quantity += 1;
-            } else {
-                alert('No hi ha més estoc disponible d\'aquest producte');
-                return;
-            }
-        } else {
-            // Add new item
-            cart.push({
-                id: id,
-                name: name,
-                price: price,
-                quantity: 1,
-                stock: stock
-            });
-        }
-        
-        // Save updated cart
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        // Update cart count in header if it exists
-        const cartCountElement = document.getElementById('cart-count');
-        if (cartCountElement) {
-            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCountElement.textContent = totalItems;
-        }
-        
-        // Show success message
-        alert(`${name} afegit al carret!`);
-    }
-</script>
+<!-- Featured Products -->
+<section class="py-5 bg-light mb-5 mt-5">
+    <div class="container">
+        <h2 class="text-center mb-5 text-success fw-bold">Productes Destacats</h2>
+        <div class="row g-4">
+            <?php foreach ($featuredProducts as $producte): ?>
+                <div class="col-md-4 col-lg-3">
+                    <div class="card h-100 shadow-sm">
+                        <img src="<?= BASE_URL ?>/images/<?= htmlspecialchars($producte->imatge) ?>" class="card-img-top" alt="<?= htmlspecialchars($producte->nom) ?>">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><?= htmlspecialchars($producte->nom) ?></h5>
+                            <p class="card-text text-muted mb-1"><?= htmlspecialchars($producte->categoria) ?></p>
+                            <div class="mb-2 fw-bold text-success"><?= number_format($producte->preu, 2, ",", ".") ?>€</div>
+                            <a href="<?= BASE_URL ?>/productes/show.php?id=<?= $producte->id ?>" class="btn btn-outline-success mt-auto">Veure Detalls</a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <div class="text-center mt-4">
+            <a href="<?= BASE_URL ?>/productes/index.php" class="btn btn-success">Veure Tots els Productes</a>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5 bg-white mb-5 mt-5">
+    <div class="container">
+        <h2 class="text-center mb-5 text-success fw-bold">Els Nostres Serveis</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="display-5 me-3">🏡</div>
+                            <h3 class="mb-0">Serveis per a Jardins</h3>
+                        </div>
+                        <ul class="list-group list-group-flush mb-3">
+                            <?php foreach ($gardenServices as $servei): ?>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <?= htmlspecialchars($servei->nom) ?>
+                                    <span class="badge bg-success rounded-pill"><?= number_format($servei->preu_base, 2, ",", ".") ?>€/h</span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <a href="<?= BASE_URL ?>/serveis/jardins.php" class="btn btn-outline-success">Veure Més</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="display-5 me-3">🏊</div>
+                            <h3 class="mb-0">Serveis per a Piscines</h3>
+                        </div>
+                        <ul class="list-group list-group-flush mb-3">
+                            <?php foreach ($poolServices as $servei): ?>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <?= htmlspecialchars($servei->nom) ?>
+                                    <span class="badge bg-success rounded-pill"><?= number_format($servei->preu_base, 2, ",", ".") ?>€/h</span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                        <a href="<?= BASE_URL ?>/serveis/piscines.php" class="btn btn-outline-success">Veure Més</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5 bg-success bg-gradient text-white mb-5 mt-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <h2 class="fw-bold">Mantén-te Informat</h2>
+                <p>Subscriu-te al nostre butlletí per rebre consells de jardineria, ofertes exclusives i novetats.</p>
+            </div>
+            <div class="col-md-6">
+                <form action="<?= BASE_URL ?>/contact/store.php" method="POST" class="d-flex flex-column flex-sm-row gap-3">
+                    <input type="email" name="email" class="form-control form-control-lg" placeholder="El teu correu electrònic" required>
+                    <button type="submit" class="btn btn-light btn-lg fw-bold">Subscriure's</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

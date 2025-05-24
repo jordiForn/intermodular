@@ -512,4 +512,19 @@ Call to undefined method App\Core\Auth::role()
 #0 D:\xampp\htdocs\Intermodular\public\admin\index.php(12): App\Http\Middlewares\Middleware::role(Array)
 #1 {main}Class "RoleMiddleware" not found
 #0 {main}Class "RoleMiddleware" not found
-#0 {main}
+#0 {main}[2025-05-24 16:21:56] ERROR: syntax error, unexpected token "<", expecting end of file
+File: D:\xampp\htdocs\Intermodular\resources\views\home\index.php Line: 102
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-24 16:32:31] ERROR: syntax error, unexpected token "<", expecting end of file
+File: D:\xampp\htdocs\Intermodular\resources\views\home\index.php Line: 2
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
