@@ -22,7 +22,7 @@ $poolServices = Servei::where('cat', 'piscines')->limit(3)->get();
 ?>
 
 <!-- Hero Section -->
-<section class="bg-success bg-gradient py-5 mb-5 mt-5">
+<section class="bg-success py-5 mb-5 mt-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 text-white">
@@ -175,7 +175,7 @@ $poolServices = Servei::where('cat', 'piscines')->limit(3)->get();
 </section>
 
 <!-- Newsletter Section -->
-<section class="py-5 bg-success bg-gradient text-white mb-5 mt-5">
+<section class="py-5 bg-success text-white mb-5 mt-5">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-6 mb-4 mb-md-0">

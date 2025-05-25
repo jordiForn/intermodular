@@ -24,8 +24,6 @@
         </div>
     </div>
     
-    <h2 class="mb-3">Tots els serveis</h2>
-    
     <div class="row">
         <?php foreach ($serveis as $servei): ?>
             <div class="col-md-4 mb-4">
