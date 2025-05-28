@@ -7,7 +7,7 @@
                 <div class="card-header bg-primary  border-0">
                     <h4 class="mb-0">Iniciar sessió</h4>
                 </div>
-                <div class="card-body d-flex flex-column justify-content-center bg-highlight ">
+                <div class="card-body d-flex flex-column justify-content-center bg-color-bg ">
                     <div>
                         <?php
                         // Inicializar $errors para que esté disponible en todo el archivo
