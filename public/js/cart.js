@@ -1,4 +1,6 @@
 // Function to add items to cart
+console.log("cart.js loaded");
+/*
 function addToCart(name, price, id, stock) {
   // Get current cart from localStorage
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -35,9 +37,9 @@ function addToCart(name, price, id, stock) {
   window.dispatchEvent(new Event("cartUpdated"));
 
   // Show confirmation
-  alert(`${name} afegit al carret!`);
+  alert(`${name} afegit al carret desde cart.js!`);
 }
-
+*/
 // Function to update cart count in UI
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("cart")) || [];

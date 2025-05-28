@@ -28,7 +28,6 @@
     
     <?php include __DIR__ . '/partials/footer.php'; ?>
     
-    <script src="<?= BASE_URL ?>/js/cart.js"></script>
     <script src="<?= BASE_URL ?>/js/ui.js"></script>
     <script src="<?= BASE_URL ?>/js/tooltip.js"></script>
     <script src="<?= BASE_URL ?>/js/main.js"></script>

@@ -46,7 +46,6 @@ foreach ($productes as $producte) {
             <button class="toggle-button"><?= htmlspecialchars($categoria) ?></button>
             <div class="product-list">
                 <?php foreach ($productes as $producte): ?>
-                    <a href="public/productes/show.php?id=<?= htmlspecialchars($producte->id) ?>" class="product-link">
                         <div class="product-card">
                             <img src="../../public/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
                             <h3><?= htmlspecialchars($producte->nom) ?></h3>
@@ -63,7 +62,6 @@ foreach ($productes as $producte) {
                                 <span class="tooltip-text">0 ítems - 0,00€</span>
                             </div>
                         </div>
-                    </a>
                 <?php endforeach; ?>
             </div>
         </div>

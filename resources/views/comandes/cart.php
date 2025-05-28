@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
-
+<script src="<?= BASE_URL ?>/js/cart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const cartItemsContainer = document.getElementById('cart-items-container');
