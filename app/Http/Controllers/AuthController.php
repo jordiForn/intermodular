@@ -74,7 +74,15 @@ class AuthController {
                } else if ($user) {
                    session()->set('nom_real', $user->username);
                }
-               // Get redirect URL if it exists
+               // Check if user is admin and redirect to admin dashboard
+               if (Auth::isAdmin()) {
+                   $adminDashboardUrl = BASE_URL . '/admin/';
+                   Debug::log("Admin user logged in: " . $request->nom_login . ", redirecting to admin dashboard: " . $adminDashboardUrl);
+                   redirect($adminDashboardUrl)->with('success', 'Benvingut al panell d\'administració')->send();
+                   return;
+               }
+
+               // Get redirect URL if it exists (for non-admin users)
                $redirectTo = session()->getFlash('redirect_to');
                Debug::log('Valor de $redirectTo antes de normalizar: ' . var_export($redirectTo, true));
                if (!$redirectTo) {
