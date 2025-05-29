@@ -1,34 +1,5 @@
-=== Debug Log Started at 2025-05-29 17:39:54 ===
-[2025-05-29 17:39:54] [0.91ms] [0.41KB] [index.php:2] Debug system initialized
-[2025-05-29 17:39:54] [6.25ms] [77.2KB] [index.php:2] Bootstrap completed successfully
-[2025-05-29 17:39:54] [6.53ms] [66.4KB] [Session.php:14] Session started successfully
-[2025-05-29 17:39:54] [6.72ms] [67.3KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: C:/xampp/htdocs/intermodular/config/db.php
-[2025-05-29 17:39:54] [11.03ms] [113.23KB] [unknown] Admin user accessing dashboard: Root
-[2025-05-29 17:39:54] [11.56ms] [113.23KB] [index.php:28] Helper view() called for: admin.index
-[2025-05-29 17:39:54] [11.8ms] [113.24KB] [helpers.php:101] Starting view rendering for: admin.index
-[2025-05-29 17:39:54] [12.28ms] [113.72KB] [Response.php:17] Flash value set: _previous_url
-[2025-05-29 17:39:54] [12.59ms] [113.74KB] [helpers.php:101] Previous URL stored: /intermodular/public/admin/
-[2025-05-29 17:39:54] [13ms] [113.66KB] [helpers.php:101] Extracting data with keys: 
-[2025-05-29 17:39:54] [13.28ms] [113.76KB] [helpers.php:101] Loading view content: admin.index
-[2025-05-29 17:39:54] [13.55ms] [114.13KB] [Response.php:59] View Rendering [loadView]: admin.index | Context: {"data_keys":[],"memory":770432}
-[2025-05-29 17:39:54] [14.01ms] [113.76KB] [Response.php:63] Getting view path for: admin.index
-[2025-05-29 17:39:54] [14.66ms] [114.03KB] [Response.php:188] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-29 17:39:54] [15.1ms] [113.87KB] [Response.php:63] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-29 17:39:54] [15.36ms] [113.88KB] [Response.php:63] Converted view path: admin\index
-[2025-05-29 17:39:54] [16.48ms] [114.38KB] [Response.php:201] File Check: C:/xampp/htdocs/intermodular/resources/views/admin\index.php | Context: {"exists":true,"readable":true}
-[2025-05-29 17:39:54] [16.92ms] [114.02KB] [Response.php:63] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/admin\index.php
-[2025-05-29 17:39:54] [17.24ms] [113.9KB] [Response.php:29] View file path: C:/xampp/htdocs/intermodular/resources/views/admin\index.php
-[2025-05-29 17:39:54] [17.5ms] [114.19KB] [Response.php:29] Starting output buffering
-[2025-05-29 17:39:54] [17.67ms] [130.42KB] [Response.php:29] Including view file: C:/xampp/htdocs/intermodular/resources/views/admin\index.php
-[2025-05-29 17:39:54] [19.07ms] [153.79KB] [Response.php:29] View rendered successfully, content length: 12459
-[2025-05-29 17:39:54] [19.23ms] [147.82KB] [helpers.php:101] View content loaded successfully, length: 12459
-[2025-05-29 17:39:54] [19.37ms] [147.8KB] [Response.php:33] Getting view path for: layouts/app
-[2025-05-29 17:39:54] [19.47ms] [148.08KB] [Response.php:188] Helper project_path() called for: resources/views/, returning: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-29 17:39:54] [19.59ms] [147.91KB] [Response.php:33] Base path for views: C:/xampp/htdocs/intermodular/resources/views/
-[2025-05-29 17:39:54] [19.71ms] [147.88KB] [Response.php:33] Converted view path: layouts/app
-[2025-05-29 17:39:54] [19.99ms] [148.39KB] [Response.php:201] File Check: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php | Context: {"exists":true,"readable":true}
-[2025-05-29 17:39:54] [20.15ms] [148.02KB] [Response.php:33] Found PHP view file: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
-[2025-05-29 17:39:54] [20.25ms] [147.95KB] [helpers.php:101] Using layout: C:/xampp/htdocs/intermodular/resources/views/layouts/app.php
-[2025-05-29 17:39:54] [20.38ms] [147.84KB] [helpers.php:101] Including layout file
-[2025-05-29 17:39:54] [20.9ms] [166.09KB] [helpers.php:101] Layout included successfully
-[2025-05-29 17:39:54] [21.04ms] [150.05KB] [index.php:28] Helper view() completed successfully for: admin.index
+=== Debug Log Started at 2025-05-29 17:50:06 ===
+[2025-05-29 17:50:06] [0.56ms] [0.41KB] [clients.php:2] Debug system initialized
+[2025-05-29 17:50:06] [4.86ms] [76.98KB] [clients.php:2] Bootstrap completed successfully
+[2025-05-29 17:50:06] [5.07ms] [66.18KB] [Session.php:14] Session started successfully
+[2025-05-29 17:50:06] [5.17ms] [67.09KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: C:/xampp/htdocs/intermodular/config/db.php
