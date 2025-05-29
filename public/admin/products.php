@@ -14,10 +14,37 @@ if (!Auth::check() || !Auth::isAdmin()) {
 // Get all products
 $products = Producte::all();
 
-// Render the admin products view
-$title = 'Gestió de Productes';
-$content = view('admin/products', [
-    'products' => $products
-]);
+// Get product statistics
+$totalProducts = count($products);
+$lowStockCount = 0;
+$outOfStockCount = 0;
+$totalValue = 0;
 
-echo view('layouts/app', ['content' => $content, 'title' => $title]);
+foreach ($products as $product) {
+    $totalValue += $product->preu * $product->stock;
+    
+    if ($product->stock <= 5 && $product->stock > 0) {
+        $lowStockCount++;
+    } elseif ($product->stock == 0) {
+        $outOfStockCount++;
+    }
+}
+
+// Get product categories
+$categories = [];
+foreach ($products as $product) {
+    if (!empty($product->categoria) && !in_array($product->categoria, $categories)) {
+        $categories[] = $product->categoria;
+    }
+}
+
+// Start output buffering to capture the view content
+ob_start();
+include __DIR__ . '/../../resources/views/admin/products.php';
+$content = ob_get_clean();
+
+// Set page title
+$title = 'Gestió de Productes';
+
+// Render using admin layout
+include __DIR__ . '/../../resources/views/layouts/admin.php';

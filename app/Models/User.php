@@ -19,6 +19,7 @@ class User extends Model
     public string $created_at;
     public string $updated_at;
     
+    
     /**
      * Find a user by username
      * 

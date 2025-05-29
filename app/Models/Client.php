@@ -30,7 +30,7 @@ class Client extends Model
     public ?int $id_referit = null;
     public ?int $id_referidor = null;
     public ?int $id_fidelitat = null;
-    
+    public $orderCount = 0;
     /**
      * Insert a new client record
      */
