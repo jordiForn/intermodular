@@ -1,33 +1,33 @@
-=== Bootstrap Started at 2025-05-28 20:13:55 ===
-[2025-05-28 20:13:55] Checking config files...
-[2025-05-28 20:13:55] Loading config files...
-[2025-05-28 20:13:55] BASE_URL is defined as: http://localhost/intermodular/public
-[2025-05-28 20:13:55] Loading core files...
-[2025-05-28 20:13:55] Loaded: app\Core\Debug.php
-[2025-05-28 20:13:55] Loaded: app\Core\Session.php
-[2025-05-28 20:13:55] Loaded: app\Core\Request.php
-[2025-05-28 20:13:55] Loaded: app\Core\Response.php
-[2025-05-28 20:13:55] Loaded: app\Core\DB.php
-[2025-05-28 20:13:55] Loaded: app\Core\Model.php
-[2025-05-28 20:13:55] Loaded: app\Core\QueryBuilder.php
-[2025-05-28 20:13:55] Loaded: app\Core\Auth.php
-[2025-05-28 20:13:55] Loaded: app\Core\ErrorHandler.php
-[2025-05-28 20:13:55] Loaded: app\Core\helpers.php
-[2025-05-28 20:13:55] Loading Auth facade...
-[2025-05-28 20:13:55] Loaded Auth facade
-[2025-05-28 20:13:55] Initializing debug system...
-[2025-05-28 20:13:55] Debug system initialized successfully
-[2025-05-28 20:13:55] Debug log file: C:/xampp/htdocs/intermodular/logs/debug.log
-[2025-05-28 20:13:55] Loading other required files...
-[2025-05-28 20:13:55] Loaded: app\Exceptions\ModelNotFoundException.php
-[2025-05-28 20:13:55] Loaded: app\Http\Middlewares\Middleware.php
-[2025-05-28 20:13:55] Loaded: app\Http\Middlewares\MiddlewareHandler.php
-[2025-05-28 20:13:55] Loaded: app\Http\Middlewares\MiddlewareRegistry.php
-[2025-05-28 20:13:55] Loaded: app\Models\User.php
-[2025-05-28 20:13:55] Loaded: app\Models\Client.php
-[2025-05-28 20:13:55] Loaded: app\Models\Producte.php
-[2025-05-28 20:13:55] Loaded: app\Models\Comanda.php
-[2025-05-28 20:13:55] Loaded: app\Models\Servei.php
-[2025-05-28 20:13:55] Loading middleware bootstrap...
-[2025-05-28 20:13:55] Loaded middleware bootstrap
-[2025-05-28 20:13:55] Bootstrap completed successfully
+=== Bootstrap Started at 2025-05-29 14:14:25 ===
+[2025-05-29 14:14:25] Checking config files...
+[2025-05-29 14:14:25] Loading config files...
+[2025-05-29 14:14:25] BASE_URL is defined as: http://localhost/intermodular/public
+[2025-05-29 14:14:25] Loading core files...
+[2025-05-29 14:14:25] Loaded: app\Core\Debug.php
+[2025-05-29 14:14:25] Loaded: app\Core\Session.php
+[2025-05-29 14:14:25] Loaded: app\Core\Request.php
+[2025-05-29 14:14:25] Loaded: app\Core\Response.php
+[2025-05-29 14:14:25] Loaded: app\Core\DB.php
+[2025-05-29 14:14:25] Loaded: app\Core\Model.php
+[2025-05-29 14:14:25] Loaded: app\Core\QueryBuilder.php
+[2025-05-29 14:14:25] Loaded: app\Core\Auth.php
+[2025-05-29 14:14:25] Loaded: app\Core\ErrorHandler.php
+[2025-05-29 14:14:25] Loaded: app\Core\helpers.php
+[2025-05-29 14:14:25] Loading Auth facade...
+[2025-05-29 14:14:25] Loaded Auth facade
+[2025-05-29 14:14:25] Initializing debug system...
+[2025-05-29 14:14:25] Debug system initialized successfully
+[2025-05-29 14:14:25] Debug log file: D:/xampp/htdocs/Intermodular/logs/debug.log
+[2025-05-29 14:14:25] Loading other required files...
+[2025-05-29 14:14:25] Loaded: app\Exceptions\ModelNotFoundException.php
+[2025-05-29 14:14:25] Loaded: app\Http\Middlewares\Middleware.php
+[2025-05-29 14:14:25] Loaded: app\Http\Middlewares\MiddlewareHandler.php
+[2025-05-29 14:14:25] Loaded: app\Http\Middlewares\MiddlewareRegistry.php
+[2025-05-29 14:14:25] Loaded: app\Models\User.php
+[2025-05-29 14:14:25] Loaded: app\Models\Client.php
+[2025-05-29 14:14:25] Loaded: app\Models\Producte.php
+[2025-05-29 14:14:25] Loaded: app\Models\Comanda.php
+[2025-05-29 14:14:25] Loaded: app\Models\Servei.php
+[2025-05-29 14:14:25] Loading middleware bootstrap...
+[2025-05-29 14:14:25] Loaded middleware bootstrap
+[2025-05-29 14:14:25] Bootstrap completed successfully

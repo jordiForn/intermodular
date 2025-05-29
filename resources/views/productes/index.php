@@ -46,22 +46,7 @@ foreach ($productes as $producte) {
             <button class="toggle-button"><?= htmlspecialchars($categoria) ?></button>
             <div class="product-list">
                 <?php foreach ($productes as $producte): ?>
-                        <div class="product-card">
-                            <img src="../../public/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
-                            <h3><?= htmlspecialchars($producte->nom) ?></h3>
-                            <p><?= htmlspecialchars(substr($producte->descripcio, 0, 100)) . (strlen($producte->descripcio) > 100 ? '...' : '') ?></p>
-                            <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
-                            <p>Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
-                            <div class="tooltip-container">
-                                <button 
-                                    data-name="<?= addslashes($producte->nom) ?>"
-                                    data-price="<?= $producte->preu ?>"
-                                    data-id="<?= $producte->id ?>"
-                                    data-stock="<?= $producte->estoc ?>"
-                                >Afegir al Carret</button>
-                                <span class="tooltip-text">0 ítems - 0,00€</span>
-                            </div>
-                        </div>
+                        <?php include __DIR__ . '/_product_card.php'; ?>  
                 <?php endforeach; ?>
             </div>
         </div>
