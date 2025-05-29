@@ -7,7 +7,13 @@
     <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
     <p>Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
     <div class="tooltip-container">
-        <button onclick="addToCart('<?= addslashes($producte->nom) ?>', <?= $producte->preu ?>, <?= $producte->id ?>, <?= $producte->estoc ?>)">Afegir al Carret</button>
+        <button
+            type="button"
+            data-name="<?= addslashes($producte->nom) ?>"
+            data-price="<?= $producte->preu ?>"
+            data-id="<?= $producte->id ?>"
+            data-stock="<?= $producte->estoc ?>"
+        >Afegir al Carret</button>
         <span class="tooltip-text">0 ítems - 0,00€</span>
     </div>
 </div>

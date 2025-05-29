@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // If we're on the homepage, activate the first category by default
   if (
     window.location.pathname === "/" ||
-    window.location.pathname.includes("index.php")
+    window.location.pathname.includes("productes/index.php")
   ) {
     const firstToggleButton = document.querySelector(".toggle-button");
     if (firstToggleButton) {

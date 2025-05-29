@@ -67,24 +67,3 @@ foreach ($productes as $producte) {
         </div>
     <?php endif; ?>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const toggleButtons = document.querySelectorAll('.toggle-button');
-        toggleButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const productList = this.nextElementSibling;
-                productList.classList.toggle('active');
-            });
-            
-            // Activate the first category by default
-            if (button === toggleButtons[0]) {
-                button.nextElementSibling.classList.add('active');
-            }
-        });
-        
-        // Initialize cart functionality
-        if (typeof initializeCart === 'function') {
-            initializeCart();
-        }
-    });
-</script>
