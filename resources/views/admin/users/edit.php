@@ -42,7 +42,7 @@ $role = $oldInput['role'] ?? $user->role;
                         <div class="mb-3">
                             <label for="username" class="form-label">Nom d'usuari <span class="text-danger">*</span></label>
                             <input type="text" class="form-control <?= isset($errors['username']) ? 'is-invalid' : '' ?>" 
-                                   id="username" name="username" value="<?= htmlspecialchars($username) ?>" required>
+                                id="username" name="username" value="<?= htmlspecialchars($username) ?>" required>
                             <?php if (isset($errors['username'])): ?>
                                 <div class="invalid-feedback"><?= $errors['username'] ?></div>
                             <?php endif; ?>
@@ -51,7 +51,7 @@ $role = $oldInput['role'] ?? $user->role;
                         <div class="mb-3">
                             <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                             <input type="email" class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>" 
-                                   id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
+                                id="email" name="email" value="<?= htmlspecialchars($email) ?>" required>
                             <?php if (isset($errors['email'])): ?>
                                 <div class="invalid-feedback"><?= $errors['email'] ?></div>
                             <?php endif; ?>
@@ -61,7 +61,7 @@ $role = $oldInput['role'] ?? $user->role;
                             <label for="password" class="form-label">Contrasenya</label>
                             <div class="input-group">
                                 <input type="password" class="form-control <?= isset($errors['password']) ? 'is-invalid' : '' ?>" 
-                                       id="password" name="password">
+                                    id="password" name="password">
                                 <button class="btn btn-outline-secondary toggle-password" type="button">
                                     <i class="fas fa-eye"></i>
                                 </button>

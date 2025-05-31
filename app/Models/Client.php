@@ -176,4 +176,5 @@ class Client extends Model
             ->where('email', '=', $email)
             ->first();
     }
+    
 }

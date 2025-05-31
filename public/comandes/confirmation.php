@@ -16,7 +16,7 @@ try {
     $id = $request->id;
     
     // Show confirmation page
-    (new ComandaController())->showConfirmation($id);
+    (new ComandaController())->Confirmation($id);
 } catch (Throwable $e) {
     ErrorHandler::handle($e);
 }

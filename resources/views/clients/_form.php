@@ -10,11 +10,11 @@
                         Nom d'usuari <span class="text-danger">*</span>
                     </label>
                     <input type="text" 
-                           class="form-control <?= isset($errors['nom_login']) ? 'is-invalid' : '' ?>" 
-                           id="nom_login" 
-                           name="nom_login" 
-                           value="<?= htmlspecialchars($values['nom_login'] ?? '') ?>"
-                           required>
+                        class="form-control <?= isset($errors['nom_login']) ? 'is-invalid' : '' ?>" 
+                        id="nom_login" 
+                        name="nom_login" 
+                        value="<?= htmlspecialchars($values['nom_login'] ?? '') ?>"
+                        required>
                     <?php if (isset($errors['nom_login'])): ?>
                         <div class="invalid-feedback"><?= htmlspecialchars($errors['nom_login']) ?></div>
                     <?php endif; ?>
@@ -26,11 +26,11 @@
                         Email <span class="text-danger">*</span>
                     </label>
                     <input type="email" 
-                           class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>" 
-                           id="email" 
-                           name="email" 
-                           value="<?= htmlspecialchars($values['email'] ?? '') ?>"
-                           required>
+                        class="form-control <?= isset($errors['email']) ? 'is-invalid' : '' ?>" 
+                        id="email" 
+                        name="email" 
+                        value="<?= htmlspecialchars($values['email'] ?? '') ?>"
+                        required>
                     <?php if (isset($errors['email'])): ?>
                         <div class="invalid-feedback"><?= htmlspecialchars($errors['email']) ?></div>
                     <?php endif; ?>
@@ -42,10 +42,10 @@
                     </label>
                     <div class="input-group">
                         <input type="password" 
-                               class="form-control <?= isset($errors['contrasena']) ? 'is-invalid' : '' ?>" 
-                               id="contrasena" 
-                               name="contrasena"
-                               <?= isset($client) ? '' : 'required' ?>>
+                            class="form-control <?= isset($errors['contrasena']) ? 'is-invalid' : '' ?>" 
+                            id="contrasena" 
+                            name="contrasena"
+                            <?= isset($client) ? '' : 'required' ?>>
                         <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                             <i class="fas fa-eye"></i>
                         </button>
@@ -82,11 +82,11 @@
                         Nom <span class="text-danger">*</span>
                     </label>
                     <input type="text" 
-                           class="form-control <?= isset($errors['nom']) ? 'is-invalid' : '' ?>" 
-                           id="nom" 
-                           name="nom" 
-                           value="<?= htmlspecialchars($values['nom'] ?? '') ?>"
-                           required>
+                        class="form-control <?= isset($errors['nom']) ? 'is-invalid' : '' ?>" 
+                        id="nom" 
+                        name="nom" 
+                        value="<?= htmlspecialchars($values['nom'] ?? '') ?>"
+                        required>
                     <?php if (isset($errors['nom'])): ?>
                         <div class="invalid-feedback"><?= htmlspecialchars($errors['nom']) ?></div>
                     <?php endif; ?>
@@ -95,10 +95,10 @@
                 <div class="mb-3">
                     <label for="cognom" class="form-label">Cognom</label>
                     <input type="text" 
-                           class="form-control <?= isset($errors['cognom']) ? 'is-invalid' : '' ?>" 
-                           id="cognom" 
-                           name="cognom" 
-                           value="<?= htmlspecialchars($values['cognom'] ?? '') ?>">
+                        class="form-control <?= isset($errors['cognom']) ? 'is-invalid' : '' ?>" 
+                        id="cognom" 
+                        name="cognom" 
+                        value="<?= htmlspecialchars($values['cognom'] ?? '') ?>">
                     <?php if (isset($errors['cognom'])): ?>
                         <div class="invalid-feedback"><?= htmlspecialchars($errors['cognom']) ?></div>
                     <?php endif; ?>
@@ -109,11 +109,11 @@
                         Telèfon <span class="text-danger">*</span>
                     </label>
                     <input type="tel" 
-                           class="form-control <?= isset($errors['tlf']) ? 'is-invalid' : '' ?>" 
-                           id="tlf" 
-                           name="tlf" 
-                           value="<?= htmlspecialchars($values['tlf'] ?? '') ?>"
-                           required>
+                        class="form-control <?= isset($errors['tlf']) ? 'is-invalid' : '' ?>" 
+                        id="tlf" 
+                        name="tlf" 
+                        value="<?= htmlspecialchars($values['tlf'] ?? '') ?>"
+                        required>
                     <?php if (isset($errors['tlf'])): ?>
                         <div class="invalid-feedback"><?= htmlspecialchars($errors['tlf']) ?></div>
                     <?php endif; ?>
@@ -147,10 +147,10 @@
         <div class="mb-3">
             <label for="missatge" class="form-label">Missatge o comentaris</label>
             <textarea class="form-control <?= isset($errors['missatge']) ? 'is-invalid' : '' ?>" 
-                      id="missatge" 
-                      name="missatge" 
-                      rows="4" 
-                      placeholder="Escriu aquí qualsevol comentari o informació adicional..."><?= htmlspecialchars($values['missatge'] ?? '') ?></textarea>
+                    id="missatge" 
+                    name="missatge" 
+                    rows="4" 
+                    placeholder="Escriu aquí qualsevol comentari o informació adicional..."><?= htmlspecialchars($values['missatge'] ?? '') ?></textarea>
             <?php if (isset($errors['missatge'])): ?>
                 <div class="invalid-feedback"><?= htmlspecialchars($errors['missatge']) ?></div>
             <?php endif; ?>
