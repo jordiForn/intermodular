@@ -33,12 +33,12 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="notes" class="form-label">La teva consulta</label>
-                            <textarea class="form-control <?= isset($errors['notes']) ? 'is-invalid' : '' ?>" id="notes" name="notes" rows="5" required><?= htmlspecialchars(session()->getFlash('old')['notes'] ?? '') ?></textarea>
-                            <?php if (isset($errors['notes'])): ?>
-                                <div class="invalid-feedback"><?= $errors['notes'] ?></div>
-                            <?php endif; ?>
-                        </div>
+    <label for="consulta" class="form-label">La teva consulta</label>
+    <textarea class="form-control <?= isset($errors['consulta']) ? 'is-invalid' : '' ?>" id="consulta" name="consulta" rows="5" required><?= htmlspecialchars(session()->getFlash('old')['consulta'] ?? '') ?></textarea>
+    <?php if (isset($errors['consulta'])): ?>
+        <div class="invalid-feedback"><?= $errors['consulta'] ?></div>
+    <?php endif; ?>
+</div>
                         
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">Enviar consulta</button>

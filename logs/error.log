@@ -626,4 +626,33 @@ Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
 #3 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('productes.creat...', Array)
 #4 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(93): view('productes.creat...')
 #5 D:\xampp\htdocs\Intermodular\public\productes\create.php(25): App\Http\Controllers\ProducteController->create()
-#6 {main}
+#6 {main}Call to undefined method App\Core\Auth::clientId()
+#0 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#1 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'aa')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'aa')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'joder macho')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'joder macho')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'joder machoaa')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'joder machoaaaa')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'joder machoaaaa...')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'a')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(58): App\Core\Model->__set('consulta', 'aa')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}
