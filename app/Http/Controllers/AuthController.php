@@ -242,4 +242,53 @@ class AuthController {
        Auth::logout();
        redirect('/auth/show-login.php')->with('success', 'Has tancat la sessió correctament')->send();
    }
+
+   public static function adminRegisterUser(array $data): ?User
+{
+    \App\Core\Debug::log('Entrando en adminRegisterUser', $data);
+
+    try {
+        if (empty($data['username']) || empty($data['email']) || empty($data['password']) || empty($data['role'])) {
+            \App\Core\Debug::log('Faltan datos obligatorios');
+            return null;
+        }
+
+        if (User::findByUsername($data['username']) || User::findByEmail($data['email'])) {
+            \App\Core\Debug::log('Usuario o email duplicado');
+            return null;
+        }
+
+        $user = new User();
+        $user->username = trim($data['username']);
+        $user->email = trim($data['email']);
+        $user->password = password_hash($data['password'], PASSWORD_DEFAULT);
+        $user->role = $data['role'];
+        $user->created_at = date('Y-m-d H:i:s');
+        $user->updated_at = date('Y-m-d H:i:s');
+        if (!$user->save()) {
+            \App\Core\Debug::log('Error al guardar usuario');
+            return null;
+        }
+
+        if ($user->role === 'user') {
+            $client = new \App\Models\Client();
+            $client->user_id = $user->id;
+            $client->nom = $data['username'];
+            $client->email = $data['email'];
+            $client->nom_login = $data['username'];
+            $client->contrasena = $data['password'];
+            $client->rol = 0;
+            $client->save();
+            \App\Core\Debug::log('Cliente creado');
+        }
+
+        \App\Core\Debug::log('Usuario creado correctamente');
+        return $user;
+    } catch (\Throwable $e) {
+        \App\Core\Debug::log("Error en adminRegisterUser: " . $e->getMessage());
+        return null;
+    }
 }
+
+}
+
