@@ -1,117 +1,293 @@
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <title>Editar un producte</title>
-    <script>
-        function editProduct(id, nom, descripcio, preu, estoc) {
-            document.getElementById('edit-form').style.display = 'block';
-            document.getElementById('edit-id').value = id;
-            document.getElementById('edit-nom').value = nom;
-            document.getElementById('edit-descripcio').value = descripcio;
-            document.getElementById('edit-preu').value = preu;
-            document.getElementById('edit-estoc').value = estoc;
+<?php 
+use App\Core\Auth; 
+use App\Http\Middlewares\Security\CsrfMiddleware;
+?>
 
-            const productCards = document.querySelectorAll('.product-card');
-            productCards.forEach(card => {
-                const cardId = card.getAttribute('data-id');
-                if (cardId === id) {
-                    card.style.display = 'block';
-                    card.setAttribute('id', 'editing-product');
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+<div class="container mt-4">
+    <h1 class="mb-4">Edició en Lot de Productes</h1>
 
-            document.getElementById('edit-nom').addEventListener('input', function() {
-                document.querySelector('#editing-product h3').innerText = this.value;
-            });
-            document.getElementById('edit-descripcio').addEventListener('input', function() {
-                document.querySelector('#editing-product p.description').innerText = this.value;
-            });
-            document.getElementById('edit-preu').addEventListener('input', function() {
-                document.querySelector('#editing-product p.price').innerText = parseFloat(this.value).toFixed(2) + '€';
-            });
-            document.getElementById('edit-estoc').addEventListener('input', function() {
-                document.querySelector('#editing-product p.stock').innerText = 'Estoc disponible: ' + this.value;
-            });
-        }
+    <!-- Alert container for dynamic messages -->
+    <div id="alert-container">
+        <!-- Mostrar mensajes de error y éxito si existen -->
+        <?php include __DIR__ . '/../partials/messages.php'; ?>
+    </div>
 
-        function deleteProduct(id) {
-            if (confirm("Estàs segur que vols eliminar aquest producte?")) {
-                fetch('<?= BASE_URL ?>/productes/destroy.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'id=' + id
-                })
-                .then(response => response.text())
-                .then(data => {
-                    alert(data);
-                    location.reload();
-                });
-            }
-        }
-    </script>
-</head>
-<body>
-    <header>
-        <h1>Canviar producte</h1>
-        <div><a href="<?= BASE_URL ?>/index.php">Pàgina principal</a></div>
-    </header>
-
-    <div class="container">
-        <div class="form-container">
-            <form action="<?= BASE_URL ?>/productes/edit-list.php" method="POST">
-                <label for="category">Selecciona una categoria:</label>
-                <select name="category" id="category">
-                    <?php foreach ($categories as $cat): ?>
-                        <option value="<?= htmlspecialchars($cat) ?>" <?= $cat === $category ? 'selected' : '' ?>><?= htmlspecialchars($cat) ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <button type="submit">Mostrar productes</button>
+    <!-- Filter form -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Filtrar Productes</h5>
+        </div>
+        <div class="card-body">
+            <form id="search-form" action="edit-list.php" method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label for="categoria" class="form-label">Categoria</label>
+                    <select class="form-select" id="categoria" name="categoria">
+                        <option value="">Totes les categories</option>
+                        <?php foreach ($categories as $cat): ?>
+                            <option value="<?= htmlspecialchars($cat) ?>" <?= $categoria === $cat ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($cat) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Cerca per nom</label>
+                    <input type="text" class="form-control" id="search" name="search" value="<?= htmlspecialchars($searchTerm ?? '') ?>" placeholder="Cerca productes...">
+                </div>
+                <div class="col-md-4">
+                    <label for="sort_by" class="form-label">Ordenar per</label>
+                    <div class="input-group">
+                        <select class="form-select" id="sort_by" name="sort_by">
+                            <option value="nom" <?= ($sortBy ?? 'nom') === 'nom' ? 'selected' : '' ?>>Nom</option>
+                            <option value="preu" <?= ($sortBy ?? '') === 'preu' ? 'selected' : '' ?>>Preu</option>
+                            <option value="estoc" <?= ($sortBy ?? '') === 'estoc' ? 'selected' : '' ?>>Estoc</option>
+                            <option value="categoria" <?= ($sortBy ?? '') === 'categoria' ? 'selected' : '' ?>>Categoria</option>
+                        </select>
+                        <select class="form-select" id="sort_order" name="sort_order">
+                            <option value="ASC" <?= ($sortOrder ?? 'ASC') === 'ASC' ? 'selected' : '' ?>>Ascendent</option>
+                            <option value="DESC" <?= ($sortOrder ?? '') === 'DESC' ? 'selected' : '' ?>>Descendent</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-12 d-flex">
+                    <button type="submit" class="btn btn-primary me-2">Filtrar</button>
+                    <?php if (!empty($categoria) || !empty($searchTerm) || ($sortBy ?? '') !== 'nom' || ($sortOrder ?? '') !== 'ASC'): ?>
+                        <a href="edit-list.php" class="btn btn-outline-secondary">Netejar filtres</a>
+                    <?php endif; ?>
+                </div>
             </form>
         </div>
+    </div>
+
+    <!-- Batch edit form -->
+    <form action="update-batch.php" method="POST">
+        <?= CsrfMiddleware::tokenField(); ?>
         
-        <?php if (!empty($products)): ?>
-            <div class="product-list" style="display: flex; justify-content: space-around;">
-                <?php foreach ($products as $producte): ?>
-                    <div class="product-card" data-id="<?= $producte->id ?>">
-                        <img src="<?= BASE_URL ?>/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
-                        <h3><?= htmlspecialchars($producte->nom) ?></h3>
-                        <p class="description"><?= htmlspecialchars($producte->descripcio) ?></p>
-                        <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
-                        <p class="stock">Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
-
-                        <a href="javascript:void(0);" onclick="editProduct('<?= $producte->id ?>', '<?= htmlspecialchars($producte->nom) ?>', '<?= htmlspecialchars($producte->descripcio) ?>', '<?= $producte->preu ?>', '<?= $producte->estoc ?>')" class="edit-icon">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-
-                        <a href="javascript:void(0);" onclick="deleteProduct('<?= $producte->id ?>')" class="delete-icon">
-                            <i class="fas fa-trash" style="color: red;"></i>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Actualitzacions en Lot</h5>
             </div>
-        <?php endif; ?>
-    </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="categoria-update" class="form-label">Actualitzar Categoria</label>
+                        <select class="form-select" id="categoria-update" name="updates[categoria]">
+                            <option value="">No canviar</option>
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= htmlspecialchars($cat) ?>">
+                                    <?= htmlspecialchars($cat) ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label for="estoc-adjust" class="form-label">Ajustar Estoc</label>
+                        <div class="input-group">
+                            <span class="input-group-text">+/-</span>
+                            <input type="number" class="form-control" id="estoc-adjust" name="updates[estoc_adjust]" placeholder="0">
+                        </div>
+                        <small class="form-text text-muted">Introdueix un número positiu per augmentar o negatiu per disminuir</small>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label for="preu-adjust" class="form-label">Ajustar Preu</label>
+                        <div class="input-group">
+                            <input type="number" step="0.01" class="form-control" id="preu-adjust" name="updates[preu_adjust]" placeholder="0">
+                            <select class="form-select" name="updates[preu_adjust_type]" style="max-width: 100px;">
+                                <option value="absolute">€</option>
+                                <option value="percent">%</option>
+                            </select>
+                        </div>
+                        <small class="form-text text-muted">Introdueix un número positiu per augmentar o negatiu per disminuir</small>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div id="edit-form" style="display: none;">
-        <h2>Editar producte</h2>
-        <form action="<?= BASE_URL ?>/productes/update.php" method="POST">
-            <input type="hidden" id="edit-id" name="id">
-            <label for="edit-nom">Nom:</label>
-            <input type="text" id="edit-nom" name="nom" required>
-            <label for="edit-descripcio">Descripció:</label>
-            <input type="text" id="edit-descripcio" name="descripcio" required>
-            <label for="edit-preu">Preu:</label>
-            <input type="number" id="edit-preu" name="preu" step="0.01" required>
-            <label for="edit-estoc">Estoc:</label>
-            <input type="number" id="edit-estoc" name="estoc" required>
-            <button type="submit">Guardar canvis</button>
-        </form>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th width="40">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="select-all">
+                            </div>
+                        </th>
+                        <th>
+                            <a href="?sort_by=id&sort_order=<?= ($sortBy === 'id' && $sortOrder === 'ASC') ? 'DESC' : 'ASC' ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?>" class="text-white sort-link">
+                                ID
+                                <?php if ($sortBy === 'id'): ?>
+                                    <i class="fas fa-sort-<?= $sortOrder === 'ASC' ? 'up' : 'down' ?>"></i>
+                                <?php endif; ?>
+                            </a>
+                        </th>
+                        <th>Imatge</th>
+                        <th>
+                            <a href="?sort_by=nom&sort_order=<?= ($sortBy === 'nom' && $sortOrder === 'ASC') ? 'DESC' : 'ASC' ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?>" class="text-white sort-link">
+                                Nom
+                                <?php if ($sortBy === 'nom'): ?>
+                                    <i class="fas fa-sort-<?= $sortOrder === 'ASC' ? 'up' : 'down' ?>"></i>
+                                <?php endif; ?>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?sort_by=categoria&sort_order=<?= ($sortBy === 'categoria' && $sortOrder === 'ASC') ? 'DESC' : 'ASC' ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?>" class="text-white sort-link">
+                                Categoria
+                                <?php if ($sortBy === 'categoria'): ?>
+                                    <i class="fas fa-sort-<?= $sortOrder === 'ASC' ? 'up' : 'down' ?>"></i>
+                                <?php endif; ?>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?sort_by=preu&sort_order=<?= ($sortBy === 'preu' && $sortOrder === 'ASC') ? 'DESC' : 'ASC' ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?>" class="text-white sort-link">
+                                Preu
+                                <?php if ($sortBy === 'preu'): ?>
+                                    <i class="fas fa-sort-<?= $sortOrder === 'ASC' ? 'up' : 'down' ?>"></i>
+                                <?php endif; ?>
+                            </a>
+                        </th>
+                        <th>
+                            <a href="?sort_by=estoc&sort_order=<?= ($sortBy === 'estoc' && $sortOrder === 'ASC') ? 'DESC' : 'ASC' ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?>" class="text-white sort-link">
+                                Estoc
+                                <?php if ($sortBy === 'estoc'): ?>
+                                    <i class="fas fa-sort-<?= $sortOrder === 'ASC' ? 'up' : 'down' ?>"></i>
+                                <?php endif; ?>
+                            </a>
+                        </th>
+                        <th>Accions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($productes as $producte): ?>
+                        <tr data-id="<?= $producte->id ?>">
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input product-checkbox" type="checkbox" name="product_ids[]" value="<?= $producte->id ?>">
+                                </div>
+                            </td>
+                            <td><?= $producte->id ?></td>
+                            <td>
+                                <?php if ($producte->imatge): ?>
+                                    <img src="<?= imageUrl($producte->imatge, 50, 50) ?>" alt="<?= htmlspecialchars($producte->nom) ?>" width="50" height="50" class="img-thumbnail">
+                                <?php else: ?>
+                                    <div class="bg-light text-center" style="width: 50px; height: 50px; line-height: 50px;">
+                                        <i class="fas fa-image text-muted"></i>
+                                    </div>
+                                <?php endif; ?>
+                            </td>
+                            <td class="product-name"><?= htmlspecialchars($producte->nom) ?></td>
+                            <td class="product-category"><?= htmlspecialchars($producte->categoria ?? 'Sense categoria') ?></td>
+                            <td class="product-price"><?= number_format($producte->preu, 2) ?> €</td>
+                            <td>
+                                <span class="badge <?= $producte->estoc > 5 ? 'bg-success' : 'bg-warning' ?> stock-badge">
+                                    <?= $producte->estoc ?>
+                                </span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm quick-edit-btn" data-id="<?= $producte->id ?>">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <a href="edit.php?id=<?= $producte->id ?>" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <a href="show.php?id=<?= $producte->id ?>" class="btn btn-info btn-sm">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+            <div>
+                <button type="submit" class="btn btn-primary" id="update-selected" disabled>
+                    Actualitzar Seleccionats
+                </button>
+                <span class="ms-3" id="selected-count">0 productes seleccionats</span>
+            </div>
+            
+            <!-- Paginación -->
+            <div class="d-flex align-items-center">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page - 1 ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?><?= ($sortBy ?? '') !== 'nom' ? '&sort_by=' . urlencode($sortBy) : '' ?><?= ($sortOrder ?? '') !== 'ASC' ? '&sort_order=' . urlencode($sortOrder) : '' ?>" class="btn btn-outline-primary me-2">
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </a>
+                <?php endif; ?>
+
+                <span class="mx-2">Pàgina <?= $page ?> de <?= $totalPages ?></span>
+
+                <?php if ($page < $totalPages): ?>
+                    <a href="?page=<?= $page + 1 ?><?= !empty($categoria) ? '&categoria=' . urlencode($categoria) : '' ?><?= !empty($searchTerm) ? '&search=' . urlencode($searchTerm) : '' ?><?= ($sortBy ?? '') !== 'nom' ? '&sort_by=' . urlencode($sortBy) : '' ?><?= ($sortOrder ?? '') !== 'ASC' ? '&sort_order=' . urlencode($sortOrder) : '' ?>" class="btn btn-outline-primary ms-2">
+                        Següent <i class="fas fa-chevron-right"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </form>
+
+    <!-- Quick Edit Modal -->
+    <div class="modal fade" id="quick-edit-modal" tabindex="-1" aria-labelledby="quickEditModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="quickEditModalLabel">Edició Ràpida</h5>
+                    <button type="button" class="btn-close" id="close-modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="quick-edit-form">
+                        <?= CsrfMiddleware::tokenField(); ?>
+                        <input type="hidden" id="quick-edit-id" name="id">
+                        
+                        <div class="mb-3">
+                            <label for="quick-edit-nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="quick-edit-nom" name="nom" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="quick-edit-descripcio" class="form-label">Descripció</label>
+                            <textarea class="form-control" id="quick-edit-descripcio" name="descripcio" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="quick-edit-preu" class="form-label">Preu</label>
+                            <div class="input-group">
+                                <input type="number" step="0.01" class="form-control" id="quick-edit-preu" name="preu" required>
+                                <span class="input-group-text">€</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="quick-edit-estoc" class="form-label">Estoc</label>
+                            <input type="number" class="form-control" id="quick-edit-estoc" name="estoc" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="quick-edit-categoria" class="form-label">Categoria</label>
+                            <select class="form-select" id="quick-edit-categoria" name="categoria">
+                                <option value="">Sense categoria</option>
+                                <?php foreach ($categories as $cat): ?>
+                                    <option value="<?= htmlspecialchars($cat) ?>">
+                                        <?= htmlspecialchars($cat) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Guardar canvis</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>
+
+<script>
+    // Define BASE_URL for JavaScript
+    const BASE_URL = '<?= BASE_URL ?>';
+</script>
+<script src="<?= BASE_URL ?>/js/batch-edit.js"></script>

@@ -2,9 +2,8 @@
 declare(strict_types=1);
 
 namespace App\Core;
-use App\Exceptions\ModelNotFoundException;
 
-abstract class Model
+class Model
 {
     protected static string $table;
     protected static array $fillable;
@@ -13,39 +12,45 @@ abstract class Model
     protected static array $relations;
     
     protected ?int $id = null;
+    
+    // Dynamic properties container to avoid deprecation warnings
+    protected array $attributes = [];
 
-    public function __get($propiedad)
+    public function __get($property)
     {
-        if (property_exists($this, $propiedad)) {
-            return $this->$propiedad;
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+        
+        if (array_key_exists($property, $this->attributes)) {
+            return $this->attributes[$property];
         }
 
-        if (method_exists($this, $propiedad) && in_array($propiedad, static::$relations ?? [])) {
-            $resultado = $this->$propiedad();
+        if (method_exists($this, $property) && in_array($property, static::$relations ?? [])) {
+            $result = $this->$property();
 
-            if ($resultado instanceof QueryBuilder) {
-                return $this->$propiedad = $resultado->get();
+            if ($result instanceof QueryBuilder) {
+                return $this->attributes[$property] = $result->get();
             }
-            return $this->$propiedad = $resultado;
+            return $this->attributes[$property] = $result;
         }
 
         return null;
     }
 
-    public function __set($propiedad, $valor)
+    public function __set($property, $value)
     {
-        if ($propiedad === 'id') {
-            $this->$propiedad = (int) $valor;
+        if ($property === 'id') {
+            $this->$property = (int) $value;
         } elseif (
-            in_array($propiedad, static::$fillable ?? []) ||
-            in_array($propiedad, static::$relations ?? []) ||
-            in_array($propiedad, static::$aggregates ?? []) ||
-            in_array($propiedad, static::$pivots ?? [])
+            in_array($property, static::$fillable ?? []) ||
+            in_array($property, static::$relations ?? []) ||
+            in_array($property, static::$aggregates ?? []) ||
+            in_array($property, static::$pivots ?? [])
         ) {
-            $this->$propiedad = $valor;
-
+            $this->attributes[$property] = $value;
         } else {
-            throw new \RuntimeException("La propiedad '$propiedad' no está permitida en el modelo.");
+            throw new \RuntimeException("La propiedad '$property' no está permitida en el modelo.");
         }
     }
 
@@ -105,8 +110,17 @@ abstract class Model
         return $qb->count();
     }
 
-    protected abstract function insert(): void;
-    protected abstract function update(): void;
+    protected function insert(): bool
+    {
+        // This method should be implemented by child classes
+        throw new \RuntimeException("El método insert() debe ser implementado por la clase hija.");
+    }
+    
+    protected function update(): bool
+    {
+        // This method should be implemented by child classes
+        throw new \RuntimeException("El método update() debe ser implementado por la clase hija.");
+    }
 
     public static function all(): array
     {
@@ -126,24 +140,46 @@ abstract class Model
         $model = self::find($id);
 
         if (!$model) {
-            throw new ModelNotFoundException("El modelo con ID($id) no fue encontrado");
+            throw new \RuntimeException("El modelo con ID($id) no fue encontrado");
         }
         return $model;
     }
 
-    public function save(): void
-    {
-        if ($this->id === null) {
-            $this->insert();
-        } else {
-            $this->update();
-        }
+    public function save(): bool
+{
+    if ($this->id === null) {
+        return $this->insert();
+    } else {
+        return $this->update();
     }
+}
 
     public function delete(): bool
     {
         $sql = "DELETE FROM " . static::$table . " WHERE id = :id";
         $params = ['id' => $this->id];
         return DB::delete($sql, $params) === 1;
+    }
+    
+    /**
+     * Convert the model to an array
+     * 
+     * @return array
+     */
+    public function toArray(): array
+    {
+        $data = [];
+        
+        // Add the ID
+        if ($this->id !== null) {
+            $data['id'] = $this->id;
+        }
+        
+        // Add all attributes
+        foreach ($this->attributes as $key => $value) {
+            $data[$key] = $value;
+        }
+        
+        return $data;
     }
 }

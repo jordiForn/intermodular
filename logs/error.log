@@ -1,0 +1,530 @@
+Class "Auth" not found
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}Class "Auth" not found
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}Class "Auth" not found
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(15): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(86): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(17): view('home.index')
+#3 {main}[2025-05-16 16:42:55] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-16 16:44:03] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-16 16:44:22] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-16 16:44:25] ERROR: Class "Auth" not found
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\app.php Line: 12
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(92): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo for sql111.infinityfree.com failed: Host desconocido. 
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(19): PDO->__construct('mysql:host=sql1...', 'if0_38694634', Object(SensitiveParameterValue))
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(97): App\Core\DB::connection()
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(33): App\Core\DB::prepare('SELECT * FROM c...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\DB.php(66): App\Core\DB::select('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#5 C:\xampp\htdocs\intermodular\app\Core\Auth.php(16): App\Core\QueryBuilder->first()
+#6 C:\xampp\htdocs\intermodular\app\Http\Controllers\AuthController.php(24): App\Core\Auth::attempt(Array)
+#7 C:\xampp\htdocs\intermodular\public\auth\login.php(30): App\Http\Controllers\AuthController->login(Object(App\Core\Request))
+#8 {main}SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(19): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue))
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(97): App\Core\DB::connection()
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(33): App\Core\DB::prepare('SELECT * FROM c...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\DB.php(66): App\Core\DB::select('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#5 C:\xampp\htdocs\intermodular\app\Core\Auth.php(16): App\Core\QueryBuilder->first()
+#6 C:\xampp\htdocs\intermodular\app\Http\Controllers\AuthController.php(24): App\Core\Auth::attempt(Array)
+#7 C:\xampp\htdocs\intermodular\public\auth\login.php(30): App\Http\Controllers\AuthController->login(Object(App\Core\Request))
+#8 {main}SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES)
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(19): PDO->__construct('mysql:host=loca...', 'root', Object(SensitiveParameterValue))
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(97): App\Core\DB::connection()
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(33): App\Core\DB::prepare('SELECT * FROM c...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\DB.php(66): App\Core\DB::select('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#5 C:\xampp\htdocs\intermodular\app\Core\Auth.php(16): App\Core\QueryBuilder->first()
+#6 C:\xampp\htdocs\intermodular\app\Http\Controllers\AuthController.php(24): App\Core\Auth::attempt(Array)
+#7 C:\xampp\htdocs\intermodular\public\auth\login.php(30): App\Http\Controllers\AuthController->login(Object(App\Core\Request))
+#8 {main}SQLSTATE[42S02]: Base table or view not found: 1146 Table 'jardineria.clients' doesn't exist
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(161): PDO->prepare('SELECT * FROM c...')
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(96): App\Core\DB::prepare('SELECT * FROM c...', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(129): App\Core\DB::select('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Http\Validators\RegisterValidator.php(39): App\Core\QueryBuilder->first()
+#5 C:\xampp\htdocs\intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#6 {main}SQLSTATE[42S02]: Base table or view not found: 1146 Table 'jardineria.clients' doesn't exist
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(161): PDO->prepare('SELECT * FROM c...')
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(96): App\Core\DB::prepare('SELECT * FROM c...', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(129): App\Core\DB::select('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\Clie...', 'SELECT * FROM c...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Http\Validators\RegisterValidator.php(39): App\Core\QueryBuilder->first()
+#5 C:\xampp\htdocs\intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#6 {main}Call to undefined method App\Http\Controllers\AuthController::showRegisterForm()
+#0 {main}Call to undefined method App\Http\Controllers\AuthController::showRegisterForm()
+#0 {main}Call to undefined method App\Http\Controllers\AuthController::showRegisterForm()
+#0 {main}Call to undefined method App\Http\Controllers\AuthController::showRegisterForm()
+#0 {main}Call to undefined method App\Http\Controllers\AuthController::showLoginForm()
+#0 {main}Call to undefined method App\Http\Controllers\AuthController::showLoginForm()
+#0 {main}Call to undefined method App\Http\Controllers\AuthController::showLoginForm()
+#0 {main}SQLSTATE[42S02]: Base table or view not found: 1146 Table 'jardineria.users' doesn't exist
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(161): PDO->prepare('SELECT * FROM u...')
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(96): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(129): App\Core\DB::select('App\\Models\\User', 'SELECT * FROM u...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Models\User.php(62): App\Core\QueryBuilder->first()
+#5 C:\xampp\htdocs\intermodular\app\Http\Validators\RegisterValidator.php(31): App\Models\User::findByUsername('Root')
+#6 C:\xampp\htdocs\intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#7 {main}SQLSTATE[42S02]: Base table or view not found: 1146 Table 'jardineria.users' doesn't exist
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(161): PDO->prepare('SELECT * FROM u...')
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(96): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(129): App\Core\DB::select('App\\Models\\User', 'SELECT * FROM u...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Models\User.php(62): App\Core\QueryBuilder->first()
+#5 C:\xampp\htdocs\intermodular\app\Http\Validators\RegisterValidator.php(31): App\Models\User::findByUsername('Root')
+#6 C:\xampp\htdocs\intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#7 {main}Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
+#0 {main}SQLSTATE[42S02]: Base table or view not found: 1146 Table 'jardineria.users' doesn't exist
+#0 C:\xampp\htdocs\intermodular\app\Core\DB.php(161): PDO->prepare('SELECT * FROM u...')
+#1 C:\xampp\htdocs\intermodular\app\Core\DB.php(96): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\DB.php(129): App\Core\DB::select('App\\Models\\User', 'SELECT * FROM u...', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#4 C:\xampp\htdocs\intermodular\app\Models\User.php(62): App\Core\QueryBuilder->first()
+#5 C:\xampp\htdocs\intermodular\app\Http\Validators\RegisterValidator.php(31): App\Models\User::findByUsername('Root')
+#6 C:\xampp\htdocs\intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#7 {main}Call to undefined function url()
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('auth.register', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('auth.register', Array)
+#3 C:\xampp\htdocs\intermodular\app\Http\Controllers\AuthController.php(47): view('auth.register')
+#4 C:\xampp\htdocs\intermodular\public\auth\show-register.php(14): App\Http\Controllers\AuthController->showRegisterForm()
+#5 {main}Call to undefined function url()
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('auth.login', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('auth.login', Array)
+#3 C:\xampp\htdocs\intermodular\app\Http\Controllers\AuthController.php(17): view('auth.login')
+#4 C:\xampp\htdocs\intermodular\public\auth\show-login.php(17): App\Http\Controllers\AuthController->showLoginForm()
+#5 {main}Call to undefined function url()
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('auth.login', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('auth.login', Array)
+#3 C:\xampp\htdocs\intermodular\app\Http\Controllers\AuthController.php(17): view('auth.login')
+#4 C:\xampp\htdocs\intermodular\public\auth\show-login.php(17): App\Http\Controllers\AuthController->showLoginForm()
+#5 {main}Call to undefined method App\Core\Request::input()
+#0 C:\xampp\htdocs\intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#1 {main}Call to undefined method App\Core\Request::input()
+#0 C:\xampp\htdocs\intermodular\public\auth\login.php(27): App\Http\Validators\LoginValidator::validate(Object(App\Core\Request))
+#1 {main}Call to undefined method App\Core\Request::input()
+#0 C:\xampp\htdocs\intermodular\public\auth\login.php(27): App\Http\Validators\LoginValidator::validate(Object(App\Core\Request))
+#1 {main}[2025-05-17 11:33:09] ERROR: syntax error, unexpected string content "", expecting "-" or identifier or variable or number
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 25
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
+#1 {main}
+
+[2025-05-17 11:33:31] ERROR: syntax error, unexpected string content "", expecting "-" or identifier or variable or number
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 25
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
+#1 {main}
+
+[2025-05-17 11:33:40] ERROR: syntax error, unexpected string content "", expecting "-" or identifier or variable or number
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 25
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\public\index.php(18): require_once()
+#1 {main}
+
+Unsupported operand types: string + int
+#0 D:\xampp\htdocs\Intermodular\app\Core\DB.php(120): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#1 D:\xampp\htdocs\Intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Models\User.php(32): App\Core\QueryBuilder->first()
+#3 D:\xampp\htdocs\Intermodular\app\Http\Validators\RegisterValidator.php(30): App\Models\User::findByUsername('Root')
+#4 D:\xampp\htdocs\Intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#5 {main}SQLSTATE[HY093]: Invalid parameter number: parameter was not defined
+#0 D:\xampp\htdocs\Intermodular\app\Core\DB.php(218): PDOStatement->bindValue('::username', 'Root', 2)
+#1 D:\xampp\htdocs\Intermodular\app\Core\DB.php(120): App\Core\DB::prepare('SELECT * FROM u...', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Core\QueryBuilder.php(114): App\Core\DB::selectOne('App\\Models\\User', 'SELECT * FROM u...', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Models\User.php(32): App\Core\QueryBuilder->first()
+#4 D:\xampp\htdocs\Intermodular\app\Http\Validators\RegisterValidator.php(30): App\Models\User::findByUsername('Root')
+#5 D:\xampp\htdocs\Intermodular\public\auth\register.php(27): App\Http\Validators\RegisterValidator::validate(Object(App\Core\Request))
+#6 {main}Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
+#3 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#4 {main}[2025-05-17 13:44:03] ERROR: Call to undefined method App\Core\Auth::role()
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php Line: 13
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-17 13:47:30] ERROR: Call to undefined method App\Core\Auth::role()
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php Line: 13
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-17 13:47:30] ERROR: Call to undefined method App\Core\Auth::role()
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php Line: 13
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-17 13:47:30] ERROR: Call to undefined method App\Core\Auth::role()
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php Line: 13
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-17 13:47:31] ERROR: Call to undefined method App\Core\Auth::role()
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php Line: 13
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
+#3 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#4 {main}Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
+#3 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#4 {main}[2025-05-17 13:47:41] ERROR: Call to undefined method App\Core\Auth::role()
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php Line: 13
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-17 13:59:04] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:04] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:04] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:05] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:05] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:05] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:05] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:05] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:06] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:06] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:06] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:06] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:06] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:06] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:07] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:07] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:07] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:07] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:07] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:07] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:08] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:08] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-17 13:59:08] ERROR: Cannot use object of type App\Models\User as array
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 30
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\resources\views\layouts\app.php(19): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('errors.500', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(54): view('errors.500', Array)
+#4 D:\xampp\htdocs\Intermodular\public\productes\index.php(25): App\Http\Controllers\ProducteController->index(Object(App\Core\Request))
+#5 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}[2025-05-20 20:33:56] ERROR: Call to undefined method App\Core\QueryBuilder::orderByRaw()
+File: C:\xampp\htdocs\intermodular\resources\views\home\index.php Line: 9
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-20 20:35:42] ERROR: La ordenación sólo puede ser ascendente (ASC) o descendente (DESC)
+File: C:\xampp\htdocs\intermodular\app\Core\QueryBuilder.php Line: 57
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\resources\views\home\index.php(12): App\Core\QueryBuilder->orderBy('CASE \r\n    WHEN...', '')
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#4 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#5 {main}
+
+[2025-05-20 20:41:26] ERROR: Class "QueryBuilder" not found
+File: C:\xampp\htdocs\intermodular\resources\views\home\index.php Line: 3
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(75): require()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+[2025-05-20 20:47:56] ERROR: syntax error, unexpected token "<", expecting end of file
+File: C:\xampp\htdocs\intermodular\resources\views\home\index.php Line: 23
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#1 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}[2025-05-21 20:48:40] ERROR: Unsupported operand types: string + string
+File: C:\xampp\htdocs\intermodular\resources\views\layouts\partials\header.php Line: 14
+Stack trace:
+#0 C:\xampp\htdocs\intermodular\resources\views\layouts\app.php(23): include()
+#1 C:\xampp\htdocs\intermodular\app\Core\Response.php(47): require('C:\\xampp\\htdocs...')
+#2 C:\xampp\htdocs\intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#3 C:\xampp\htdocs\intermodular\public\index.php(41): view('home.index')
+#4 {main}
+
+Call to undefined method App\Http\Controllers\ComandaController::showCart()
+#0 {main}[2025-05-22 12:14:40] ERROR: syntax error, unexpected token "<", expecting end of file
+File: D:\xampp\htdocs\Intermodular\resources\views\layouts\partials\header.php Line: 59
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(47): require()
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\public\admin\index.php(12): App\Http\Middlewares\Middleware::role(Array)
+#1 {main}Class "RoleMiddleware" not found
+#0 {main}Class "RoleMiddleware" not found
+#0 {main}[2025-05-24 16:21:56] ERROR: syntax error, unexpected token "<", expecting end of file
+File: D:\xampp\htdocs\Intermodular\resources\views\home\index.php Line: 102
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+
+[2025-05-24 16:32:31] ERROR: syntax error, unexpected token "<", expecting end of file
+File: D:\xampp\htdocs\Intermodular\resources\views\home\index.php Line: 2
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#1 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#3 {main}
+

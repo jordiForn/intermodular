@@ -1,6 +1,12 @@
 <?php
 
-define('DB_HOST', 'sql111.infinityfree.com');
-define('DB_USER', 'if0_38694634');
-define('DB_PASS', 'KiXaOeT1DJ');
-define('DB_NAME', 'if0_38694634_jardineria');
+// Cambia a false para usar la base de datos remota
+$useLocal = true;
+
+// Carga las credenciales según el entorno
+return [
+    'host'     => $useLocal ? 'localhost' : 'sql111.infinityfree.com',
+    'username' => $useLocal ? 'root' : 'if0_38694634',
+    'password' => $useLocal ? '' : 'KiXaOeT1DJ',
+    'database' => $useLocal ? 'jardineria' : 'if0_38694634_jardineria',
+];

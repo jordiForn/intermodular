@@ -1,0 +1,715 @@
+// Variables
+$color-bg: #f9eccc;
+$color-primary: #4daa57;
+$color-secondary: #587d71;
+$color-highlight: #754668;
+$color-accent: #b5dda4;
+$color-white: white;
+$color-border: #754668;
+
+.bg-success,
+.btn-success,
+.badge.bg-success {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+}
+.text-success,
+.btn-outline-success,
+.badge.text-bg-success {
+  color: $color-primary !important;
+  border-color: $color-primary !important;
+}
+.btn-outline-success {
+  background-color: transparent !important;
+}
+.bg-light {
+  background-color: $color-bg !important;
+}
+.bg-gradient {
+  background-image: linear-gradient(
+    90deg,
+    $color-primary 60%,
+    $color-secondary 100%
+  ) !important;
+}
+.bg-highlight {
+  background-color: $color-highlight !important;
+}
+.text-highlight {
+  color: $color-highlight !important;
+}
+.border-highlight {
+  border-color: $color-highlight !important;
+}
+.btn-primary {
+  background-color: $color-highlight !important;
+  border-color: $color-highlight !important;
+  color: $color-white !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+}
+.btn-outline-light {
+  border-color: $color-white !important;
+  color: $color-white !important;
+}
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: $color-white !important;
+  color: $color-highlight !important;
+}
+
+// Efectos para todos los botones personalizados
+.btn,
+.btn-success,
+.btn-outline-success,
+.btn-primary,
+.btn-outline-light,
+.btn-light {
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+// Botón principal (btn-primary)
+.btn-primary {
+  background-color: $color-highlight !important;
+  border-color: $color-highlight !important;
+  color: $color-white !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(117, 70, 104, 0.15);
+}
+
+// Botón éxito (btn-success)
+.btn-success {
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
+  color: $color-white !important;
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(77, 170, 87, 0.15);
+}
+
+// Botón outline-success
+.btn-outline-success {
+  color: $color-primary !important;
+  border-color: $color-primary !important;
+  background: transparent !important;
+}
+.btn-outline-success:hover,
+.btn-outline-success:focus {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+  border-color: $color-primary !important;
+  box-shadow: 0 0 0 0.2rem rgba(77, 170, 87, 0.15);
+}
+
+// Botón outline-light
+.btn-outline-light {
+  color: $color-white !important;
+  border-color: $color-white !important;
+  background: transparent !important;
+}
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: $color-white !important;
+  color: $color-highlight !important;
+  border-color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(249, 236, 204, 0.15);
+}
+
+// Botón light
+.btn-light {
+  background-color: $color-bg !important;
+  color: $color-highlight !important;
+  border-color: $color-bg !important;
+}
+.btn-light:hover,
+.btn-light:focus {
+  background-color: $color-accent !important;
+  color: $color-highlight !important;
+  border-color: $color-accent !important;
+  box-shadow: 0 0 0 0.2rem rgba(181, 221, 164, 0.15);
+}
+
+// Mixins
+@mixin button-style($bg-color, $hover-color) {
+  background-color: $bg-color;
+  color: $color-white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+
+// Base styles
+body {
+  font-family: Arial, sans-serif;
+  background-color: $color-bg;
+  color: $color-secondary;
+  margin: 0;
+  padding: 0;
+}
+
+// Layout styles
+.cart-page,
+.form-page,
+.login-page,
+.signup-page {
+  header {
+    flex-direction: column;
+    height: auto;
+
+    a {
+      padding: 10px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+  }
+}
+
+.container,
+main {
+  margin-top: 120px; // Ajusta según la altura real del header
+}
+
+header nav {
+  width: 100%;
+}
+header ul.nav {
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+header ul.nav .nav-item {
+  margin: 0 10px;
+}
+
+header {
+  flex-direction: row !important;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $color-highlight !important;
+  height: auto;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+
+  h1 {
+    color: $color-white;
+  }
+
+  h1:hover {
+    cursor: default;
+  }
+
+  #admin-menu {
+    display: none;
+    background-color: $color-bg;
+    padding: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 2px solid $color-primary;
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    li {
+      margin: 10px 0;
+
+      a {
+        text-decoration: none;
+        color: $color-secondary;
+        font-weight: bold;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        transition: border 0.3s ease-in-out;
+      }
+      a:hover {
+        color: $color-primary;
+        background-color: $color-accent;
+      }
+    }
+
+    &.visible {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+      border: 1px solid $color-secondary;
+    }
+  }
+
+  div {
+    display: flex;
+    gap: 30px;
+
+    a {
+      text-decoration: none;
+      color: $color-white;
+      font-size: 20px;
+      transition: transform 0.3s ease, color 0.3s ease;
+
+      &:hover {
+        transform: translateY(-5px);
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+
+  h2:hover {
+    cursor: default;
+  }
+
+  a {
+    text-decoration: none;
+    color: $color-secondary;
+    padding: 10px;
+    transition: border 0.3s ease-in-out;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  a:hover {
+    border: 1px solid $color-secondary;
+    border-radius: 5px;
+    background-color: $color-accent;
+  }
+
+  .mt-4 {
+    margin-top: 40px;
+  }
+}
+
+// Component styles
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.product-category,
+.service-category {
+  border-radius: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: $color-bg;
+}
+
+.cart {
+  a:hover {
+    color: inherit;
+    background-color: inherit;
+    border: none;
+  }
+}
+
+.toggle-button {
+  width: 100%;
+  @include button-style($color-primary, $color-secondary);
+  font-size: 18px;
+}
+
+.product-list,
+.service-garden,
+.service-pool {
+  display: none;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 10px;
+
+  &.active {
+    display: flex;
+  }
+}
+
+h3 {
+  color: $color-primary;
+}
+
+.product-card,
+.service-card {
+  background-color: $color-accent;
+  border-radius: 10px;
+  padding: 15px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+
+  h3 {
+    color: $color-highlight;
+    cursor: default;
+  }
+
+  p {
+    font-size: 14px;
+    color: $color-secondary;
+    cursor: default;
+  }
+
+  .price {
+    font-weight: bold;
+    color: $color-primary;
+  }
+}
+
+button {
+  @include button-style($color-primary, $color-secondary);
+  margin-top: 10px;
+}
+
+.cart {
+  background-color: $color-white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  margin: 20px auto;
+  max-width: 500px;
+
+  h2 {
+    text-align: center;
+    color: $color-highlight;
+  }
+
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $color-accent;
+    padding: 10px 0;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.form-container {
+  background-color: $color-bg;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: $color-highlight;
+  }
+
+  input,
+  textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid $color-primary;
+    border-radius: 5px;
+  }
+}
+
+.confirm-btn {
+  @include button-style($color-highlight, $color-secondary);
+  font-weight: bold;
+}
+
+.confirmation {
+  text-align: center;
+  padding: 20px;
+  background-color: $color-accent;
+  color: $color-highlight;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 16px;
+  text-align: left;
+
+  th,
+  td {
+    padding: 12px 15px;
+  }
+
+  th {
+    background-color: $color-primary;
+    color: $color-white;
+  }
+
+  tr {
+    border-bottom: 1px solid $color-border;
+  }
+
+  tr:nth-of-type(odd) {
+    background-color: $color-accent;
+  }
+
+  tr:hover {
+    background-color: $color-accent;
+    color: $color-white;
+  }
+
+  td {
+    border-right: 1px solid $color-border;
+  }
+
+  td:last-child {
+    border-right: none;
+  }
+
+  .edit-icon,
+  .delete-icon {
+    cursor: pointer;
+    color: $color-primary;
+    margin-right: 10px;
+
+    &:hover {
+      color: $color-accent;
+    }
+  }
+
+  .delete-icon {
+    color: red;
+
+    &:hover {
+      color: darkred;
+    }
+  }
+}
+
+#edit-form {
+  display: none;
+  background-color: $color-white;
+  padding: 20px;
+  border: 1px solid $color-border;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid $color-border;
+    border-radius: 5px;
+  }
+
+  button {
+    background-color: $color-primary;
+    color: $color-white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color-accent;
+    }
+  }
+}
+
+.product-link {
+  text-decoration: none !important;
+  color: inherit !important;
+  border: none !important;
+  background-color: inherit !important;
+
+  .product-card {
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.product-details {
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: $color-white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
+    h2 {
+      color: $color-highlight;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      max-width: 400px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    p {
+      font-size: 16px;
+      color: $color-secondary;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      color: $color-primary;
+      margin-bottom: 20px;
+    }
+
+    .stock {
+      font-size: 16px;
+      color: $color-secondary;
+      margin-bottom: 20px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: $color-primary;
+      color: $color-white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: $color-accent;
+      }
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+
+  header div {
+    margin-top: 15px;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .product-card,
+  .service-card {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .form-container {
+    width: 90%;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  table th,
+  table td {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  header div {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .container {
+    width: 95%;
+    padding: 10px;
+  }
+
+  .product-list,
+  .service-garden,
+  .service-pool {
+    gap: 10px;
+  }
+}

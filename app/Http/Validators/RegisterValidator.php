@@ -3,68 +3,71 @@ declare(strict_types=1);
 
 namespace App\Http\Validators;
 use App\Core\Request;
-use App\Models\Client;
+use App\Models\User;
 
 class RegisterValidator
 {
-    public static function validate(Request $request): void
-    {
-        $errors = [];
+   public static function validate(Request $request): void
+   {
+       $errors = [];
 
-        // Obtener datos
-        $name = $request->name ?? '';
-        $surname = $request->surname ?? '';
-        $email = $request->email ?? '';
-        $username = $request->username ?? '';
-        $tlf = $request->tlf ?? '';
-        $password = $request->password ?? '';
-        $password_confirm = $request->password_confirm ?? '';
-        
-        // Validación de nombre
-        if (trim($name) === '') {
-            $errors['name'] = 'El nom és obligatori.';
-        }
+       // Obtener datos
+       $nom = $request->nom ?? '';
+       $email = $request->email ?? '';
+       $nomLogin = $request->nom_login ?? '';
+       $contrasena = $request->contrasena ?? '';
+       $contrasena_confirm = $request->contrasena_confirm ?? '';
+       $terms = $request->terms ?? false;  // Verificar si el checkbox está marcado
+       
+       // Validación de nombre
+       if (trim($nom) === '') {
+           $errors['nom'] = 'El nom és obligatori.';
+       }
 
-        // Validaciones de email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = 'Ha d\'introduir un email vàlid';
-        }
+       // Validación de nom_login
+       if (trim($nomLogin) === '') {
+           $errors['nom_login'] = 'El nom d\'usuari és obligatori.';
+       } elseif (User::findByUsername($nomLogin)) {
+           $errors['nom_login'] = 'Aquest nom d\'usuari ja està en ús.';
+       }
 
-        // Validación de nombre de usuario
-        if (trim($username) === '') {
-            $errors['username'] = 'El nom d\'usuari és obligatori.';
-        }
-        
-        // Validación de teléfono
-        if (trim($tlf) === '') {
-            $errors['tlf'] = 'El telèfon és obligatori.';
-        }
-        
-        // Validación de usuario existente
-        $existingUser = Client::where('nom_login', $username)->first();
-        if ($existingUser) {
-            $errors['username'] = 'Aquest nom d\'usuari ja està registrat.';
-        }
+       // Validaciones de email
+       if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+           $errors['email'] = 'Ha d\'introduir un email vàlid';
+       }
 
-        // Validaciones de contraseña
-        if (strlen($password) < 6) {
-            $errors['password'] = 'La contrasenya ha de tenir almenys 6 caràcters.';
-        }
+       if(User::findByEmail($email)){
+           $errors['email'] = 'Aquest correu ja està registrat.';
+       }
 
-        // Confirmación de contraseña
-        if ($password !== $password_confirm) {
-            $errors['password_confirm'] = 'Les contrasenyes no coincideixen.';
-        }
+       // Validaciones de contraseña
+       $contrasena_valid = strlen($contrasena) > 7 &&
+           preg_match('/[a-z]/', $contrasena) &&
+           preg_match('/[A-Z]/', $contrasena) &&
+           preg_match('/[\W]/', $contrasena);
+       
+       if (!$contrasena_valid) {
+           $errors['contrasena'] = 'La contrasenya ha de tenir almenys 8 caràcters, una majúscula, una minúscula i un caràcter especial.';
+       }
 
-        // Si hay errores, redirigir con los mensajes
-        if ($errors) {
-            back()->withErrors($errors)->withInput([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'email' => $request->email,
-                'username' => $request->username,
-                'tlf' => $request->tlf
-            ])->send();
-        }
-    }
+       // Confirmación de contraseña
+       if ($contrasena !== $contrasena_confirm) {
+           $errors['contrasena_confirm'] = 'Les contrasenyes no coincideixen.';
+       }
+
+       // Validación de términos y condiciones
+       if (!$terms) {
+           $errors['terms'] = 'Ha d\'acceptar els termes i condicions.';
+       }
+
+       // Si hay errores, redirigir con los mensajes
+       if ($errors) {
+           back()->withErrors($errors)->withInput([
+               'nom' => $request->nom,
+               'email' => $request->email,
+               'nom_login' => $request->nom_login,
+               'terms' => $request->terms
+           ])->send();
+       }
+   }
 }

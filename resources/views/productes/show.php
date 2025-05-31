@@ -1,35 +1,36 @@
 <?php
-use App\Core\Auth;
+use App\Models\Producte;
+
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header('Location: index.php');
+    exit;
+}
+
+$producte = Producte::find($id);
+if (!$producte) {
+    header('Location: index.php');
+    exit;
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalls del Producte</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/css/styles.css">
-    <script src="<?= BASE_URL ?>/js/script.js" defer></script>
-</head>
-<body>
-    <header>
-        <h1>Detalls del Producte</h1>
-        <div><a href="<?= BASE_URL ?>/index.php">Pàgina principal</a></div>
-    </header>
-
-    <div class="product-details">
-        <div class="container">
-            <h2><?= htmlspecialchars($producte->nom) ?></h2>
-            <img src="<?= BASE_URL ?>/images/<?= htmlspecialchars($producte->imatge) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
-            <p><?= htmlspecialchars($producte->descripcio) ?></p>
-            <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
-            <p class="stock">Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
-            
-            <div class="actions">
-                <button onclick="addToCart('<?= addslashes($producte->nom) ?>', <?= $producte->preu ?>)">Afegir al Carret</button>
-                <a href="<?= BASE_URL ?>/index.php" class="back-link">Tornar a la botiga</a>
-            </div>
+<div class="product-details">
+    <div class="container">
+        <h2><?= htmlspecialchars($producte->nom) ?></h2>
+        
+        <?php if ($producte->imatge): ?>
+            <img src="<?= imageUrl($producte->imatge, 400, 300) ?>" alt="<?= htmlspecialchars($producte->nom) ?>">
+        <?php endif; ?>
+        
+        <p><?= nl2br(htmlspecialchars($producte->descripcio)) ?></p>
+        <p class="price"><?= number_format($producte->preu, 2, ",", ".") ?>€</p>
+        <p class="stock">Estoc disponible: <?= number_format($producte->estoc, 0, ",", ".") ?></p>
+        
+        <div class="tooltip-container">
+            <button onclick="addToCart('<?= addslashes($producte->nom) ?>', <?= $producte->preu ?>, <?= $producte->id ?>, <?= $producte->estoc ?>)">Afegir al Carret</button>
+            <span class="tooltip-text">0 ítems - 0,00€</span>
         </div>
+        
+        <a href="index.php" class="back-link">Tornar al catàleg</a>
     </div>
-</body>
-</html>
+</div>
