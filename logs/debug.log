@@ -1,5 +1,5 @@
-=== Debug Log Started at 2025-05-31 19:13:40 ===
-[2025-05-31 19:13:40] [0.68ms] [0.41KB] [index.php:2] Debug system initialized
-[2025-05-31 19:13:40] [4.51ms] [76.99KB] [index.php:2] Bootstrap completed successfully
-[2025-05-31 19:13:40] [4.75ms] [66.2KB] [Session.php:14] Session started successfully
-[2025-05-31 19:13:40] [4.88ms] [67.11KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
+=== Debug Log Started at 2025-05-31 19:31:26 ===
+[2025-05-31 19:31:26] [0.94ms] [0.41KB] [clients.php:3] Debug system initialized
+[2025-05-31 19:31:26] [5.78ms] [78.15KB] [clients.php:3] Bootstrap completed successfully
+[2025-05-31 19:31:26] [6.25ms] [67.38KB] [Session.php:14] Session started successfully
+[2025-05-31 19:31:26] [6.4ms] [68.28KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php

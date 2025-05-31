@@ -163,4 +163,17 @@ class Client extends Model
             ->where('nom_login', '=', $nomLogin)
             ->first();
     }
+
+    /**
+     * Find a client by email
+     * 
+     * @param string $email The email to search for
+     * @return Client|null The client if found, null otherwise
+     */
+    public static function findByEmail(string $email): ?Client
+    {
+        return (new QueryBuilder(static::class))
+            ->where('email', '=', $email)
+            ->first();
+    }
 }
