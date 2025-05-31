@@ -159,7 +159,7 @@
                                 </td>
                                 <td class="px-3 py-3"><?= date('d/m/Y', strtotime($order->data_comanda)) ?></td>
                                 <td class="px-3 py-3">
-                                    <span class="fw-bold"><?= number_format($order->import_total, 2) ?> €</span>
+                                    <span class="fw-bold"><?= number_format($order->import_total ?? 0, 2) ?> €</span>
                                 </td>
                                 <td class="px-3 py-3">
                                     <span class="badge <?= $statusClass ?>"><?= $statusText ?></span>

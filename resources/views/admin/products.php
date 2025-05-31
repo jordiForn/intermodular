@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <!-- Low Stock Card -->
+        <!-- Low estoc Card -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-warning shadow h-100 py-2 stat-card">
                 <div class="card-body">
@@ -58,7 +58,7 @@
             </div>
         </div>
 
-        <!-- Out of Stock Card -->
+        <!-- Out of estoc Card -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-danger shadow h-100 py-2 stat-card">
                 <div class="card-body">
@@ -129,7 +129,7 @@
                             <th class="px-3 py-3">Nom</th>
                             <th class="px-3 py-3">Categoria</th>
                             <th class="px-3 py-3">Preu</th>
-                            <th class="px-3 py-3">Stock</th>
+                            <th class="px-3 py-3">estoc</th>
                             <th class="px-3 py-3">Accions</th>
                         </tr>
                     </thead>
@@ -139,8 +139,8 @@
                                 <td class="px-3 py-3"><?= $product->id ?></td>
                                 <td class="px-3 py-3">
                                     <img src="<?= BASE_URL ?>/images/<?= $product->imatge ?>" 
-                                         alt="<?= htmlspecialchars($product->nom) ?>" 
-                                         class="img-thumbnail" style="max-width: 50px; max-height: 50px;">
+                                        alt="<?= htmlspecialchars($product->nom) ?>" 
+                                        class="img-thumbnail" style="max-width: 50px; max-height: 50px;">
                                 </td>
                                 <td class="px-3 py-3">
                                     <div class="fw-bold"><?= htmlspecialchars($product->nom) ?></div>
@@ -154,20 +154,20 @@
                                     <span class="fw-bold"><?= number_format($product->preu, 2) ?> €</span>
                                 </td>
                                 <td class="px-3 py-3">
-                                    <?php if ($product->stock <= 0): ?>
+                                    <?php if ($product->estoc <= 0): ?>
                                         <span class="badge bg-danger">Sense estoc</span>
-                                    <?php elseif ($product->stock <= 5): ?>
-                                        <span class="badge bg-warning text-dark">Baix: <?= $product->stock ?></span>
+                                    <?php elseif ($product->estoc <= 5): ?>
+                                        <span class="badge bg-warning text-dark">Baix: <?= $product->estoc ?></span>
                                     <?php else: ?>
-                                        <span class="badge" style="background-color: #4daa57; color: white;"><?= $product->stock ?></span>
+                                        <span class="badge" style="background-color: #4daa57; color: white;"><?= $product->estoc ?></span>
                                     <?php endif; ?>
                                     
-                                    <button class="btn btn-sm btn-outline-secondary ms-2 edit-stock-btn" 
+                                    <button class="btn btn-sm btn-outline-secondary ms-2 edit-estoc-btn" 
                                             data-bs-toggle="modal" 
-                                            data-bs-target="#editStockModal" 
+                                            data-bs-target="#editestocModal" 
                                             data-product-id="<?= $product->id ?>"
                                             data-product-name="<?= htmlspecialchars($product->nom) ?>"
-                                            data-product-stock="<?= $product->stock ?>"
+                                            data-product-estoc="<?= $product->estoc ?>"
                                             title="Editar estoc">
                                         <i class="fas fa-edit"></i>
                                     </button>
@@ -175,13 +175,13 @@
                                 <td class="px-3 py-3">
                                     <div class="btn-group">
                                         <a href="<?= BASE_URL ?>/productes/edit.php?id=<?= $product->id ?>" 
-                                           class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" 
-                                           title="Editar">
+                                        class="btn btn-sm btn-outline-primary" data-bs-toggle="tooltip" 
+                                        title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="<?= BASE_URL ?>/productes/show.php?id=<?= $product->id ?>" 
-                                           class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" 
-                                           title="Veure">
+                                        class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" 
+                                        title="Veure">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         <button type="button" class="btn btn-sm btn-outline-danger delete-product" 
@@ -202,36 +202,36 @@
     </div>
 </div>
 
-<!-- Edit Stock Modal -->
-<div class="modal fade" id="editStockModal" tabindex="-1" aria-labelledby="editStockModalLabel" aria-hidden="true">
+<!-- Edit estoc Modal -->
+<div class="modal fade" id="editestocModal" tabindex="-1" aria-labelledby="editestocModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #4daa57; color: white;">
-                <h5 class="modal-title" id="editStockModalLabel">
+                <h5 class="modal-title" id="editestocModalLabel">
                     <i class="fas fa-edit me-2"></i>Actualitzar Estoc
                 </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editStockForm">
+                <form id="editestocForm">
                     <input type="hidden" id="productId" name="productId">
                     <div class="mb-3">
                         <label for="productName" class="form-label">Producte</label>
                         <input type="text" class="form-control" id="productName" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="currentStock" class="form-label">Estoc Actual</label>
-                        <input type="number" class="form-control" id="currentStock" name="currentStock" readonly>
+                        <label for="currentestoc" class="form-label">Estoc Actual</label>
+                        <input type="number" class="form-control" id="currentestoc" name="currentestoc" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="newStock" class="form-label">Nou Estoc</label>
-                        <input type="number" class="form-control" id="newStock" name="newStock" min="0" required>
+                        <label for="newestoc" class="form-label">Nou Estoc</label>
+                        <input type="number" class="form-control" id="newestoc" name="newestoc" min="0" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
-                <button type="button" class="btn btn-success" id="saveStockBtn">
+                <button type="button" class="btn btn-success" id="saveestocBtn">
                     <i class="fas fa-save me-1"></i>Guardar
                 </button>
             </div>
@@ -277,43 +277,43 @@ document.addEventListener('DOMContentLoaded', function() {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
     
-    // Edit stock modal
-    const editStockModal = document.getElementById('editStockModal');
-    if (editStockModal) {
-        editStockModal.addEventListener('show.bs.modal', function(event) {
+    // Edit estoc modal
+    const editestocModal = document.getElementById('editestocModal');
+    if (editestocModal) {
+        editestocModal.addEventListener('show.bs.modal', function(event) {
             const button = event.relatedTarget;
             const productId = button.getAttribute('data-product-id');
             const productName = button.getAttribute('data-product-name');
-            const productStock = button.getAttribute('data-product-stock');
+            const productestoc = button.getAttribute('data-product-estoc');
             
             const modalProductId = document.getElementById('productId');
             const modalProductName = document.getElementById('productName');
-            const modalCurrentStock = document.getElementById('currentStock');
-            const modalNewStock = document.getElementById('newStock');
+            const modalCurrentestoc = document.getElementById('currentestoc');
+            const modalNewestoc = document.getElementById('newestoc');
             
             modalProductId.value = productId;
             modalProductName.value = productName;
-            modalCurrentStock.value = productStock;
-            modalNewStock.value = productStock;
+            modalCurrentestoc.value = productestoc;
+            modalNewestoc.value = productestoc;
         });
     }
     
-    // Save stock button
-    const saveStockBtn = document.getElementById('saveStockBtn');
-    if (saveStockBtn) {
-        saveStockBtn.addEventListener('click', function() {
+    // Save estoc button
+    const saveestocBtn = document.getElementById('saveestocBtn');
+    if (saveestocBtn) {
+        saveestocBtn.addEventListener('click', function() {
             const productId = document.getElementById('productId').value;
-            const newStock = document.getElementById('newStock').value;
+            const newestoc = document.getElementById('newestoc').value;
             
-            // Here you would normally make an AJAX request to update the stock
+            // Here you would normally make an AJAX request to update the estoc
             // For demonstration, we'll just show an alert
-            alert(`Estoc actualitzat per al producte ID ${productId}: ${newStock} unitats`);
+            alert(`Estoc actualitzat per al producte ID ${productId}: ${newestoc} unitats`);
             
             // Close the modal
-            const modal = bootstrap.Modal.getInstance(editStockModal);
+            const modal = bootstrap.Modal.getInstance(editestocModal);
             modal.hide();
             
-            // Reload the page to show updated stock
+            // Reload the page to show updated estoc
             setTimeout(() => {
                 window.location.reload();
             }, 1000);
