@@ -528,3 +528,16 @@ Stack trace:
 #2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
 #3 {main}
 
+[2025-05-31 16:11:47] ERROR: SQLSTATE[HY000] [1045] Access denied for user 'vboxuser'@'localhost' (using password: YES)
+File: D:\xampp\htdocs\Intermodular\app\Core\DB.php Line: 36
+Stack trace:
+#0 D:\xampp\htdocs\Intermodular\app\Core\DB.php(228): App\Core\DB::connection()
+#1 D:\xampp\htdocs\Intermodular\app\Core\DB.php(114): App\Core\DB::prepare('SELECT * FROM p...', Array)
+#2 D:\xampp\htdocs\Intermodular\app\Core\QueryBuilder.php(118): App\Core\DB::select('App\\Models\\Prod...', 'SELECT * FROM p...', Array)
+#3 D:\xampp\htdocs\Intermodular\resources\views\home\index.php(11): App\Core\QueryBuilder->get()
+#4 D:\xampp\htdocs\Intermodular\app\Core\Response.php(75): require('D:\\xampp\\htdocs...')
+#5 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('home.index', Array)
+#6 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('home.index', Array)
+#7 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
+#8 {main}
+
