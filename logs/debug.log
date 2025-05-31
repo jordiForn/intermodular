@@ -1,3 +1,9 @@
+=== Debug Log Started at 2025-05-31 16:13:08 ===
+[2025-05-31 16:13:08] [0.68ms] [0.41KB] [index.php:2] Debug system initialized
+[2025-05-31 16:13:08] [4.82ms] [76.99KB] [index.php:2] Bootstrap completed successfully
+[2025-05-31 16:13:08] [5.1ms] [66.36KB] [Session.php:14] Session started successfully
+[2025-05-31 16:13:08] [5.24ms] [67.27KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
+[2025-05-31 16:13:08] [28.33ms] [154.49KB] [admin.php:179] Flash value retrieved and removed: success
 === Debug Log Started at 2025-05-31 16:27:09 ===
 [2025-05-31 16:27:09] [0.32ms] [0.41KB] [index.php:18] Debug system initialized
 [2025-05-31 16:27:09] [1.76ms] [66.34KB] [index.php:18] Bootstrap completed successfully
