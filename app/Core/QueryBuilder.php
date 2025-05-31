@@ -9,6 +9,7 @@ class QueryBuilder {
     private string $table;
     private string $whereClause = "";
     private string $orderByClause = "";
+    private string $orderByRawClause = "";
     private int $limit = 0;
     private int $offset = 0;
 
@@ -39,8 +40,10 @@ class QueryBuilder {
             $operator = $operator === "=" ? "IS" : "IS NOT";
             $this->whereClause .= "$prefix $column $operator NULL";
         } else if($this->namedPlaceholders){
-            $this->whereClause .= "$prefix $column $operator :$column";
-            $this->params[":$column"] = $value;
+            // Use a sanitized column name for the parameter to avoid SQL injection
+            $paramName = str_replace('.', '_', $column);
+            $this->whereClause .= "$prefix $column $operator :$paramName";
+            $this->params[":$paramName"] = $value;
         } else {
             $this->whereClause .= "$prefix $column $operator ?";
             $this->params[] = $value;
@@ -56,6 +59,11 @@ class QueryBuilder {
         }
 
         $this->orderByClause = " ORDER BY $column $direction";
+        return $this;
+    }
+
+    public function orderByRaw(string $expression): self {
+        $this->orderByRawClause = " ORDER BY $expression";
         return $this;
     }
 
@@ -77,8 +85,10 @@ class QueryBuilder {
         if ($this->whereClause) {
             $this->sql .= $this->whereClause;
         }
-            
-        if ($this->orderByClause) {
+        // Si hay orderByRaw, tiene prioridad
+        if ($this->orderByRawClause) {
+            $this->sql .= $this->orderByRawClause;
+        } else if ($this->orderByClause) {
             $this->sql .= $this->orderByClause;
         }
             
@@ -124,6 +134,7 @@ class QueryBuilder {
     public function count(): int {
         $this->sql = "SELECT COUNT(*) AS total FROM " . $this->table;
         $this->build();
-        return DB::selectAssoc($this->sql, $this->params)[0]['total'];
+        $result = DB::selectAssoc($this->sql, $this->params);
+        return (int)($result[0]['total'] ?? 0);
     }
 }

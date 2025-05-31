@@ -9,105 +9,158 @@ use App\Core\QueryBuilder;
 
 class Client extends Model
 {
-    protected static string $table = 'clients';
-    protected static array $fillable = ['user_id', 'nom', 'cognom', 'tlf', 'direccio', 'ciutat', 'codi_postal', 'provincia', 'pais', 'consulta', 'missatge', 'created_at', 'updated_at'];
-    protected static array $relations = ['user', 'comandes'];
-
-    /** @override */
-    public function insert(): void
+    protected static string $table = 'client';
+    protected static array $fillable = [
+        'user_id', 'nom', 'cognom', 'email', 'tlf', 'consulta', 
+        'missatge', 'nom_login', 'contrasena', 'rol', 'id_referit', 'id_referidor', 'id_fidelitat'
+    ];
+    
+    
+    public ?int $id = null;
+    public ?int $user_id = null;
+    public ?string $nom = null;
+    public ?string $cognom = null;
+    public ?string $email = null;
+    public ?string $tlf = null;
+    public ?string $consulta = null;
+    public ?string $missatge = null;
+    public ?string $nom_login = null;
+    public ?string $contrasena = null;
+    public int $rol = 0;
+    public ?int $id_referit = null;
+    public ?int $id_referidor = null;
+    public ?int $id_fidelitat = null;
+    public $orderCount = 0;
+    /**
+     * Insert a new client record
+     */
+    public function insert(): bool
     {
-        $this->created_at = date('Y-m-d H:i:s');
-        $this->updated_at = date('Y-m-d H:i:s');
-        
-        $sql = "INSERT INTO " . self::$table 
-            . " (user_id, nom, cognom, tlf, direccio, ciutat, codi_postal, provincia, pais, consulta, missatge, created_at, updated_at)"
-            . " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $params = [
-            $this->user_id,
-            $this->nom,
-            $this->cognom,
-            $this->tlf,
-            $this->direccio ?? null,
-            $this->ciutat ?? null,
-            $this->codi_postal ?? null,
-            $this->provincia ?? null,
-            $this->pais ?? null,
-            $this->consulta ?? null,
-            $this->missatge ?? null,
-            $this->created_at,
-            $this->updated_at
+        $data = [
+            'user_id' => $this->user_id,
+            'nom' => $this->nom,
+            'cognom' => $this->cognom,
+            'email' => $this->email,
+            'tlf' => $this->tlf,
+            'nom_login' => $this->nom_login,
+            'contrasena' => $this->contrasena,
+            'rol' => $this->rol
         ];
-        $this->id = DB::insert($sql, $params);
+        
+        // Add optional fields if they exist
+        if ($this->consulta !== null) {
+            $data['consulta'] = $this->consulta;
+        }
+        
+        if ($this->missatge !== null) {
+            $data['missatge'] = $this->missatge;
+        }
+        
+        if ($this->id_referit !== null) {
+            $data['id_referit'] = $this->id_referit;
+        }
+        
+        if ($this->id_referidor !== null) {
+            $data['id_referidor'] = $this->id_referidor;
+        }
+        
+        if ($this->id_fidelitat !== null) {
+            $data['id_fidelitat'] = $this->id_fidelitat;
+        }
+        
+        $this->id = DB::insert(static::$table, $data);
+        return $this->id !== null && $this->id > 0;
     }
-
-    /** @override */
-    public function update(): void
+    
+    /**
+     * Update an existing client record
+     */
+    public function update(): bool
     {
-        $this->updated_at = date('Y-m-d H:i:s');
-        
-        $sql = "UPDATE " . self::$table 
-            . " SET user_id = ?, nom = ?, cognom = ?, tlf = ?, direccio = ?, ciutat = ?, codi_postal = ?, provincia = ?, pais = ?, consulta = ?, missatge = ?, updated_at = ?"
-            . " WHERE id = ?";
-        $params = [
-            $this->user_id,
-            $this->nom,
-            $this->cognom,
-            $this->tlf,
-            $this->direccio ?? null,
-            $this->ciutat ?? null,
-            $this->codi_postal ?? null,
-            $this->provincia ?? null,
-            $this->pais ?? null,
-            $this->consulta ?? null,
-            $this->missatge ?? null,
-            $this->updated_at,
-            $this->id
+        $data = [
+            'user_id' => $this->user_id,
+            'nom' => $this->nom,
+            'cognom' => $this->cognom,
+            'email' => $this->email,
+            'tlf' => $this->tlf,
+            'nom_login' => $this->nom_login,
+            'contrasena' => $this->contrasena,
+            'rol' => $this->rol
         ];
-        DB::update($sql, $params);
+        
+        // Add optional fields if they exist
+        if ($this->consulta !== null) {
+            $data['consulta'] = $this->consulta;
+        }
+        
+        if ($this->missatge !== null) {
+            $data['missatge'] = $this->missatge;
+        }
+        
+        if ($this->id_referit !== null) {
+            $data['id_referit'] = $this->id_referit;
+        }
+        
+        if ($this->id_referidor !== null) {
+            $data['id_referidor'] = $this->id_referidor;
+        }
+        
+        if ($this->id_fidelitat !== null) {
+            $data['id_fidelitat'] = $this->id_fidelitat;
+        }
+        
+        $result = DB::update(static::$table, $data, ['id' => $this->id]);
+        return $result > 0;
     }
-
+    
+    /**
+     * Find a client by user ID
+     */
+    public static function findByUserId(int $userId): ?self
+    {
+        return (new QueryBuilder(static::class))
+            ->where('user_id', '=', $userId)
+            ->first();
+    }
+    
+    /**
+     * Get the user associated with this client
+     */
     public function user(): ?User
     {
-        return User::find($this->user_id);
-    }
-
-    public function comandes(): QueryBuilder
-    {
-        return Comanda::where('client_id', $this->id);
-    }
-
-    // Helper method to get full name
-    public function getNomComplet(): string
-    {
-        return $this->nom . ' ' . $this->cognom;
-    }
-
-    // Helper method to get full address
-    public function getAdrecaCompleta(): ?string
-    {
-        if (empty($this->direccio)) {
+        if (!$this->user_id) {
             return null;
         }
         
-        $parts = [$this->direccio];
-        
-        if (!empty($this->codi_postal) || !empty($this->ciutat)) {
-            $parts[] = trim($this->codi_postal . ' ' . $this->ciutat);
-        }
-        
-        if (!empty($this->provincia)) {
-            $parts[] = $this->provincia;
-        }
-        
-        if (!empty($this->pais)) {
-            $parts[] = $this->pais;
-        }
-        
-        return implode(', ', $parts);
+        return User::find($this->user_id);
     }
-
-    public static function findByNomLogin(string $nomLogin): ?self
+    
+    /**
+     * Get the full name of the client
+     */
+    public function fullName(): string
     {
-        return self::where('nom_login', $nomLogin)->first();
+        return trim("{$this->nom} {$this->cognom}");
+    }
+    
+    /**
+     * Check if the client is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->rol === 1;
+    }
+    
+    /**
+     * Find a client by login name
+     * 
+     * @param string $nomLogin The login name to search for
+     * @return Client|null The client if found, null otherwise
+     */
+    public static function findByNomLogin(string $nomLogin): ?Client
+    {
+        return (new QueryBuilder(static::class))
+            ->where('nom_login', '=', $nomLogin)
+            ->first();
     }
 }

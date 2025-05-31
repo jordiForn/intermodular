@@ -11,7 +11,7 @@ try {
     \App\Http\Middlewares\Security\CsrfMiddleware::generateToken();
     
     // Show cart page
-    (new ComandaController())->showCart();
+    (new ComandaController())->cart();
 } catch (Throwable $e) {
     ErrorHandler::handle($e);
 }

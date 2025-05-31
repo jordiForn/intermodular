@@ -5,41 +5,88 @@ namespace App\Http\Controllers;
 require_once __DIR__ . '/../../Models/Producte.php';
 
 use App\Core\Request;
+use App\Core\Debug;
+use App\Core\DB;
 use App\Models\Producte;
 
 class ProducteController {
 
-    public function index(Request $request)
-    {
-        $page = $request->page ?? 1;
+   public function index(Request $request)
+   {
+       try {
+           // Test database connection first
+           $dbTest = DB::testConnection();
+           if (!$dbTest['success']) {
+               // Log the database connection error
+               if (class_exists('\\App\\Core\\Debug')) {
+                   Debug::log("Database connection error in ProducteController::index: " . $dbTest['message']);
+               }
+               
+               // Show error view
+               view('errors.database', ['message' => $dbTest['message']]);
+               return;
+           }
+           
+           $page = $request->page ?? 1;
 
-        $productes = Producte::orderBy('nom')->paginate(6, $page);
-        $totalPages = ceil(Producte::count() / 6);
- 
-        view('productes.index', compact('productes', 'page', 'totalPages'));
-    }
-    
-    public function search(Request $request)
-    {
-        $q = $request->q ?? '';
-    
-        if (empty($q)) {
-            return redirect("/productes/index.php")->send();
-        }
+           // Log the query we're about to execute
+           if (class_exists('\\App\\Core\\Debug')) {
+               Debug::log("Executing paginate query for products, page: $page");
+           }
 
-        $page = $request->page ?? 1;
-        $segment = '%' . $q . '%';
+           $productes = Producte::orderBy('nom')->paginate(6, $page);
+           $totalPages = ceil(Producte::count() / 6);
+           
+           // Log the results
+           if (class_exists('\\App\\Core\\Debug')) {
+               Debug::log("Query completed, found " . count($productes) . " products, total pages: $totalPages");
+           }
 
-        $totalResults = count(Producte::where('nom', 'LIKE', $segment)->get());
-        $productes = Producte::where('nom', 'LIKE', $segment)
-                             ->limit(3)
-                             ->offset(($page - 1) * 3)
-                             ->get();
-    
-        $totalPages = ceil($totalResults / 3);
-    
-        view('productes.search', compact('productes', 'q', 'page', 'totalPages'));
-    }
+           view('productes.index', compact('productes', 'page', 'totalPages'));
+       } catch (\Throwable $e) {
+           // Log the exception
+           if (class_exists('\\App\\Core\\Debug')) {
+               Debug::log("Exception in ProducteController::index: " . $e->getMessage());
+               Debug::log("Stack trace: " . $e->getTraceAsString());
+           }
+           
+           // Show error view
+           view('errors.500', ['message' => $e->getMessage()]);
+       }
+   }
+   
+   public function search(Request $request)
+   {
+       try {
+           $q = $request->q ?? '';
+       
+           if (empty($q)) {
+               return redirect("/productes/index.php")->send();
+           }
+
+           $page = $request->page ?? 1;
+           $segment = '%' . $q . '%';
+
+           $totalResults = count(Producte::where('nom', 'LIKE', $segment)->get());
+           $productes = Producte::where('nom', 'LIKE', $segment)
+                                ->limit(3)
+                                ->offset(($page - 1) * 3)
+                                ->get();
+       
+           $totalPages = ceil($totalResults / 3);
+       
+           view('productes.search', compact('productes', 'q', 'page', 'totalPages'));
+       } catch (\Throwable $e) {
+           // Log the exception
+           if (class_exists('\\App\\Core\\Debug')) {
+               Debug::log("Exception in ProducteController::search: " . $e->getMessage());
+               Debug::log("Stack trace: " . $e->getTraceAsString());
+           }
+           
+           // Show error view
+           view('errors.500', ['message' => $e->getMessage()]);
+       }
+   }
 
     public function create()
     {

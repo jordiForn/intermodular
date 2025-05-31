@@ -10,8 +10,11 @@ try {
     // Generate CSRF token for the login form
     \App\Http\Middlewares\Security\CsrfMiddleware::generateToken();
     
+    // Create controller instance
+    $controller = new AuthController();
+    
     // Show login form
-    (new AuthController())->showLoginForm();
+    $controller->showLoginForm();
 } catch (Throwable $e) {
     ErrorHandler::handle($e);
 }

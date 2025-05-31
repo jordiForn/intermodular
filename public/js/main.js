@@ -1,52 +1,127 @@
 /**
- * Main JavaScript file
- * Initializes all functionality and provides global access to modules
+ * Initialize cart functionality
  */
+function initializeCart() {
+  // Update cart count on page load
+  updateCartCount();
 
-// Define auth variables with default values
-// These should be set by the server in the actual page
-var isLoggedIn = false;
-var isAdmin = false;
+  // Initialize tooltips for cart buttons
+  initializeTooltips();
 
-/**
- * Initialize the application when the DOM is fully loaded
- */
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("Jardineria application initialized");
+  // Add event listeners to cart buttons
+  const addToCartButtons = document.querySelectorAll(
+    ".tooltip-container button"
+  );
 
-  // Initialize first product list as visible by default
-  const productLists = document.querySelectorAll(".product-list");
-  productLists.forEach((list, index) => {
-    list.style.display = index === 0 ? "flex" : "none";
-  });
-
-  // Set up event delegation for add to cart buttons
-  document.body.addEventListener("click", (event) => {
-    // Handle add to cart button clicks
-    if (event.target.classList.contains("add-to-cart")) {
-      const productName = event.target.getAttribute("data-name");
-      const productPrice = Number.parseFloat(
-        event.target.getAttribute("data-price")
+  addToCartButtons.forEach((button, i) => {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      addToCart(
+        this.getAttribute("data-name"),
+        Number.parseFloat(this.getAttribute("data-price")),
+        Number.parseInt(this.getAttribute("data-id")),
+        Number.parseInt(this.getAttribute("data-stock"))
       );
-
-      if (productName && !isNaN(productPrice)) {
-        window.cartModule.addToCart(productName, productPrice);
-      }
-    }
+    });
   });
-});
+  /*
+  addToCartButtons.forEach((button) => {
+    console.log("Añadiendo listener");
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("Botón de añadir al carrito clicado");
+      const name = this.getAttribute("data-name");
+      const price = Number.parseFloat(this.getAttribute("data-price"));
+      const id = Number.parseInt(this.getAttribute("data-id"));
+      const stock = Number.parseInt(this.getAttribute("data-stock"));
+
+      addToCart(name, price, id, stock);
+    });
+  });
+  */
+}
 
 /**
- * Set authentication status - to be called from PHP
- * @param {boolean} loggedIn - Whether user is logged in
- * @param {boolean} admin - Whether user is an admin
+ * Update cart count in header
  */
-function setAuthStatus(loggedIn, admin) {
-  isLoggedIn = loggedIn;
-  isAdmin = admin;
-
-  // Update UI based on new auth status
-  if (window.uiModule) {
-    window.uiModule.setupAuthUI(isLoggedIn, isAdmin);
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCountElement = document.getElementById("cart-count");
+  if (cartCountElement) {
+    cartCountElement.textContent = totalItems;
   }
 }
+
+/**
+ * Initialize tooltips for cart buttons
+ */
+function initializeTooltips() {
+  const tooltipContainers = document.querySelectorAll(".tooltip-container");
+  tooltipContainers.forEach((container) => {
+    const button = container.querySelector("button");
+    const tooltip = container.querySelector(".tooltip-text");
+
+    if (button && tooltip) {
+      button.addEventListener("mouseover", () => {
+        // Get cart data from localStorage
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const totalPrice = cart.reduce(
+          (sum, item) => sum + item.price * item.quantity,
+          0
+        );
+
+        // Update tooltip text
+        tooltip.textContent = `${totalItems} ítems - ${totalPrice.toFixed(2)}€`;
+      });
+    }
+  });
+}
+
+/**
+ * Add product to cart
+ */
+
+function addToCart(name, price, id, stock) {
+  // Get existing cart or initialize empty array
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  // Check if product already in cart
+  const existingItem = cart.find((item) => item.id === id);
+
+  if (existingItem) {
+    // Don't exceed available stock
+    if (existingItem.quantity < stock) {
+      existingItem.quantity += 1;
+    } else {
+      alert("No hi ha més estoc disponible d'aquest producte");
+      return;
+    }
+  } else {
+    // Add new item
+    cart.push({
+      id: id,
+      name: name,
+      price: price,
+      quantity: 1,
+      stock: stock,
+    });
+  }
+
+  // Save updated cart
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Update cart count
+  updateCartCount();
+
+  // Show success message
+  alert(`${name} afegit al carret!`);
+}
+
+// Initialize cart when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  initializeCart();
+});

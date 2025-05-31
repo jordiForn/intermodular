@@ -4,6 +4,8 @@ declare(strict_types=1);
 use App\Core\Request;
 use App\Core\Response;
 use App\Core\Session;
+use App\Core\Debug;
+use App\Core\Auth;
 
 //
 // Instancias reutilizables relacionadas con la petición
@@ -36,6 +38,14 @@ function session(): Session
         $instance = new Session();
     }
     return $instance;
+}
+
+/**
+ * Helper function for Auth class to make it easier to use in views
+ */
+function auth(): Auth
+{
+    return new Auth();
 }
 
 //
@@ -83,7 +93,23 @@ function escapeArray(array $data): array
  */
 function view(string $view, array $data = []): void
 {
-    Response::view($view, $data);
+    try {
+        if (class_exists('\\App\\Core\\Debug')) {
+            \App\Core\Debug::log("Helper view() called for: $view");
+        }
+        
+        Response::view($view, $data);
+        
+        if (class_exists('\\App\\Core\\Debug')) {
+            \App\Core\Debug::log("Helper view() completed successfully for: $view");
+        }
+    } catch (\Throwable $e) {
+        if (class_exists('\\App\\Core\\Debug')) {
+            \App\Core\Debug::log("ERROR in helper view(): " . $e->getMessage());
+            \App\Core\Debug::log("Stack trace: " . $e->getTraceAsString());
+        }
+        throw $e;
+    }
 }
 
 /**
@@ -91,6 +117,13 @@ function view(string $view, array $data = []): void
  */
 function redirect(string $url): Response
 {
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper redirect() called for: $url");
+    }
+    // Si la URL ya es absoluta, no anteponer BASE_URL
+    if (strpos($url, 'http') === 0) {
+        return (new \App\Core\Response())->redirectToAbsolute($url);
+    }
     return Response::redirect($url);
 }
 
@@ -99,6 +132,9 @@ function redirect(string $url): Response
  */
 function back(): Response
 {
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper back() called");
+    }
     return Response::back();
 }
 
@@ -109,7 +145,41 @@ function back(): Response
  */
 function previousUrl(): string
 {
-    return $_SERVER['HTTP_REFERER'] ?? HOME;
+    $referer = $_SERVER['HTTP_REFERER'] ?? HOME;
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper previousUrl() called, returning: $referer");
+    }
+    return $referer;
+}
+
+/**
+ * Generate a URL for a given path
+ * 
+ * @param string $path The path to generate a URL for
+ * @return string The full URL
+ */
+function url(string $path = ''): string
+{
+    $baseUrl = rtrim(BASE_URL, '/');
+    $path = ltrim($path, '/');
+    
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper url() called for: $path");
+    }
+    
+    return $baseUrl . ($path ? '/' . $path : '');
+}
+
+/**
+ * Get the old input value
+ * 
+ * @param string $key The input key
+ * @param mixed $default Default value if key doesn't exist
+ * @return mixed The old input value or default
+ */
+function old(string $key, mixed $default = ''): mixed
+{
+    return session()->getFlash('old', [])[$key] ?? $default;
 }
 
 /**
@@ -123,15 +193,147 @@ function previousUrl(): string
  */
 function imageUrl(?string $imageName, int $width = 300, int $height = 300): string
 {
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper imageUrl() called for: $imageName");
+    }
+    
     if (empty($imageName)) {
+        if (class_exists('\\App\\Core\\Debug')) {
+            \App\Core\Debug::log("Empty image name, returning placeholder");
+        }
         return "/placeholder.svg?height={$height}&width={$width}";
     }
     
-    $imagePath = __DIR__ . '/../../public/images/' . $imageName;
+    $imagePath = project_path('public/images/' . $imageName);
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Checking image path: $imagePath");
+    }
     
     if (file_exists($imagePath)) {
+        if (class_exists('\\App\\Core\\Debug')) {
+            \App\Core\Debug::log("Image exists, returning URL: " . BASE_URL . '/images/' . $imageName);
+        }
         return BASE_URL . '/images/' . $imageName;
     }
     
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Image not found, returning placeholder");
+    }
     return "/placeholder.svg?height={$height}&width={$width}";
+}
+
+/**
+ * Trigger an HTTP error with the specified status code
+ * 
+ * @param int $statusCode The HTTP status code
+ * @param string|null $message Optional custom message
+ * @return void
+ */
+function http_error(int $statusCode, ?string $message = null)
+{
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper http_error() called with status: $statusCode, message: $message");
+    }
+    \App\Core\ErrorHandler::handleHttpError($statusCode, $message);
+}
+
+/**
+ * Get the absolute path to a file in the project
+ * 
+ * @param string $path Relative path from project root
+ * @return string Absolute path
+ */
+function project_path(string $path = ''): string
+{
+    // First, try to get the project root using __DIR__
+    $rootDir = null;
+    
+    // Check if we're in app/Core
+    if (basename(dirname(__DIR__)) === 'app' && basename(__DIR__) === 'Core') {
+        $rootDir = dirname(__DIR__, 2); // Go up two levels from app/Core
+    } 
+    // Check if we're in public
+    elseif (basename(__DIR__) === 'public') {
+        $rootDir = dirname(__DIR__); // Go up one level from public
+    }
+    // Check if we're in bootstrap
+    elseif (basename(__DIR__) === 'bootstrap') {
+        $rootDir = dirname(__DIR__); // Go up one level from bootstrap
+    }
+    // Check if PROJECT_ROOT is defined
+    elseif (defined('PROJECT_ROOT')) {
+        $rootDir = PROJECT_ROOT;
+    }
+    // Fallback: try to find the project root by looking for key directories
+    else {
+        // Start from the current directory and go up until we find a directory that looks like the project root
+        $currentDir = __DIR__;
+        $maxLevels = 5; // Prevent infinite loops
+        
+        for ($i = 0; $i < $maxLevels; $i++) {
+            // Check if this looks like the project root (has app, public, and resources directories)
+            if (is_dir($currentDir . '/app') && is_dir($currentDir . '/public') && is_dir($currentDir . '/resources')) {
+                $rootDir = $currentDir;
+                break;
+            }
+            
+            // Go up one level
+            $parentDir = dirname($currentDir);
+            if ($parentDir === $currentDir) {
+                // We've reached the filesystem root without finding the project root
+                break;
+            }
+            
+            $currentDir = $parentDir;
+        }
+    }
+    
+    // If we still don't have a root directory, use a best guess based on the server document root
+    if ($rootDir === null) {
+        if (isset($_SERVER['DOCUMENT_ROOT'])) {
+            // Assume the project root is one level up from the document root/intermodular/public
+            $rootDir = dirname(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']) . '/intermodular/public');
+        } else {
+            // Last resort: use the current directory
+            $rootDir = __DIR__;
+            
+            // Log this issue
+            if (function_exists('error_log')) {
+                error_log("WARNING: Could not determine project root in project_path(). Using current directory: $rootDir");
+            }
+        }
+    }
+    
+    // Normalize directory separators
+    $rootDir = str_replace('\\', '/', $rootDir);
+    $path = str_replace('\\', '/', $path);
+    
+    // Combine the root directory with the path
+    $fullPath = $rootDir . ($path ? '/' . ltrim($path, '/') : '');
+    
+    // Log the path resolution if Debug class is available
+    if (class_exists('\\App\\Core\\Debug') && method_exists('\\App\\Core\\Debug', 'log')) {
+        try {
+            \App\Core\Debug::log("Helper project_path() called for: $path, returning: $fullPath");
+        } catch (\Throwable $e) {
+            // Ignore errors in logging
+        }
+    }
+    
+    return $fullPath;
+}
+
+/**
+ * Get the URL for a public asset
+ * 
+ * @param string $path Path relative to the public directory
+ * @return string Full URL to the asset
+ */
+function asset(string $path): string
+{
+    $url = BASE_URL . '/' . ltrim($path, '/');
+    if (class_exists('\\App\\Core\\Debug')) {
+        \App\Core\Debug::log("Helper asset() called for: $path, returning: $url");
+    }
+    return $url;
 }

@@ -1,164 +1,164 @@
-/**
- * Cart Management Module
- * Handles all cart-related functionality including adding/removing items,
- * updating the cart display, and calculating totals.
- */
-
-// Initialize cart from localStorage or create empty cart
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-/**
- * Updates the cart tooltip to show current items and total
- */
-function updateTooltip() {
-  let totalItems = 0;
-  let totalPrice = 0;
-
-  cart.forEach((item) => {
-    totalItems += item.quantity;
-    totalPrice += item.price * item.quantity;
-  });
-
-  const formattedPrice = totalPrice.toFixed(2).replace(".", ",");
-
-  const tooltips = document.querySelectorAll(".tooltip-text");
-  tooltips.forEach((tooltip) => {
-    tooltip.innerText = `${totalItems} ítems - ${formattedPrice}€`;
-  });
-}
-
-/**
- * Adds a product to the cart
- * @param {string} name - Product name
- * @param {number} price - Product price
- * @param {number} id - Product ID
- * @param {number} stock - Product stock
- */
+// Function to add items to cart
+console.log("cart.js loaded");
+/*
 function addToCart(name, price, id, stock) {
-  try {
-    const existingItem = cart.find((item) => item.id === id);
+  // Get current cart from localStorage
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    if (existingItem) {
-      // Check if adding more would exceed stock
-      if (existingItem.quantity < stock) {
-        existingItem.quantity += 1;
-      } else {
-        alert(`No hi ha més estoc disponible de ${name}.`);
-        return;
-      }
+  // Check if item already exists in cart
+  const existingItemIndex = cart.findIndex((item) => item.id === id);
+
+  if (existingItemIndex !== -1) {
+    // Item exists, increase quantity if stock allows
+    if (cart[existingItemIndex].quantity < stock) {
+      cart[existingItemIndex].quantity += 1;
     } else {
-      cart.push({ id, name, price, quantity: 1 });
+      alert("No hi ha més estoc disponible per aquest producte.");
+      return;
     }
-
-    localStorage.setItem("cart", JSON.stringify(cart));
-
-    updateTooltip();
-    alert(name + " s'ha afegit al carret.");
-  } catch (error) {
-    console.error("Error adding item to cart:", error);
+  } else {
+    // Item doesn't exist, add new item
+    cart.push({
+      id: id,
+      name: name,
+      price: price,
+      quantity: 1,
+      stock: stock,
+    });
   }
+
+  // Save updated cart to localStorage
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  // Update cart count in UI
+  updateCartCount();
+
+  // Dispatch event for other components to listen
+  window.dispatchEvent(new Event("cartUpdated"));
+
+  // Show confirmation
+  alert(`${name} afegit al carret desde cart.js!`);
+}
+*/
+// Function to update cart count in UI
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Update any cart count elements
+  const cartCountElements = document.querySelectorAll(
+    ".cart-count, #cart-count"
+  );
+  cartCountElements.forEach((element) => {
+    element.textContent = totalItems;
+  });
 }
 
-/**
- * Removes an item from the cart
- * @param {number} index - Index of the item to remove
- */
-function removeFromCart(index) {
-  try {
-    index = Number.parseInt(index);
-    if (cart[index].quantity > 1) {
-      cart[index].quantity -= 1;
-    } else {
-      cart.splice(index, 1);
-    }
+// Function to render cart in cart page
+function renderCartPage() {
+  const cartItemsContainer = document.getElementById("cart-items-container");
+  const emptyCartMessage = document.getElementById("empty-cart-message");
+  const cartSubtotal = document.getElementById("cart-subtotal");
+  const cartTax = document.getElementById("cart-tax");
+  const cartTotal = document.getElementById("cart-total");
+  const checkoutButton = document.getElementById("checkout-button");
 
-    localStorage.setItem("cart", JSON.stringify(cart));
-    loadCart();
-    updateTooltip();
-  } catch (error) {
-    console.error("Error removing item from cart:", error);
-  }
-}
+  if (!cartItemsContainer) return; // Only run on cart page
 
-/**
- * Loads and displays the cart contents
- */
-function loadCart() {
-  try {
-    const cartContainer = document.getElementById("cart-items");
-    const totalElement = document.getElementById("cart-total");
+  // Load cart from localStorage
+  const cart = JSON.parse(localStorage.getItem("cart") || "[]");
 
-    if (!cartContainer || !totalElement) {
-      return; // Not on cart page
-    }
-
-    cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cartContainer.innerHTML = "";
-    let total = 0;
-
+  // Display cart items or empty cart message
+  if (cart.length === 0) {
+    cartItemsContainer.style.display = "none";
+    if (emptyCartMessage) emptyCartMessage.style.display = "block";
+    if (checkoutButton) checkoutButton.disabled = true;
+  } else {
+    // Create cart items table
+    let tableHTML = `
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Producte</th>
+            <th>Preu</th>
+            <th>Quantitat</th>
+            <th>Total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    let subtotal = 0;
     cart.forEach((item, index) => {
-      total += item.price * item.quantity;
-      const itemElement = document.createElement("div");
-      itemElement.classList.add("cart-item");
-      itemElement.innerHTML = `
-        <span>${item.name} (x${item.quantity})</span>
-        <span>${(item.price * item.quantity).toFixed(2)}€</span>
-        <button class="remove-btn" data-index="${index}">X</button>
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+      tableHTML += `
+        <tr>
+          <td>${item.name}</td>
+          <td>${item.price.toFixed(2)} €</td>
+          <td>
+            <div class="input-group input-group-sm" style="width: 120px;">
+              <button class="btn btn-outline-secondary quantity-btn" data-action="decrease" data-index="${index}">-</button>
+              <input type="text" class="form-control text-center" value="${
+                item.quantity
+              }" readonly>
+              <button class="btn btn-outline-secondary quantity-btn" data-action="increase" data-index="${index}">+</button>
+            </div>
+          </td>
+          <td>${itemTotal.toFixed(2)} €</td>
+          <td>
+            <button class="btn btn-sm btn-danger remove-item" data-index="${index}">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
       `;
-      cartContainer.appendChild(itemElement);
     });
-
-    totalElement.innerText = total.toFixed(2) + "€";
-    setupCartListeners();
-  } catch (error) {
-    console.error("Error loading cart:", error);
+    tableHTML += `
+        </tbody>
+      </table>
+    `;
+    cartItemsContainer.innerHTML = tableHTML;
+    // Calculate and display totals
+    const tax = subtotal * 0.21;
+    const total = subtotal + tax;
+    if (cartSubtotal) cartSubtotal.textContent = subtotal.toFixed(2) + " €";
+    if (cartTax) cartTax.textContent = tax.toFixed(2) + " €";
+    if (cartTotal) cartTotal.textContent = total.toFixed(2) + " €";
+    if (checkoutButton) checkoutButton.disabled = false;
+    // Add event listeners for quantity buttons
+    document.querySelectorAll(".quantity-btn").forEach((button) => {
+      button.addEventListener("click", function () {
+        const index = parseInt(this.getAttribute("data-index"));
+        const action = this.getAttribute("data-action");
+        if (action === "increase") {
+          if (cart[index].quantity < cart[index].stock) {
+            cart[index].quantity += 1;
+          }
+        } else if (action === "decrease") {
+          if (cart[index].quantity > 1) {
+            cart[index].quantity -= 1;
+          }
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCartPage();
+        updateCartCount();
+      });
+    });
+    // Add event listeners for remove buttons
+    document.querySelectorAll(".remove-item").forEach((button) => {
+      button.addEventListener("click", function () {
+        const index = parseInt(this.getAttribute("data-index"));
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderCartPage();
+        updateCartCount();
+      });
+    });
   }
 }
 
-/**
- * Sets up event listeners for cart item removal
- */
-function setupCartListeners() {
-  document.querySelectorAll(".remove-btn").forEach((button) => {
-    button.addEventListener("click", function () {
-      const index = this.getAttribute("data-index");
-      removeFromCart(index);
-    });
-  });
-}
-
-/**
- * Updates the hidden total input for form submission
- */
-function getTotal() {
-  const hiddenTotalInput = document.getElementById("cart-total-hidden");
-  if (!hiddenTotalInput) return;
-
-  let total = 0;
-  cart.forEach((item) => {
-    total += item.price * item.quantity;
-  });
-  hiddenTotalInput.value = total.toFixed(2);
-}
-
-// Initialize tooltip on page load
 document.addEventListener("DOMContentLoaded", () => {
-  updateTooltip();
-
-  // Load cart if on cart page
-  if (
-    window.location.pathname.includes("cart.php") ||
-    window.location.pathname.includes("cart.html")
-  ) {
-    loadCart();
-  }
+  updateCartCount();
+  renderCartPage();
 });
-
-// Export functions for use in other modules
-window.cartModule = {
-  addToCart,
-  removeFromCart,
-  loadCart,
-  getTotal,
-  updateTooltip,
-};

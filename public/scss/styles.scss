@@ -7,6 +7,140 @@ $color-accent: #b5dda4;
 $color-white: white;
 $color-border: #754668;
 
+.bg-success,
+.btn-success,
+.badge.bg-success {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+}
+.text-success,
+.btn-outline-success,
+.badge.text-bg-success {
+  color: $color-primary !important;
+  border-color: $color-primary !important;
+}
+.btn-outline-success {
+  background-color: transparent !important;
+}
+.bg-light {
+  background-color: $color-bg !important;
+}
+.bg-gradient {
+  background-image: linear-gradient(
+    90deg,
+    $color-primary 60%,
+    $color-secondary 100%
+  ) !important;
+}
+.bg-highlight {
+  background-color: $color-highlight !important;
+}
+.text-highlight {
+  color: $color-highlight !important;
+}
+.border-highlight {
+  border-color: $color-highlight !important;
+}
+.btn-primary {
+  background-color: $color-highlight !important;
+  border-color: $color-highlight !important;
+  color: $color-white !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+}
+.btn-outline-light {
+  border-color: $color-white !important;
+  color: $color-white !important;
+}
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: $color-white !important;
+  color: $color-highlight !important;
+}
+
+// Efectos para todos los botones personalizados
+.btn,
+.btn-success,
+.btn-outline-success,
+.btn-primary,
+.btn-outline-light,
+.btn-light {
+  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+// Botón principal (btn-primary)
+.btn-primary {
+  background-color: $color-highlight !important;
+  border-color: $color-highlight !important;
+  color: $color-white !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(117, 70, 104, 0.15);
+}
+
+// Botón éxito (btn-success)
+.btn-success {
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
+  color: $color-white !important;
+}
+.btn-success:hover,
+.btn-success:focus {
+  background-color: $color-secondary !important;
+  border-color: $color-secondary !important;
+  color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(77, 170, 87, 0.15);
+}
+
+// Botón outline-success
+.btn-outline-success {
+  color: $color-primary !important;
+  border-color: $color-primary !important;
+  background: transparent !important;
+}
+.btn-outline-success:hover,
+.btn-outline-success:focus {
+  background-color: $color-primary !important;
+  color: $color-white !important;
+  border-color: $color-primary !important;
+  box-shadow: 0 0 0 0.2rem rgba(77, 170, 87, 0.15);
+}
+
+// Botón outline-light
+.btn-outline-light {
+  color: $color-white !important;
+  border-color: $color-white !important;
+  background: transparent !important;
+}
+.btn-outline-light:hover,
+.btn-outline-light:focus {
+  background-color: $color-white !important;
+  color: $color-highlight !important;
+  border-color: $color-white !important;
+  box-shadow: 0 0 0 0.2rem rgba(249, 236, 204, 0.15);
+}
+
+// Botón light
+.btn-light {
+  background-color: $color-bg !important;
+  color: $color-highlight !important;
+  border-color: $color-bg !important;
+}
+.btn-light:hover,
+.btn-light:focus {
+  background-color: $color-accent !important;
+  color: $color-highlight !important;
+  border-color: $color-accent !important;
+  box-shadow: 0 0 0 0.2rem rgba(181, 221, 164, 0.15);
+}
+
 // Mixins
 @mixin button-style($bg-color, $hover-color) {
   background-color: $bg-color;
@@ -48,13 +182,32 @@ body {
   }
 }
 
+.container,
+main {
+  margin-top: 120px; // Ajusta según la altura real del header
+}
+
+header nav {
+  width: 100%;
+}
+header ul.nav {
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+header ul.nav .nav-item {
+  margin: 0 10px;
+}
+
 header {
-  display: flex;
+  flex-direction: row !important;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: $color-highlight;
-  height: 100px;
+  background-color: $color-highlight !important;
+  height: auto;
+  left: 0;
+  top: 0;
+  z-index: 1000;
 
   h1 {
     color: $color-white;
@@ -156,6 +309,10 @@ header {
     border-radius: 5px;
     background-color: $color-accent;
   }
+
+  .mt-4 {
+    margin-top: 40px;
+  }
 }
 
 // Component styles
@@ -221,6 +378,10 @@ header {
   &.active {
     display: flex;
   }
+}
+
+h3 {
+  color: $color-primary;
 }
 
 .product-card,
@@ -512,6 +673,7 @@ table {
   header div {
     margin-top: 15px;
     gap: 15px;
+    flex-wrap: wrap;
   }
 
   .product-card,

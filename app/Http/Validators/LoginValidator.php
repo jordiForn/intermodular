@@ -2,35 +2,38 @@
 declare(strict_types=1);
 
 namespace App\Http\Validators;
+
 use App\Core\Request;
+use App\Models\User;
 
 class LoginValidator
 {
-    public static function validate(Request $request): void
+    public static function validate(Request $request): array
     {
         $errors = [];
-
-        $nomLogin = $request->nom_login ?? '';
-        $contrasena = $request->contrasena ?? '';
-
-        $nomLoginValid = trim($nomLogin) !== '';
-        $contrasenaValid = strlen($contrasena) > 7 &&
-            preg_match('/[a-z]/', $contrasena) &&
-            preg_match('/[A-Z]/', $contrasena) &&
-            preg_match('/[\W]/', $contrasena);
-    
-        if (!$nomLoginValid) {
-            $errors['nom_login'] = 'El nom d\'usuari és obligatori';
+        
+        // Validate username
+        $username = $request->input('username');
+        if (empty($username)) {
+            $errors['username'] = 'Username is required';
         }
-
-        if (!$contrasenaValid) {
-            $errors['contrasena'] = 'La contrasenya ha de tenir almenys 8 caràcters, una majúscula, una minúscula i un caràcter especial.';
+        
+        // Validate password
+        $password = $request->input('password');
+        if (empty($password)) {
+            $errors['password'] = 'Password is required';
         }
-
-        if ($errors) {
-            back()->withErrors($errors)->withInput([
-                'nom_login' => $request->nom_login,
-            ])->send();
+        
+        // Check if user exists
+        if (empty($errors)) {
+            $user = User::findByUsername($username);
+            if (!$user) {
+                $errors['username'] = 'User not found';
+            } elseif (!password_verify($password, $user->password)) {
+                $errors['password'] = 'Invalid password';
+            }
         }
+        
+        return $errors;
     }
 }

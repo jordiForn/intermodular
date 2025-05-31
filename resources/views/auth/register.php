@@ -6,7 +6,7 @@
                     <h4 class="mb-0">Registre d'usuari</h4>
                 </div>
                 <div class="card-body">
-                    <?php include __DIR__ . '/../partials/messages.php'; ?>
+                    <?php include __DIR__ . '/../partials/message.php'; ?>
                     <?php include __DIR__ . '/../partials/errors.php'; ?>
                     
                     <form action="<?= BASE_URL ?>/auth/register.php" method="POST">

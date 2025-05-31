@@ -1,4 +1,3 @@
-
 <?php
 declare(strict_types=1);
 
@@ -20,12 +19,26 @@ class Request
         $this->server = $_SERVER;
         
         // Apply global middleware
-        MiddlewareRegistry::applyGlobalMiddleware($this);
+        if (class_exists('App\Http\Middlewares\MiddlewareRegistry')) {
+            MiddlewareRegistry::applyGlobalMiddleware($this);
+        }
     }
 
     public function __get(string $key): mixed
     {
         return $this->data[$key] ?? null;
+    }
+    
+    /**
+     * Get an input value from the request
+     * 
+     * @param string $key The input key
+     * @param mixed $default Default value if key doesn't exist
+     * @return mixed The input value or default
+     */
+    public function input(string $key, mixed $default = null): mixed
+    {
+        return $this->data[$key] ?? $default;
     }
 
     public function file(string $key): ?array
@@ -77,6 +90,19 @@ class Request
      */
     public function middleware(array $middleware): ?Response
     {
-        return MiddlewareRegistry::apply($this, $middleware);
+        if (class_exists('App\Http\Middlewares\MiddlewareRegistry')) {
+            return MiddlewareRegistry::apply($this, $middleware);
+        }
+        return null;
+    }
+    
+    /**
+     * Get all input data
+     * 
+     * @return array All input data
+     */
+    public function all(): array
+    {
+        return $this->data;
     }
 }

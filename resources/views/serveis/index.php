@@ -1,7 +1,7 @@
 <div class="container mt-4">
     <h1 class="mb-4">Els nostres serveis</h1>
     
-    <?php include __DIR__ . '/../partials/messages.php'; ?>
+    <?php include __DIR__ . '/../partials/message.php'; ?>
     
     <div class="row mb-4">
         <div class="col-md-6">
@@ -23,8 +23,6 @@
             </div>
         </div>
     </div>
-    
-    <h2 class="mb-3">Tots els serveis</h2>
     
     <div class="row">
         <?php foreach ($serveis as $servei): ?>
