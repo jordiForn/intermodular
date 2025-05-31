@@ -528,3 +528,22 @@ Stack trace:
 #2 D:\xampp\htdocs\Intermodular\public\index.php(41): view('home.index')
 #3 {main}
 
+[2025-05-31 13:37:40] ERROR: SQLSTATE[HY000] [1698] Access denied for user 'root'@'localhost'
+File: /var/www/html/intermodular/app/Core/DB.php Line: 36
+Stack trace:
+#0 /var/www/html/intermodular/app/Core/DB.php(228): App\Core\DB::connection()
+#1 /var/www/html/intermodular/app/Core/DB.php(114): App\Core\DB::prepare()
+#2 /var/www/html/intermodular/app/Core/QueryBuilder.php(118): App\Core\DB::select()
+#3 /var/www/html/intermodular/resources/views/home/index.php(11): App\Core\QueryBuilder->get()
+#4 /var/www/html/intermodular/app/Core/Response.php(75): require('...')
+#5 /var/www/html/intermodular/app/Core/Response.php(29): App\Core\Response::loadView()
+#6 /var/www/html/intermodular/app/Core/helpers.php(101): App\Core\Response::view()
+#7 /var/www/html/intermodular/public/index.php(41): view()
+#8 {main}
+
+[2025-05-31 14:36:20] ERROR: syntax error, unexpected token "(", expecting ":"
+File: /var/www/html/intermodular/config/config.php Line: 5
+Stack trace:
+#0 /var/www/html/intermodular/public/index.php(18): require_once()
+#1 {main}
+
