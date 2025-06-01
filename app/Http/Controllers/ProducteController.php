@@ -228,32 +228,109 @@ class ProducteController {
             return;
         }
         
-        $producte = Producte::findOrFail($id);
-        $title = 'Editar Producte - Intermodular Admin';
-        
-        // Render the edit view using the admin layout
-        $this->renderAdminView('productes.edit', compact('title', 'producte'));
+        try {
+            $producte = Producte::findOrFail($id);
+            $title = 'Editar Producte - Intermodular Admin';
+            
+            // Render the edit view using the admin layout
+            $this->renderAdminView('productes.edit', compact('title', 'producte'));
+        } catch (\Throwable $e) {
+            Debug::log("Exception in ProducteController::edit: " . $e->getMessage());
+            redirect('/admin/products.php')
+                ->with('error', 'Error al carregar el producte: ' . $e->getMessage())
+                ->send();
+        }
     }
 
     public function update(Request $request)
     {
-        $producte = Producte::findOrFail($request->id);
-        $producte->nom = $request->nom;
-        $producte->descripcio = $request->descripcio;
-        $producte->preu = $request->preu;
-        $producte->estoc = $request->estoc;
-        $producte->categoria = $request->categoria;
-        $producte->imatge = $request->imatge;
-        $producte->detalls = $request->detalls;
-        $producte->save();
-        redirect('/productes/index.php')->with('success', 'Producte modificat amb èxit')->send();
+        try {
+            Debug::log("ProducteController::update called");
+            // Ensure user is authenticated and has admin privileges
+            if (!Auth::check() || !Auth::isAdmin()) {
+                Debug::log("User not authenticated or not admin");
+                redirect('/auth/show-login.php?error=unauthorized')->send();
+                return;
+            }
+            
+            // Find the product
+            $producte = Producte::findOrFail($request->id);
+            Debug::log("Found product: " . $producte->nom);
+            
+            // Validate the request data
+            ProducteValidator::validate($request);
+            
+            // Update product fields
+            $producte->nom = trim($request->nom);
+            $producte->descripcio = trim($request->descripcio);
+            $producte->preu = (float)$request->preu;
+            $producte->estoc = (int)$request->estoc;
+            $producte->categoria = trim($request->categoria);
+            $producte->imatge = trim($request->imatge);
+            $producte->detalls = trim($request->detalls);
+            // Save the changes
+            $success = $producte->save();
+            if (!$success) {
+                throw new \Exception("Failed to update product in database");
+            }
+            
+            Debug::log("Product updated successfully");
+            
+            // Redirect to admin products page with success message
+            redirect('/admin/products.php')
+                ->with('success', 'Producte actualitzat amb èxit')
+                ->send();
+                
+        } catch (\Throwable $e) {
+            Debug::log("Exception in ProducteController::update: " . $e->getMessage());
+            Debug::log("Stack trace: " . $e->getTraceAsString());
+            
+            // Redirect back to edit page with error message
+            redirect("/productes/edit.php?id=" . ($request->id ?? ''))
+                ->with('error', 'Error al actualitzar el producte: ' . $e->getMessage())
+                ->send();
+        }
     }
 
     public function destroy(string $id)
     {
-        $producte = Producte::findOrFail($id);
-        $producte->delete();
-        redirect('/productes/index.php')->with('success', 'Producte eliminat amb èxit')->send();
+        try {
+            Debug::log("ProducteController::destroy called with ID: $id");
+        
+            // Ensure user is authenticated and has admin privileges
+            if (!Auth::check() || !Auth::isAdmin()) {
+                Debug::log("User not authenticated or not admin");
+                redirect('/auth/show-login.php?error=unauthorized')->send();
+                return;
+            }
+        
+            // Find the product
+            $producte = Producte::findOrFail($id);
+            Debug::log("Found product: " . $producte->nom);
+        
+            // Delete the product
+            $success = $producte->delete();
+        
+            if (!$success) {
+                throw new \Exception("Failed to delete product from database");
+            }
+        
+            Debug::log("Product deleted successfully");
+        
+            // Redirect to admin products page with success message
+            redirect('/admin/products.php')
+                ->with('success', 'Producte eliminat amb èxit')
+                ->send();
+            
+        } catch (\Throwable $e) {
+            Debug::log("Exception in ProducteController::destroy: " . $e->getMessage());
+            Debug::log("Stack trace: " . $e->getTraceAsString());
+        
+            // Redirect to admin products page with error message
+            redirect('/admin/products.php')
+                ->with('error', 'Error al eliminar el producte: ' . $e->getMessage())
+                ->send();
+        }
     }
 
     public function byCategory(Request $request)

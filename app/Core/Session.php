@@ -137,6 +137,14 @@ class Session {
     }
 
     /**
+     * Alias for flash() method to maintain compatibility
+     * Sets a flash value that will be available for the next request only
+     */
+    public function setFlash(string $key, $value): void {
+        $this->flash($key, $value);
+    }
+
+    /**
      * Verifica si existe un valor flash.
      */
     public function hasFlash(string $key): bool {

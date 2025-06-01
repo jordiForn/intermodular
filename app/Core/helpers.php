@@ -337,3 +337,37 @@ function asset(string $path): string
     }
     return $url;
 }
+
+/**
+ * Set a flash message
+ * 
+ * @param string $key The flash message key
+ * @param mixed $value The flash message value
+ * @return void
+ */
+function flash(string $key, mixed $value): void
+{
+    session()->flash($key, $value);
+}
+
+/**
+ * Set a success flash message
+ * 
+ * @param string $message The success message
+ * @return void
+ */
+function flashSuccess(string $message): void
+{
+    session()->flash('success', $message);
+}
+
+/**
+ * Set an error flash message
+ * 
+ * @param string $message The error message
+ * @return void
+ */
+function flashError(string $message): void
+{
+    session()->flash('error', $message);
+}

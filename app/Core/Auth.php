@@ -137,4 +137,32 @@ class Auth
         
         return $user->role === 'admin';
     }
+
+    /**
+     * Get the current user's role
+     */
+    public static function role(): ?string
+    {
+        $user = self::user();
+        
+        if (!$user) {
+            return null;
+        }
+        
+        return $user->role;
+    }
+
+    /**
+     * Get the current user's ID
+     */
+    public static function id(): ?int
+    {
+        $user = self::user();
+        
+        if (!$user) {
+            return null;
+        }
+        
+        return $user->id;
+    }
 }

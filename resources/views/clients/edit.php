@@ -33,7 +33,7 @@ foreach ($fields as $field) {
                         </div>
                     <?php endif; ?>
 
-                    <form action="/clients/update.php" method="POST" novalidate>
+                    <form action="<?= BASE_URL ?>/clients/update.php" method="POST" class="needs-validation" novalidate>
                         <input type="hidden" name="id" value="<?= $client->id ?>">
                         <?php include __DIR__ . '/_form.php'; ?>
                         

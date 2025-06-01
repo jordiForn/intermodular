@@ -697,4 +697,6 @@ Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
 #3 D:\xampp\htdocs\Intermodular\public\productes\create.php(14): App\Core\Request->middleware(Array)
 #4 {main}Call to undefined method App\Core\Auth::role()
 #0 D:\xampp\htdocs\Intermodular\public\productes\destroy.php(12): App\Http\Middlewares\Middleware::role(Array)
+#1 {main}Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\public\productes\destroy.php(12): App\Http\Middlewares\Middleware::role(Array)
 #1 {main}

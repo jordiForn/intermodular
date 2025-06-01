@@ -179,11 +179,7 @@
                                         title="Editar">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a href="<?= BASE_URL ?>/productes/show.php?id=<?= $product->id ?>" 
-                                        class="btn btn-sm btn-outline-info" data-bs-toggle="tooltip" 
-                                        title="Veure">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
+                                        
                                         <button type="button" class="btn btn-sm btn-outline-danger delete-product" 
                                                 data-product-id="<?= $product->id ?>"
                                                 data-product-name="<?= htmlspecialchars($product->nom) ?>"
@@ -323,7 +319,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Delete product modal
     const deleteButtons = document.querySelectorAll('.delete-product');
     deleteButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             const productId = this.getAttribute('data-product-id');
             const productName = this.getAttribute('data-product-name');
             
@@ -358,8 +355,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Category filter
     const categoryLinks = document.querySelectorAll('[data-category]');
     categoryLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
+        link.addEventListener('click', function() {
             const category = this.getAttribute('data-category');
             const rows = document.querySelectorAll('#productsTable tbody tr');
             

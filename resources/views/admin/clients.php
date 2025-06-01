@@ -84,7 +84,7 @@
                                                title="Veure detalls">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <a href="/clients/edit.php?id=<?= $client->id ?>" 
+                                            <a href="<?= BASE_URL ?>/clients/edit.php?id=<?= $client->id ?>"
                                                class="btn btn-sm btn-outline-primary" 
                                                title="Editar">
                                                 <i class="fas fa-edit"></i>
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Update modal content
             document.getElementById('clientName').textContent = clientName;
-            document.getElementById('deleteForm').action = '/clients/destroy.php?id=' + clientId;
+            document.getElementById('deleteForm').action = '<?= BASE_URL ?>/clients/destroy.php?id=' + clientId;
             
             // Show modal
             new bootstrap.Modal(document.getElementById('deleteModal')).show();

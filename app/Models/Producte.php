@@ -100,66 +100,47 @@ class Producte extends Model
     /** @override */
     public function update(): bool
     {
-        try {
-            Debug::log("Starting product update for ID: " . ($this->id ?? 'unknown'));
-            
-            if (empty($this->id)) {
-                throw new \Exception("Cannot update product without ID");
-            }
-            
-            // Ensure all required fields have values
-            $nom = trim($this->nom ?? '');
-            $descripcio = trim($this->descripcio ?? '');
-            $preu = (float)($this->preu ?? 0);
-            $estoc = (int)($this->estoc ?? 0);
-            $categoria = trim($this->categoria ?? '');
-            $imatge = trim($this->imatge ?? '');
-            $detalls = trim($this->detalls ?? '');
-            
-            // Validate required fields
-            if (empty($nom)) {
-                throw new \Exception("Product name is required");
-            }
-            if (empty($descripcio)) {
-                throw new \Exception("Product description is required");
-            }
-            if (empty($categoria)) {
-                throw new \Exception("Product category is required");
-            }
-            if ($preu <= 0) {
-                throw new \Exception("Product price must be greater than 0");
-            }
-            if ($estoc < 0) {
-                throw new \Exception("Product stock cannot be negative");
-            }
-            
-            $sql = "UPDATE `" . self::$table . "` SET `nom` = ?, `descripcio` = ?, `preu` = ?, `estoc` = ?, `categoria` = ?, `imatge` = ?, `detalls` = ? WHERE `id` = ?";
-            
-            $params = [
-                $nom,
-                $descripcio,
-                $preu,
-                $estoc,
-                $categoria,
-                $imatge,
-                $detalls,
-                $this->id
-            ];
-            
-            Debug::log("SQL Query: " . $sql);
-            Debug::log("Parameters: " . json_encode($params, JSON_UNESCAPED_UNICODE));
-            
-            $result = DB::update($sql, $params);
-            
-            Debug::log("Product updated successfully");
-            return true;
-            
-        } catch (\Throwable $e) {
-            Debug::log("Error updating product: " . $e->getMessage());
-            Debug::log("Stack trace: " . $e->getTraceAsString());
-            throw new \Exception("Database update failed: " . $e->getMessage());
+    try {
+        Debug::log("Starting product update for ID: " . ($this->id ?? 'unknown'));
+
+        if (empty($this->id)) {
+            throw new \Exception("Cannot update product without ID");
         }
+
+        $data = [
+            'nom'        => trim($this->nom ?? ''),
+            'descripcio' => trim($this->descripcio ?? ''),
+            'preu'       => (float)($this->preu ?? 0),
+            'estoc'      => (int)($this->estoc ?? 0),
+            'categoria'  => trim($this->categoria ?? ''),
+            'imatge'     => trim($this->imatge ?? ''),
+            'detalls'    => trim($this->detalls ?? '')
+        ];
+
+        // Validaciones...
+        if (empty($data['nom'])) throw new \Exception("Product name is required");
+        if (empty($data['descripcio'])) throw new \Exception("Product description is required");
+        if (empty($data['categoria'])) throw new \Exception("Product category is required");
+        if ($data['preu'] <= 0) throw new \Exception("Product price must be greater than 0");
+        if ($data['estoc'] < 0) throw new \Exception("Product stock cannot be negative");
+
+        // Llama a DB::update con where como string y valores aparte
+        $result = DB::update(
+            self::$table,
+            $data,
+            'id = ?',
+            [$this->id]
+        );
+
+        Debug::log("Product updated successfully");
+        return (bool)$result;
+
+    } catch (\Throwable $e) {
+        Debug::log("Error updating product: " . $e->getMessage());
+        Debug::log("Stack trace: " . $e->getTraceAsString());
+        throw new \Exception("Database update failed: " . $e->getMessage());
     }
+}
 
     public static function withCategoria(string $categoria): QueryBuilder
     {
