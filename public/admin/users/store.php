@@ -1,12 +1,13 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../../../bootstrap/bootstrap.php';
-
+require_once __DIR__ . '/../../../app/Http/Controllers/AuthController.php';
 use App\Core\Auth;
 use App\Core\Response;
 use App\Core\Request;
 use App\Models\User;
 use App\Core\Debug;
-
+use App\Http\Controllers\AuthController;
 // Check if user is authenticated and is an admin
 if (!Auth::check() || !Auth::isAdmin()) {
     Response::redirect('/auth/show-login.php', ['error' => 'Accés denegat. Has d\'iniciar sessió com a administrador.']);
@@ -14,7 +15,7 @@ if (!Auth::check() || !Auth::isAdmin()) {
 }
 
 $request = new Request();
-
+//var_dump($request->all()); exit;
 // Validate input
 $errors = [];
 
@@ -48,6 +49,22 @@ if (empty($request->role) || !in_array($request->role, $validRoles)) {
 }
 
 // If there are errors, redirect back with errors
+
+
+$data = [
+    'username' => $request->username,
+    'email' => $request->email,
+    'password' => $request->password,
+    'role' => $request->role,
+];
+$user = AuthController::adminRegisterUser($data);
+
+if ($user) {
+    redirect('/admin/users/index.php')->with('success', 'Usuari creat correctament.')->send();
+} else {
+    back()->with('error', 'Error en crear l\'usuari.')->withInput($data)->send();
+}
+
 if (!empty($errors)) {
     back()->withErrors($errors)->withInput([
         'username' => $request->username,
@@ -56,33 +73,4 @@ if (!empty($errors)) {
     ])->send();
     exit;
 }
-
-try {
-    // Create new user
-    $user = new User();
-    $user->username = $request->username;
-    $user->email = $request->email;
-    $user->password = password_hash($request->password, PASSWORD_DEFAULT);
-    $user->role = $request->role;
-    $user->created_at = date('Y-m-d H:i:s');
-    $user->updated_at = date('Y-m-d H:i:s');
-    
-    if ($user->save()) {
-        // Redirect to users list with success message
-        redirect('/admin/users/index.php')->with('success', 'Usuari creat correctament.')->send();
-    } else {
-        // Redirect back with error
-        back()->with('error', 'Error en crear l\'usuari.')->withInput([
-            'username' => $request->username,
-            'email' => $request->email,
-            'role' => $request->role
-        ])->send();
-    }
-} catch (\Exception $e) {
-    Debug::log("Error creating user: " . $e->getMessage());
-    back()->with('error', 'Error en crear l\'usuari: ' . $e->getMessage())->withInput([
-        'username' => $request->username,
-        'email' => $request->email,
-        'role' => $request->role
-    ])->send();
-}
+ob_end_flush();

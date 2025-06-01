@@ -21,7 +21,7 @@ class ComandaController
         $comandes = Comanda::all();
         view('comandes.index', ['comandes' => $comandes]);
     }
-    
+
     public function myOrders(): void
     {
         // Check if user is logged in
@@ -101,7 +101,7 @@ class ComandaController
         $comanda->client_id = Auth::user()->client()->id;
         $comanda->data_comanda = date('Y-m-d H:i:s');
         $comanda->total = $request->total;
-        $comanda->estat = 'Pendent';
+        $comanda->estat = 'pendent';
         $comanda->direccio_enviament = $request->direccio_enviament;
         $comanda->insert();
         
@@ -267,6 +267,7 @@ class ComandaController
     
     public function checkout(): void
     {
+        if (session_status() === PHP_SESSION_NONE) session_start();
         // Check if user is logged in
         if (!Auth::check()) {
             session()->put('intended_url', '/comandes/checkout.php');
@@ -276,7 +277,6 @@ class ComandaController
         }
         
         $cart = session()->get('cart', []);
-        
         if (empty($cart)) {
             session()->flash('error', 'El carret està buit.');
             redirect('/comandes/cart.php')->send();
@@ -311,50 +311,64 @@ class ComandaController
     }
     
     public function processOrder(Request $request): void
-    {
-        // Check if user is logged in
-        if (!Auth::check()) {
-            session()->put('intended_url', '/comandes/checkout.php');
-            session()->flash('error', 'Has d\'iniciar sessió per finalitzar la compra.');
-            redirect('/auth/show-login.php')->send();
-            return;
-        }
-        
-        $cart = session()->get('cart', []);
-        
-        if (empty($cart)) {
-            session()->flash('error', 'El carret està buit.');
-            redirect('/comandes/cart.php')->send();
-            return;
-        }
-        
-        // Calculate total
-        $total = 0;
-        
-        foreach ($cart as $productId => $quantity) {
-            $product = Producte::find($productId);
-            
-            if ($product) {
-                $total += $product->preu * $quantity;
-            }
-        }
-        
-        // Create order
-        $comanda = new Comanda();
-        $comanda->client_id = Auth::user()->client()->id;
-        $comanda->data_comanda = date('Y-m-d H:i:s');
-        $comanda->total = $total;
-        $comanda->estat = 'Pendent';
-        $comanda->direccio_enviament = $request->direccio_enviament;
-        $comanda->notes = $request->notes ?? null;
-        $comanda->insert();
-        
-        // Clear cart
-        session()->forget('cart');
-        
-        // Redirect to confirmation
-        redirect('/comandes/confirmation.php?id=' . $comanda->id)->send();
+{
+    // Check if user is logged in
+    if (!Auth::check()) {
+        session()->put('intended_url', '/comandes/checkout.php');
+        session()->flash('error', 'Has d\'iniciar sessió per finalitzar la compra.');
+        redirect('/auth/show-login.php')->send();
+        return;
     }
+
+    $cart = session()->get('cart', []);
+
+    if (empty($cart)) {
+        session()->flash('error', 'El carret està buit.');
+        redirect('/comandes/cart.php')->send();
+        return;
+    }
+
+    // Calculate total
+    $total = 0;
+    foreach ($cart as $productId => $quantity) {
+        $product = Producte::find($productId);
+        if ($product) {
+            $total += $product->preu * $quantity;
+        }
+    }
+
+    // Concatenar missatge del client
+    $client = Auth::user()->client();
+    $nouMissatge = trim($request->missatge ?? '');
+    $missatgeAnterior = $client->missatge ?? '';
+
+    if ($nouMissatge !== '') {
+        if ($missatgeAnterior !== '') {
+            $missatgeFinal = $missatgeAnterior . ' | ' . $nouMissatge;
+        } else {
+            $missatgeFinal = $nouMissatge;
+        }
+        $client->missatge = $missatgeFinal;
+        $client->save();
+    }
+
+    // Crear comanda
+    $comanda = new Comanda();
+    $comanda->client_id = $client->id;
+    $comanda->data_comanda = date('Y-m-d H:i:s');
+    $comanda->total = $total;
+    $comanda->estat = 'pendent';
+    $comanda->direccio_enviament = $request->direccio_enviament;
+    // Si quieres guardar el missatge también en la comanda, añade:
+    // $comanda->missatge = $nouMissatge;
+    $comanda->insert();
+
+    // Clear cart
+    session()->forget('cart');
+
+    // Redirect to confirmation
+    redirect('/comandes/confirmation.php?id=' . $comanda->id)->send();
+}
     
     public function confirmation(int $id): void
     {

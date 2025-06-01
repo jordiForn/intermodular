@@ -47,6 +47,8 @@ class Session {
         }
     }
 
+    
+
     /**
      * Obtiene un valor de la sesión
      */
@@ -132,6 +134,14 @@ class Session {
         if (class_exists('\\App\\Core\\Debug')) {
             Debug::log("Flash value set: $key");
         }
+    }
+
+    /**
+     * Alias for flash() method to maintain compatibility
+     * Sets a flash value that will be available for the next request only
+     */
+    public function setFlash(string $key, $value): void {
+        $this->flash($key, $value);
     }
 
     /**

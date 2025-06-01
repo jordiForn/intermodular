@@ -15,23 +15,21 @@ class Comanda extends Model
 
     /** @override */
     public function insert(): bool
-    {
-        if (!isset($this->data_comanda)) {
-            $this->data_comanda = date('Y-m-d H:i:s');
-        }
-        
-        $sql = "INSERT INTO " . self::$table 
-            . " (client_id, data_comanda, total, estat, direccio_enviament)"
-            . " VALUES (?, ?, ?, ?, ?)";
-        $params = [
-            $this->client_id, 
-            $this->data_comanda, 
-            $this->total, 
-            $this->estat ?? 'Pendent', 
-            $this->direccio_enviament
-        ];
-        $this->id = DB::insert($sql, $params);
+{
+    if (!isset($this->data_comanda)) {
+        $this->data_comanda = date('Y-m-d H:i:s');
     }
+
+    $data = [
+        'client_id' => $this->client_id,
+        'data_comanda' => $this->data_comanda,
+        'total' => $this->total,
+        'estat' => $this->estat ?? 'Pendent',
+        'direccio_enviament' => $this->direccio_enviament
+    ];
+    $this->id = DB::insert(self::$table, $data);
+    return $this->id !== false;
+}
 
     /** @override */
     public function update(): bool
@@ -60,21 +58,21 @@ class Comanda extends Model
 
     public static function pendents(): QueryBuilder
     {
-        return self::where('estat', 'Pendent');
+        return self::whereRaw('LOWER(estat) = ?', ['pendent']);
     }
 
     public static function completades(): QueryBuilder
     {
-        return self::where('estat', 'Completat');
+        return self::whereRaw('LOWER(estat) = ?', ['completat']);
     }
 
     public static function enviades(): QueryBuilder
     {
-        return self::where('estat', 'Enviat');
+        return self::whereRaw('LOWER(estat) = ?', ['enviat']);
     }
 
     public static function cancelades(): QueryBuilder
     {
-        return self::where('estat', 'Cancel·lat');
+        return self::whereRaw('LOWER(estat) = ?', ['cancel·lat']);
     }
 }

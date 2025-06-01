@@ -2,24 +2,19 @@
 ob_start();
 require_once __DIR__ . '/../../bootstrap/bootstrap.php';
 require_once __DIR__ . '/../../app/Http/Controllers/ClientController.php';
-require_once __DIR__ . '/../../app/Http/Validators/ClientValidator.php';
 require_once __DIR__ . '/../../app/Http/Middlewares/Middleware.php';
-require_once __DIR__ . '/../../app/Http/Middlewares/Security/CsrfMiddleware.php';
-\App\Core\Debug::log('INICIO update.php CLIENTES');
+
 use App\Core\Request;
 use App\Core\ErrorHandler;
 use App\Http\Controllers\ClientController;
-use App\Http\Validators\ClientValidator;
 use App\Http\Middlewares\Middleware;
 
 try {
-    
     $request = new Request();
     
-    // Apply middleware to restrict access to admin users and verify CSRF token
+    // Apply middleware to restrict access to admin users
     $response = $request->middleware([
-        'role' => ['admin'],
-        'csrf'
+        'role' => ['admin']
     ]);
     
     // If middleware returned a response, send it
@@ -28,11 +23,17 @@ try {
         exit;
     }
     
-    // Validate client data
-    ClientValidator::validate($request);
+    // Get client ID from URL
+    $id = (int)($request->id ?? 0);
     
-    // Process client update
-    (new ClientController())->update($request);
+    if (!$id) {
+        http_error(400, 'ID de client no vàlid.');
+        exit;
+    }
+    
+    // Show client details
+    (new ClientController())->show($id);
+    
 } catch (Throwable $e) {
     ErrorHandler::handle($e);
 }

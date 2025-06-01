@@ -92,9 +92,9 @@ class User extends Model
         'email' => $this->email,
         'password' => $this->password,
         'role' => $this->role,
-        'created_at' => $this->created_at
+        'created_at' => $this->created_at,
+        'updated_at' => $this->updated_at // <-- Añade esto
     ];
-
     $this->id = \App\Core\DB::insert(static::$table, $data);
     return $this->id !== null && $this->id > 0;
 }
@@ -109,7 +109,7 @@ public function update(): bool
         'updated_at' => $this->updated_at,
     ];
 
-    $result = \App\Core\DB::update(static::$table, $data, ['id' => $this->id]);
+    $result = \App\Core\DB::update(static::$table, $data, "id = {$this->id}");
     return $result > 0;
 }
 

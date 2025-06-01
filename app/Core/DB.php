@@ -41,6 +41,16 @@ class DB
     }
     
     /**
+     * Alias for connection() method for backward compatibility
+     * 
+     * @return PDO The database connection
+     */
+    public static function getConnection(): PDO
+    {
+        return self::connection();
+    }
+    
+    /**
      * Begin a transaction
      * 
      * @return bool True on success, false on failure

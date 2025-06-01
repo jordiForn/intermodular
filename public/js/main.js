@@ -2,6 +2,7 @@
  * Initialize cart functionality
  */
 function initializeCart() {
+  console.log("initializeCart ejecutado");
   // Update cart count on page load
   updateCartCount();
 
@@ -13,34 +14,21 @@ function initializeCart() {
     ".tooltip-container button"
   );
 
-  addToCartButtons.forEach((button, i) => {
-    button.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      addToCart(
-        this.getAttribute("data-name"),
-        Number.parseFloat(this.getAttribute("data-price")),
-        Number.parseInt(this.getAttribute("data-id")),
-        Number.parseInt(this.getAttribute("data-stock"))
-      );
-    });
-  });
-  /*
   addToCartButtons.forEach((button) => {
-    console.log("Añadiendo listener");
-    button.addEventListener("click", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log("Botón de añadir al carrito clicado");
-      const name = this.getAttribute("data-name");
-      const price = Number.parseFloat(this.getAttribute("data-price"));
-      const id = Number.parseInt(this.getAttribute("data-id"));
-      const stock = Number.parseInt(this.getAttribute("data-stock"));
-
-      addToCart(name, price, id, stock);
-    });
+    if (!button.classList.contains("cart-listener-added")) {
+      button.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        addToCart(
+          this.getAttribute("data-name"),
+          Number.parseFloat(this.getAttribute("data-price")),
+          Number.parseInt(this.getAttribute("data-id")),
+          Number.parseInt(this.getAttribute("data-stock"))
+        );
+      });
+      button.classList.add("cart-listener-added");
+    }
   });
-  */
 }
 
 /**
@@ -122,6 +110,16 @@ function addToCart(name, price, id, stock) {
 }
 
 // Initialize cart when DOM is loaded
+
 document.addEventListener("DOMContentLoaded", () => {
   initializeCart();
+
+  // Sincroniza el carrito JS con el backend al enviar el checkout
+  const checkoutForm = document.querySelector('form[action*="process-order"]');
+  if (checkoutForm) {
+    checkoutForm.addEventListener("submit", function () {
+      document.getElementById("cart_json").value =
+        localStorage.getItem("cart") || "[]";
+    });
+  }
 });
