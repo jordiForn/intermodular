@@ -21,11 +21,10 @@ $outOfStockCount = 0;
 $totalValue = 0;
 
 foreach ($products as $product) {
-    $totalValue += $product->preu * $product->stock;
-    
-    if ($product->stock <= 5 && $product->stock > 0) {
+    $totalValue += $product->preu * $product->estoc;
+    if ($product->estoc <= 5 && $product->estoc > 0) {
         $lowStockCount++;
-    } elseif ($product->stock == 0) {
+    } elseif ($product->estoc == 0) {
         $outOfStockCount++;
     }
 }
