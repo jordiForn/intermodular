@@ -1,28 +1,29 @@
 <?php
+// Direct access route for product creation
+// This file handles direct URL access to /productes/create.php
 
+// Load the bootstrap to initialize the application
 require_once __DIR__ . '/../../bootstrap/bootstrap.php';
-require_once __DIR__ . '/../../app/Http/Controllers/ProducteController.php';
 
-use App\Core\Request;
 use App\Http\Controllers\ProducteController;
-use App\Core\ErrorHandler;
+use App\Core\Request;
+use App\Core\Debug;
 
 try {
+    Debug::log("Direct access to productes/create.php");
+    
+    // Create a new request instance
     $request = new Request();
     
-    // Apply middleware specific to this route
-    $response = $request->middleware([
-        'role' => ['admin']
-    ]);
+    // Create controller instance and call the create method
+    $controller = new ProducteController();
+    $controller->create($request);
     
-    // If middleware returned a response, send it
-    if ($response) {
-        $response->send();
-        exit;
-    }
+} catch (\Throwable $e) {
+    Debug::log("Exception in direct access create.php: " . $e->getMessage());
     
-    // Otherwise, continue to the controller
-    (new ProducteController())->create();
-} catch (Throwable $e) {
-    ErrorHandler::handle($e);
+    // Fallback error handling
+    http_response_code(500);
+    echo "Error: " . $e->getMessage();
 }
+?>

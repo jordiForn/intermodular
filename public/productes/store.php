@@ -1,32 +1,20 @@
 <?php
-
 require_once __DIR__ . '/../../bootstrap/bootstrap.php';
-require_once __DIR__ . '/../../app/Http/Controllers/ProducteController.php';
-require_once __DIR__ . '/../../app/Http/Validators/ProducteValidator.php';
 
-use App\Core\Request;
 use App\Http\Controllers\ProducteController;
-use App\Http\Validators\ProducteValidator;
-use App\Core\ErrorHandler;
+use App\Core\Request;
+use App\Core\Auth;
 
-try {
-    $request = new Request();
-    
-    // Apply middleware specific to this route
-    $response = $request->middleware([
-        'role' => ['admin'],
-        'csrf'
-    ]);
-    
-    // If middleware returned a response, send it
-    if ($response) {
-        $response->send();
-        exit;
-    }
-    
-    // Otherwise, continue to the controller
-    ProducteValidator::validate($request);
-    (new ProducteController())->store($request);
-} catch (Throwable $e) {
-    ErrorHandler::handle($e);
+// Ensure user is authenticated and has admin privileges
+if (!Auth::check() || !Auth::isAdmin()) {
+    header('Location: ' . BASE_URL . '/auth/show-login.php?error=unauthorized');
+    exit;
 }
+
+// Create controller instance and handle the request
+$controller = new ProducteController();
+$request = new Request();
+
+// Call the store method
+$controller->store($request);
+?>

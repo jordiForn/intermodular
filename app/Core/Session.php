@@ -47,6 +47,8 @@ class Session {
         }
     }
 
+    
+
     /**
      * Obtiene un valor de la sesión
      */

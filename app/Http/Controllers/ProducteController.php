@@ -8,6 +8,8 @@ use App\Core\Request;
 use App\Core\Debug;
 use App\Core\DB;
 use App\Models\Producte;
+use App\Core\Auth;
+use App\Http\Validators\ProducteValidator;
 
 class ProducteController {
 
@@ -88,23 +90,128 @@ class ProducteController {
        }
    }
 
-    public function create()
+    public function create(Request $request = null)
     {
-        view('productes.create');
+        Debug::log("ProducteController::create method called");
+        
+        // Ensure user is authenticated and has admin privileges
+        if (!Auth::check() || !Auth::isAdmin()) {
+            Debug::log("User not authenticated or not admin, redirecting to login");
+            redirect('/auth/show-login.php?error=unauthorized')->send();
+            return;
+        }
+        
+        Debug::log("User authenticated as admin, proceeding with create view");
+        
+        try {
+            // Initialize form data
+            $producte = null;
+            $fields = ['nom', 'descripcio', 'preu', 'estoc', 'categoria', 'imatge', 'detalls'];
+            
+            // Set the title for the admin layout
+            $title = 'Crear Nou Producte - Intermodular Admin';
+            
+            Debug::log("About to render admin view for product creation");
+            
+            // Use the corrected renderAdminView method
+            $this->renderAdminView('productes.create', compact('title', 'producte', 'fields'));
+            
+        } catch (\Throwable $e) {
+            Debug::log("Exception in ProducteController::create: " . $e->getMessage());
+            Debug::log("Stack trace: " . $e->getTraceAsString());
+            
+            // Fallback to error view
+            view('errors.500', ['message' => 'Error al carregar el formulari de creació: ' . $e->getMessage()]);
+        }
     }
 
     public function store(Request $request)
     {
-        $producte = new Producte();
-        $producte->nom = $request->nom;
-        $producte->descripcio = $request->descripcio;
-        $producte->preu = $request->preu;
-        $producte->estoc = $request->estoc;
-        $producte->categoria = $request->categoria;
-        $producte->imatge = $request->imatge;
-        $producte->detalls = $request->detalls;
-        $producte->save();
-        redirect('/productes/index.php')->with('success', 'Producte inserit amb èxit')->send();
+        Debug::log("ProducteController::store method called");
+        Debug::log("Raw request data: " . json_encode($_POST, JSON_UNESCAPED_UNICODE));
+        
+        // Ensure user is authenticated and has admin privileges
+        if (!Auth::check() || !Auth::isAdmin()) {
+            Debug::log("User not authenticated or not admin");
+            redirect('/auth/show-login.php?error=unauthorized')->send();
+            return;
+        }
+        
+        try {
+            // Log the available categories from database
+            Debug::log("Available categories: " . json_encode(Producte::getCategories(), JSON_UNESCAPED_UNICODE));
+            
+            // Validate the request data first
+            Debug::log("Starting validation");
+            ProducteValidator::validate($request);
+            Debug::log("Validation passed");
+            
+            // Prepare product data with exact database enum values
+            $productData = [
+                'nom' => trim($request->nom ?? ''),
+                'descripcio' => trim($request->descripcio ?? ''),
+                'preu' => (float)($request->preu ?? 0),
+                'estoc' => (int)($request->estoc ?? 0),
+                'categoria' => trim($request->categoria ?? ''),
+                'imatge' => trim($request->imatge ?? ''),
+                'detalls' => trim($request->detalls ?? '')
+            ];
+            
+            Debug::log("Prepared product data: " . json_encode($productData, JSON_UNESCAPED_UNICODE));
+            
+            // Additional category validation with exact enum matching
+            if (!Producte::isValidCategory($productData['categoria'])) {
+                Debug::log("Invalid category provided: '" . $productData['categoria'] . "'");
+                Debug::log("Valid categories are: " . json_encode(Producte::getCategories(), JSON_UNESCAPED_UNICODE));
+                throw new \Exception("Categoria no vàlida: '" . $productData['categoria'] . "'. Categories vàlides: " . implode(', ', Producte::getCategories()));
+            }
+            
+            // Create product using the factory method
+            Debug::log("Creating product instance");
+            $producte = Producte::createProduct($productData);
+            
+            // Log the product object before saving
+            Debug::log("Product object before save: " . json_encode([
+                'nom' => $producte->nom,
+                'descripcio' => $producte->descripcio,
+                'preu' => $producte->preu,
+                'estoc' => $producte->estoc,
+                'categoria' => $producte->categoria,
+                'imatge' => $producte->imatge,
+                'detalls' => $producte->detalls
+            ], JSON_UNESCAPED_UNICODE));
+        
+            // Save the product
+            Debug::log("Attempting to save product");
+            $success = $producte->save();
+            
+            if (!$success) {
+                throw new \Exception("Failed to save product to database");
+            }
+            
+            Debug::log("Product saved successfully with ID: " . $producte->id);
+            
+            // Redirect with success message
+            redirect('/admin/products.php')->with('success', 'Producte creat amb èxit')->send();
+            
+        } catch (\Throwable $e) {
+            Debug::log("Exception in ProducteController::store: " . $e->getMessage());
+            Debug::log("Stack trace: " . $e->getTraceAsString());
+            
+            // Redirect back with error message
+            redirect('/productes/create.php')
+                ->with('error', 'Error al crear el producte: ' . $e->getMessage())
+                ->withInput([
+                    'nom' => $request->nom ?? '',
+                    'descripcio' => $request->descripcio ?? '',
+                    'preu' => $request->preu ?? '',
+                    'estoc' => $request->estoc ?? '',
+                    'categoria' => $request->categoria ?? '',
+                    'imatge' => $request->imatge ?? '',
+                    'detalls' => $request->detalls ?? ''
+                ])
+                ->send();
+        }
     }
 
     public function show(string $id)
@@ -115,8 +222,17 @@ class ProducteController {
 
     public function edit(string $id)
     {
+        // Ensure user is authenticated and has admin privileges
+        if (!Auth::check() || !Auth::isAdmin()) {
+            redirect('/auth/show-login.php?error=unauthorized')->send();
+            return;
+        }
+        
         $producte = Producte::findOrFail($id);
-        view('productes.edit', compact('producte'));
+        $title = 'Editar Producte - Intermodular Admin';
+        
+        // Render the edit view using the admin layout
+        $this->renderAdminView('productes.edit', compact('title', 'producte'));
     }
 
     public function update(Request $request)
@@ -191,14 +307,7 @@ class ProducteController {
         $totalPages = ceil($query->count() / $perPage);
         
         // Get unique categories for the filter dropdown
-        $categories = [];
-        $allProducts = Producte::all();
-        foreach ($allProducts as $product) {
-            if (!empty($product->categoria) && !in_array($product->categoria, $categories)) {
-                $categories[] = $product->categoria;
-            }
-        }
-        sort($categories);
+        $categories = Producte::getCategories();
         
         view('productes.edit-list', compact(
             'productes', 
@@ -239,8 +348,10 @@ class ProducteController {
             
             // Only update fields that are included in the updates array
             if (isset($updates['categoria']) && !empty($updates['categoria'])) {
-                $producte->categoria = $updates['categoria'];
-                $updated = true;
+                if (Producte::isValidCategory($updates['categoria'])) {
+                    $producte->categoria = $updates['categoria'];
+                    $updated = true;
+                }
             }
             
             if (isset($updates['estoc_adjust']) && is_numeric($updates['estoc_adjust'])) {
@@ -272,107 +383,209 @@ class ProducteController {
             ->send();
     }
 
-/**
- * Get product details via AJAX for inline editing
- * 
- * @param Request $request The request object containing the product ID
- * @return void
- */
-public function getProductDetails(Request $request)
-{
-    try {
-        $id = $request->id;
-        $producte = Producte::findOrFail($id);
-        
-        // Return JSON response with product details
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'product' => [
-                'id' => $producte->id,
-                'nom' => $producte->nom,
-                'descripcio' => $producte->descripcio,
-                'preu' => $producte->preu,
-                'estoc' => $producte->estoc,
-                'categoria' => $producte->categoria,
-                'imatge' => $producte->imatge,
-                'detalls' => $producte->detalls
-            ]
-        ]);
-        exit;
-    } catch (\Throwable $e) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error al obtenir els detalls del producte: ' . $e->getMessage()
-        ]);
-        exit;
+    /**
+     * Get product details via AJAX for inline editing
+     * 
+     * @param Request $request The request object containing the product ID
+     * @return void
+     */
+    public function getProductDetails(Request $request)
+    {
+        try {
+            $id = $request->id;
+            $producte = Producte::findOrFail($id);
+            
+            // Return JSON response with product details
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'product' => [
+                    'id' => $producte->id,
+                    'nom' => $producte->nom,
+                    'descripcio' => $producte->descripcio,
+                    'preu' => $producte->preu,
+                    'estoc' => $producte->estoc,
+                    'categoria' => $producte->categoria,
+                    'imatge' => $producte->imatge,
+                    'detalls' => $producte->detalls
+                ]
+            ]);
+            exit;
+        } catch (\Throwable $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al obtenir els detalls del producte: ' . $e->getMessage()
+            ]);
+            exit;
+        }
     }
-}
 
-/**
- * Update a single product via AJAX
- * 
- * @param Request $request The request object containing the product data
- * @return void
- */
-public function quickUpdate(Request $request)
-{
-    try {
-        // Validate CSRF token
-        if (empty($request->csrf_token) || $request->csrf_token !== session()->get('csrf_token')) {
-            throw new \Exception('Token CSRF no vàlid');
+    /**
+     * Update a single product via AJAX
+     * 
+     * @param Request $request The request object containing the product data
+     * @return void
+     */
+    public function quickUpdate(Request $request)
+    {
+        try {
+            // Validate CSRF token
+            if (empty($request->csrf_token) || $request->csrf_token !== session()->get('csrf_token')) {
+                throw new \Exception('Token CSRF no vàlid');
+            }
+            
+            $id = $request->id;
+            $producte = Producte::findOrFail($id);
+            
+            // Update only the fields that were provided
+            if (isset($request->nom)) {
+                $producte->nom = $request->nom;
+            }
+            
+            if (isset($request->descripcio)) {
+                $producte->descripcio = $request->descripcio;
+            }
+            
+            if (isset($request->preu) && is_numeric($request->preu)) {
+                $producte->preu = (float)$request->preu;
+            }
+            
+            if (isset($request->estoc) && is_numeric($request->estoc)) {
+                $producte->estoc = (int)$request->estoc;
+            }
+            
+            if (isset($request->categoria)) {
+                if (Producte::isValidCategory($request->categoria)) {
+                    $producte->categoria = $request->categoria;
+                } else {
+                    throw new \Exception('Categoria no vàlida');
+                }
+            }
+            
+            // Save the changes
+            $producte->save();
+            
+            // Return success response
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Producte actualitzat correctament',
+                'product' => [
+                    'id' => $producte->id,
+                    'nom' => $producte->nom,
+                    'descripcio' => $producte->descripcio,
+                    'preu' => $producte->preu,
+                    'estoc' => $producte->estoc,
+                    'categoria' => $producte->categoria
+                ]
+            ]);
+            exit;
+        } catch (\Throwable $e) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualitzar el producte: ' . $e->getMessage()
+            ]);
+            exit;
         }
-        
-        $id = $request->id;
-        $producte = Producte::findOrFail($id);
-        
-        // Update only the fields that were provided
-        if (isset($request->nom)) {
-            $producte->nom = $request->nom;
-        }
-        
-        if (isset($request->descripcio)) {
-            $producte->descripcio = $request->descripcio;
-        }
-        
-        if (isset($request->preu) && is_numeric($request->preu)) {
-            $producte->preu = (float)$request->preu;
-        }
-        
-        if (isset($request->estoc) && is_numeric($request->estoc)) {
-            $producte->estoc = (int)$request->estoc;
-        }
-        
-        if (isset($request->categoria)) {
-            $producte->categoria = $request->categoria;
-        }
-        
-        // Save the changes
-        $producte->save();
-        
-        // Return success response
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => true,
-            'message' => 'Producte actualitzat correctament',
-            'product' => [
-                'id' => $producte->id,
-                'nom' => $producte->nom,
-                'descripcio' => $producte->descripcio,
-                'preu' => $producte->preu,
-                'estoc' => $producte->estoc,
-                'categoria' => $producte->categoria
-            ]
-        ]);
-        exit;
-    } catch (\Throwable $e) {
-        header('Content-Type: application/json');
-        echo json_encode([
-            'success' => false,
-            'message' => 'Error al actualitzar el producte: ' . $e->getMessage()
-        ]);
-        exit;
     }
-}
+    
+    /**
+     * CORRECTED: Helper method to render views with admin layout
+     * Fixed path resolution and improved error handling
+     * 
+     * @param string $viewName The view name (dot notation)
+     * @param array $data Data to pass to the view
+     * @return void
+     */
+    private function renderAdminView(string $viewName, array $data = [])
+    {
+        Debug::log("renderAdminView called with view: $viewName");
+        
+        try {
+            // Extract data for use in the view
+            extract($data);
+            
+            // Convert dot notation to file path
+            $viewPath = str_replace('.', DIRECTORY_SEPARATOR, $viewName);
+            
+            // CORRECTED: Build the correct path to the view file
+            // Go up 3 levels from app/Http/Controllers to reach the project root
+            $projectRoot = dirname(__DIR__, 3);
+            $basePath = $projectRoot . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
+            $fullViewPath = $basePath . $viewPath . '.php';
+            
+            Debug::log("Project root: $projectRoot");
+            Debug::log("Base path: $basePath");
+            Debug::log("Looking for view file at: $fullViewPath");
+            Debug::log("View path: $viewPath");
+            
+            // Check if the view file exists
+            if (!file_exists($fullViewPath)) {
+                Debug::log("View file not found: $fullViewPath");
+                
+                // Try to create the directory if it doesn't exist
+                $viewDir = dirname($fullViewPath);
+                if (!is_dir($viewDir)) {
+                    Debug::log("Creating directory: $viewDir");
+                    if (!mkdir($viewDir, 0755, true)) {
+                        throw new \Exception("Failed to create directory: $viewDir");
+                    }
+                }
+                
+                throw new \Exception("View file not found: $fullViewPath. Please ensure the file exists.");
+            }
+            
+            if (!is_readable($fullViewPath)) {
+                Debug::log("View file not readable: $fullViewPath");
+                throw new \Exception("View file not readable: $fullViewPath. Please check file permissions.");
+            }
+            
+            Debug::log("View file found and readable, starting output buffering");
+            
+            // Start output buffering to capture the view content
+            ob_start();
+            
+            // Include the specific view file
+            include $fullViewPath;
+            
+            // Get the view content
+            $content = ob_get_clean();
+            
+            Debug::log("View content captured, length: " . strlen($content));
+            
+            // Build path to admin layout
+            $adminLayoutPath = $basePath . 'layouts' . DIRECTORY_SEPARATOR . 'admin.php';
+            
+            Debug::log("Looking for admin layout at: $adminLayoutPath");
+            
+            if (!file_exists($adminLayoutPath)) {
+                throw new \Exception("Admin layout file not found: $adminLayoutPath");
+            }
+            
+            // Include the admin layout with the content
+            Debug::log("Including admin layout");
+            include $adminLayoutPath;
+            
+        } catch (\Throwable $e) {
+            // Clean the buffer in case of error
+            if (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+            
+            Debug::log("Exception in renderAdminView: " . $e->getMessage());
+            Debug::log("Stack trace: " . $e->getTraceAsString());
+            
+            // Fallback to error view
+            view('errors.500', [
+                'message' => 'Error al carregar la vista: ' . $e->getMessage(),
+                'details' => [
+                    'view' => $viewName,
+                    'path' => $fullViewPath ?? 'unknown',
+                    'error' => $e->getMessage()
+                ]
+            ]);
+        }
+    }
 }
