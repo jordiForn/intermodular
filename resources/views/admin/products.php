@@ -209,27 +209,27 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editestocForm">
-                    <input type="hidden" id="productId" name="productId">
-                    <div class="mb-3">
-                        <label for="productName" class="form-label">Producte</label>
-                        <input type="text" class="form-control" id="productName" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="currentestoc" class="form-label">Estoc Actual</label>
-                        <input type="number" class="form-control" id="currentestoc" name="currentestoc" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newestoc" class="form-label">Nou Estoc</label>
-                        <input type="number" class="form-control" id="newestoc" name="newestoc" min="0" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
-                <button type="button" class="btn btn-success" id="saveestocBtn">
-                    <i class="fas fa-save me-1"></i>Guardar
-                </button>
+                <form id="editestocForm" action="<?= BASE_URL ?>/productes/update-stock.php" method="POST">
+    <input type="hidden" id="productId" name="id">
+    <div class="mb-3">
+        <label for="productName" class="form-label">Producte</label>
+        <input type="text" class="form-control" id="productName" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="currentestoc" class="form-label">Estoc Actual</label>
+        <input type="number" class="form-control" id="currentestoc" readonly>
+    </div>
+    <div class="mb-3">
+        <label for="newestoc" class="form-label">Nou Estoc</label>
+        <input type="number" class="form-control" id="newestoc" name="estoc" min="0" required>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel·lar</button>
+        <button type="submit" class="btn btn-success">
+            <i class="fas fa-save me-1"></i>Guardar
+        </button>
+    </div>
+</form>
             </div>
         </div>
     </div>
@@ -295,6 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Save estoc button
+    /*
     const saveestocBtn = document.getElementById('saveestocBtn');
     if (saveestocBtn) {
         saveestocBtn.addEventListener('click', function() {
@@ -315,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 1000);
         });
     }
-    
+    */
     // Delete product modal
     const deleteButtons = document.querySelectorAll('.delete-product');
     deleteButtons.forEach(button => {

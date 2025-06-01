@@ -1,6 +1,6 @@
-=== Debug Log Started at 2025-06-01 12:50:47 ===
-[2025-06-01 12:50:47] [0.64ms] [0.41KB] [products.php:2] Debug system initialized
-[2025-06-01 12:50:47] [5ms] [123.73KB] [Session.php:14] Session started successfully
-[2025-06-01 12:50:47] [5.4ms] [123.09KB] [products.php:2] Bootstrap completed successfully
-[2025-06-01 12:50:47] [5.56ms] [106.98KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
-[2025-06-01 12:50:47] [20.83ms] [298.45KB] [admin.php:182] Flash value retrieved and removed: success
+=== Debug Log Started at 2025-06-01 12:56:16 ===
+[2025-06-01 12:56:16] [0.65ms] [0.41KB] [products.php:2] Debug system initialized
+[2025-06-01 12:56:16] [4.71ms] [123.73KB] [Session.php:14] Session started successfully
+[2025-06-01 12:56:16] [5.18ms] [123.09KB] [products.php:2] Bootstrap completed successfully
+[2025-06-01 12:56:16] [5.35ms] [106.98KB] [DB.php:23] Helper project_path() called for: config/db.php, returning: D:/xampp/htdocs/Intermodular/config/db.php
+[2025-06-01 12:56:16] [17.53ms] [295.32KB] [admin.php:182] Flash value retrieved and removed: success

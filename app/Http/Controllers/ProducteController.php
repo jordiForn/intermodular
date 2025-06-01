@@ -665,4 +665,32 @@ class ProducteController {
             ]);
         }
     }
+
+    public function updateStock(Request $request)
+{
+    try {
+        if (!Auth::check() || !Auth::isAdmin()) {
+            redirect('/auth/show-login.php?error=unauthorized')->send();
+            return;
+        }
+
+        $producte = \App\Models\Producte::findOrFail($request->id);
+        $nouEstoc = (int)$request->estoc;
+
+        if ($nouEstoc < 0) {
+            flashError('L\'estoc no pot ser negatiu.');
+            redirect('/admin/products.php')->send();
+            return;
+        }
+
+        $producte->estoc = $nouEstoc;
+        $producte->update();
+
+        flashSuccess('Estoc actualitzat correctament.');
+        redirect('/admin/products.php')->send();
+    } catch (\Throwable $e) {
+        flashError('Error al actualitzar l\'estoc: ' . $e->getMessage());
+        redirect('/admin/products.php')->send();
+    }
+}
 }
