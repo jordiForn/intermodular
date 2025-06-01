@@ -1,4 +1,7 @@
 <?php
+// Start output buffering to prevent headers already sent errors
+ob_start();
+
 use App\Core\Auth;
 
 // Ensure user is authenticated and is admin
@@ -229,3 +232,7 @@ $userName = $user ? $user->username : 'Admin';
     </script>
 </body>
 </html>
+<?php
+// Flush the output buffer
+ob_end_flush();
+?>

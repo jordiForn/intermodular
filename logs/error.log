@@ -662,4 +662,37 @@ Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
 #3 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('productes.creat...', Array)
 #4 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(93): view('productes.creat...')
 #5 D:\xampp\htdocs\Intermodular\public\productes\create.php(25): App\Http\Controllers\ProducteController->create()
-#6 {main}
+#6 {main}Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
+#0 D:\xampp\htdocs\Intermodular\resources\views\productes\create.php(15): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(75): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('productes.creat...', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('productes.creat...', Array)
+#4 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(93): view('productes.creat...')
+#5 D:\xampp\htdocs\Intermodular\public\productes\create.php(25): App\Http\Controllers\ProducteController->create()
+#6 {main}Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
+#0 D:\xampp\htdocs\Intermodular\resources\views\productes\create.php(15): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(75): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('productes.creat...', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('productes.creat...', Array)
+#4 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(93): view('productes.creat...')
+#5 D:\xampp\htdocs\Intermodular\public\productes\create.php(25): App\Http\Controllers\ProducteController->create()
+#6 {main}Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
+#0 D:\xampp\htdocs\Intermodular\resources\views\productes\create.php(15): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(75): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('productes.creat...', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('productes.creat...', Array)
+#4 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(93): view('productes.creat...')
+#5 D:\xampp\htdocs\Intermodular\public\productes\create.php(25): App\Http\Controllers\ProducteController->create()
+#6 {main}Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
+#0 D:\xampp\htdocs\Intermodular\resources\views\productes\create.php(15): include()
+#1 D:\xampp\htdocs\Intermodular\app\Core\Response.php(75): require('D:\\xampp\\htdocs...')
+#2 D:\xampp\htdocs\Intermodular\app\Core\Response.php(29): App\Core\Response::loadView('productes.creat...', Array)
+#3 D:\xampp\htdocs\Intermodular\app\Core\helpers.php(101): App\Core\Response::view('productes.creat...', Array)
+#4 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ProducteController.php(93): view('productes.creat...')
+#5 D:\xampp\htdocs\Intermodular\public\productes\create.php(25): App\Http\Controllers\ProducteController->create()
+#6 {main}Call to undefined method App\Core\Auth::role()
+#0 D:\xampp\htdocs\Intermodular\app\Http\Middlewares\MiddlewareHandler.php(76): App\Http\Middlewares\Auth\RoleMiddleware->handle(Object(App\Core\Request), Array)
+#1 D:\xampp\htdocs\Intermodular\app\Http\Middlewares\MiddlewareRegistry.php(85): App\Http\Middlewares\MiddlewareHandler->handle()
+#2 D:\xampp\htdocs\Intermodular\app\Core\Request.php(94): App\Http\Middlewares\MiddlewareRegistry::apply(Object(App\Core\Request), Array)
+#3 D:\xampp\htdocs\Intermodular\public\productes\create.php(14): App\Core\Request->middleware(Array)
+#4 {main}

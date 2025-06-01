@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../../../bootstrap/bootstrap.php';
 
 use App\Core\Auth;
@@ -45,3 +46,4 @@ try {
     Debug::log("Error deleting user: " . $e->getMessage());
     redirect('/admin/users/index.php')->with('error', 'Error en eliminar l\'usuari: ' . $e->getMessage())->send();
 }
+ob_end_flush();

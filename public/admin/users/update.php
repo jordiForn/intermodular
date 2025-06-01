@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 require_once __DIR__ . '/../../../bootstrap/bootstrap.php';
 
 use App\Core\Auth;
@@ -103,3 +103,4 @@ try {
         'role' => $role
     ])->send();
 }
+ob_end_flush();

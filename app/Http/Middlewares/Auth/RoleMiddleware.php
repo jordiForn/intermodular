@@ -24,20 +24,20 @@ class RoleMiddleware
         // First check if the user is authenticated
         $authMiddleware = new AuthMiddleware();
         $response = $authMiddleware->handle($request);
-        
+
         if ($response !== null) {
             return $response;
         }
-        
+
         // Then check if the user has one of the allowed roles
         $allowedRoles = $params;
-        
-        if (empty($allowedRoles) || !in_array(Auth::role(), $allowedRoles)) {
-            http_response_code(403);
-            view('errors.403');
-            exit;
-        }
-        
+        $user = Auth::user();
+
+        if (empty($allowedRoles) || !$user || !in_array($user->role, $allowedRoles)) {
+    header('Location: ' . BASE_URL . '/auth/show-login.php?error=forbidden');
+    exit;
+}
+
         return null;
     }
 }
