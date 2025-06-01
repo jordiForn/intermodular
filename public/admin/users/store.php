@@ -56,8 +56,6 @@ $data = [
     'password' => $request->password,
     'role' => $request->role,
 ];
-
-\App\Core\Debug::log('Antes de llamar a adminRegisterUser', $data);
 $user = AuthController::adminRegisterUser($data);
 
 if ($user) {
@@ -66,7 +64,6 @@ if ($user) {
     back()->with('error', 'Error en crear l\'usuari.')->withInput($data)->send();
 }
 
-\App\Core\Debug::log('Validando errores', $errors);
 if (!empty($errors)) {
     back()->withErrors($errors)->withInput([
         'username' => $request->username,

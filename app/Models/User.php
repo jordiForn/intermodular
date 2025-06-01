@@ -109,7 +109,7 @@ public function update(): bool
         'updated_at' => $this->updated_at,
     ];
 
-    $result = \App\Core\DB::update(static::$table, $data, ['id' => $this->id]);
+    $result = \App\Core\DB::update(static::$table, $data, "id = {$this->id}");
     return $result > 0;
 }
 

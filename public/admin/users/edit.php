@@ -12,7 +12,7 @@ if (!Auth::check() || !Auth::isAdmin()) {
 
 // Get user ID from URL
 $userId = $_GET['id'] ?? null;
-
+\App\Core\Debug::log('Valor de $userId en edit.php', ['userId' => $userId]);
 if (!$userId) {
     request()->session()->setFlash('error', 'ID d\'usuari no especificat.');
     header('Location: ' . BASE_URL . '/admin/users/');
@@ -22,7 +22,7 @@ if (!$userId) {
 try {
     // Get the user
     $user = User::find($userId);
-    
+    \App\Core\Debug::log('Valor de $user en edit.php', ['user' => $user]);
     if (!$user) {
         request()->session()->setFlash('error', 'Usuari no trobat.');
         header('Location: ' . BASE_URL . '/admin/users/');

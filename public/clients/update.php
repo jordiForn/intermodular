@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../app/Http/Controllers/ClientController.php';
 require_once __DIR__ . '/../../app/Http/Validators/ClientValidator.php';
 require_once __DIR__ . '/../../app/Http/Middlewares/Middleware.php';
 require_once __DIR__ . '/../../app/Http/Middlewares/Security/CsrfMiddleware.php';
-
+\App\Core\Debug::log('INICIO update.php CLIENTES');
 use App\Core\Request;
 use App\Core\ErrorHandler;
 use App\Http\Controllers\ClientController;
@@ -12,6 +12,7 @@ use App\Http\Validators\ClientValidator;
 use App\Http\Middlewares\Middleware;
 
 try {
+    
     $request = new Request();
     
     // Apply middleware to restrict access to admin users and verify CSRF token

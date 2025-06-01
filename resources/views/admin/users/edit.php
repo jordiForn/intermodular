@@ -36,7 +36,7 @@ $role = $oldInput['role'] ?? $user->role;
                     <h5 class="mb-0 text-highlight">Informació de l'Usuari</h5>
                 </div>
                 <div class="card-body">
-                    <form action="<?= BASE_URL ?>/admin/users/update.php" method="post">
+                    <form action="<?= BASE_URL ?>/admin/users/update.php" method="POST">
                         <input type="hidden" name="id" value="<?= $user->id ?>">
                         
                         <div class="mb-3">
