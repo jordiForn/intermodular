@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../../../bootstrap/bootstrap.php';
 
 use App\Core\Auth;
@@ -24,3 +25,5 @@ $content = ob_get_clean();
 // Include the admin layout
 include __DIR__ . '/../../../resources/views/layouts/admin.php';
 ?>
+<?php
+ob_end_flush();

@@ -52,8 +52,8 @@ foreach ($orderProducts as $productId => $quantity) {
             <tr>
                 <td>
                     <img src="' . BASE_URL . '/images/' . $product->imatge . '" 
-                         alt="' . htmlspecialchars($product->nom) . '" 
-                         class="img-thumbnail" style="max-width: 50px;">
+                        alt="' . htmlspecialchars($product->nom) . '" 
+                        class="img-thumbnail" style="max-width: 50px;">
                 </td>
                 <td>' . htmlspecialchars($product->nom) . '</td>
                 <td>' . $quantity . '</td>

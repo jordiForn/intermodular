@@ -9,6 +9,7 @@
     <div class="tooltip-container">
         <button
             type="button"
+            class="add-to-cart-btn"
             data-name="<?= addslashes($producte->nom) ?>"
             data-price="<?= $producte->preu ?>"
             data-id="<?= $producte->id ?>"

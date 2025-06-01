@@ -39,20 +39,30 @@ class Model
     }
 
     public function __set($property, $value)
-    {
-        if ($property === 'id') {
-            $this->$property = (int) $value;
-        } elseif (
-            in_array($property, static::$fillable ?? []) ||
-            in_array($property, static::$relations ?? []) ||
-            in_array($property, static::$aggregates ?? []) ||
-            in_array($property, static::$pivots ?? [])
-        ) {
-            $this->attributes[$property] = $value;
+{
+    // Asegura que $fillable es un array
+    $fillable = static::$fillable ?? [];
+    $relations = static::$relations ?? [];
+    $aggregates = static::$aggregates ?? [];
+    $pivots = static::$pivots ?? [];
+
+    if ($property === 'id') {
+        $this->$property = (int) $value;
+    } elseif (
+        in_array($property, $fillable) ||
+        in_array($property, $relations) ||
+        in_array($property, $aggregates) ||
+        in_array($property, $pivots)
+    ) {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
         } else {
-            throw new \RuntimeException("La propiedad '$property' no está permitida en el modelo.");
+            $this->attributes[$property] = $value;
         }
+    } else {
+        throw new \RuntimeException("La propiedad '$property' no está permitida en el modelo.");
     }
+}
 
     public static function getTable(){
         return static::$table ?? "";
@@ -156,10 +166,10 @@ class Model
 
     public function delete(): bool
     {
-        $sql = "DELETE FROM " . static::$table . " WHERE id = :id";
-        $params = ['id' => $this->id];
-        return DB::delete($sql, $params) === 1;
-    }
+    $where = "id = :id";
+    $params = ['id' => $this->id];
+    return DB::delete(static::$table, $where, $params) === 1;
+}
     
     /**
      * Convert the model to an array

@@ -16,7 +16,7 @@ try {
     \App\Http\Middlewares\Security\CsrfMiddleware::generateToken();
     
     // Show checkout form
-    (new ComandaController())->showCheckoutForm();
+    (new ComandaController())->Checkout();
 } catch (Throwable $e) {
     ErrorHandler::handle($e);
 }

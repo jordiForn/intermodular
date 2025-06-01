@@ -7,7 +7,7 @@ use App\Models\Client;
 
 class ClientValidator
 {
-    public static function validate(Request $request): void
+    public static function validate(Request $request, ?int $clientId = null): void
     {
         $errors = [];
 
@@ -32,18 +32,39 @@ class ClientValidator
             $errors['nom_login'] = 'El nom d\'usuari és obligatori.';
         }
 
-        // Check if email already exists (for new clients)
-        if (!isset($request->id) && Client::findByEmail($request->email)) {
+        // Check if email already exists (exclude current client when editing)
+        $existingEmailClient = Client::findByEmail($request->email);
+        if ($existingEmailClient && (!$clientId || $existingEmailClient->id !== $clientId)) {
             $errors['email'] = 'Aquest email ja està registrat.';
         }
 
-        // Check if username already exists (for new clients)
-        if (!isset($request->id) && Client::findByNomLogin($request->nom_login)) {
+        // Check if username already exists (exclude current client when editing)
+        $existingLoginClient = Client::findByNomLogin($request->nom_login);
+        if ($existingLoginClient && (!$clientId || $existingLoginClient->id !== $clientId)) {
             $errors['nom_login'] = 'Aquest nom d\'usuari ja està en ús.';
         }
 
+        // Password validation (required for new clients, optional for updates)
+        if (!$clientId) { // New client
+            if (empty($request->contrasena)) {
+                $errors['contrasena'] = 'La contrasenya és obligatòria.';
+            } elseif (strlen($request->contrasena) < 6) {
+                $errors['contrasena'] = 'La contrasenya ha de tenir almenys 6 caràcters.';
+            }
+        } else { // Updating client
+            if (!empty($request->contrasena) && strlen($request->contrasena) < 6) {
+                $errors['contrasena'] = 'La contrasenya ha de tenir almenys 6 caràcters.';
+            }
+        }
+
+        // Phone validation
+        if ($tlf_valid && !preg_match('/^[0-9+\-\s()]+$/', $request->tlf)) {
+            $errors['tlf'] = 'El format del telèfon no és vàlid.';
+        }
+
         if ($errors) {
-            back()->withErrors($errors)->withInput([
+            session()->flash('errors', $errors);
+            session()->flash('old', [
                 'nom' => $request->nom,
                 'cognom' => $request->cognom,
                 'email' => $request->email,
@@ -51,7 +72,13 @@ class ClientValidator
                 'consulta' => $request->consulta,
                 'missatge' => $request->missatge,
                 'nom_login' => $request->nom_login,
-            ])->send();
+            ]);
+        
+            if ($clientId) {
+                redirect('/clients/edit.php?id=' . $clientId)->send();
+            } else {
+                redirect('/clients/create.php')->send();
+            }
         }
     }
 }

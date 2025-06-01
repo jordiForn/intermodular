@@ -1,4 +1,5 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../../../bootstrap/bootstrap.php';
 
 use App\Core\Auth;
@@ -16,8 +17,7 @@ if (!Auth::check() || !Auth::isAdmin()) {
 $request = new Request();
 
 // Get user ID from request
-$id = isset($request->id) ? (int)$request->id : 0;
-
+$id = (int)$request->id;
 // Find user
 $user = User::find($id);
 
@@ -46,3 +46,4 @@ try {
     Debug::log("Error deleting user: " . $e->getMessage());
     redirect('/admin/users/index.php')->with('error', 'Error en eliminar l\'usuari: ' . $e->getMessage())->send();
 }
+ob_end_flush();

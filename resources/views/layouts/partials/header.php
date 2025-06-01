@@ -1,6 +1,6 @@
 <?php use App\Core\Auth; ?>
 <header class="bg-highlight fixed-top py-0">
-    <div class="container-fluid d-flex align-items-center justify-content-between" style="min-height: 150px;">
+    <div class="container-fluid d-flex align-items-center justify-content-between" style="min-height: 130px;">
             <div>
                 <h1 class="fw-bold mb-0" style="font-size:2.5rem;">
                     <?php if (Auth::check() && Auth::isAdmin()): ?>

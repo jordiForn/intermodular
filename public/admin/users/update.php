@@ -1,11 +1,12 @@
 <?php
+ob_start();
 require_once __DIR__ . '/../../../bootstrap/bootstrap.php';
 
 use App\Core\Auth;
 use App\Core\Response;
-use App\Core\Request;
 use App\Models\User;
 use App\Core\Debug;
+use App\Core\Request;
 
 // Check if user is authenticated and is an admin
 if (!Auth::check() || !Auth::isAdmin()) {
@@ -14,88 +15,92 @@ if (!Auth::check() || !Auth::isAdmin()) {
 }
 
 $request = new Request();
-
-// Get user ID from request
-$id = isset($request->id) ? (int)$request->id : 0;
+// Get user ID from POST
+$id = (int)$request->input('id');
 
 // Find user
+
 $user = User::find($id);
 
-// Check if user exists
 if (!$user) {
     redirect('/admin/users/index.php')->with('error', 'Usuari no trobat.')->send();
     exit;
 }
 
+// Get form data
+$username = $request->input('username', '');
+$email = $request->input('email', '');
+$password = $request->input('password', '');
+$role = $request->input('role', '');
+
 // Validate input
 $errors = [];
 
 // Username validation
-if (empty($request->username)) {
+if (empty($username)) {
     $errors['username'] = 'El nom d\'usuari és obligatori.';
-} elseif ($request->username !== $user->username && User::findByUsername($request->username)) {
+} elseif ($username !== $user->username && User::findByUsername($username)) {
     $errors['username'] = 'Aquest nom d\'usuari ja està en ús.';
 }
 
 // Email validation
-if (empty($request->email)) {
+if (empty($email)) {
     $errors['email'] = 'L\'email és obligatori.';
-} elseif (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors['email'] = 'Format d\'email invàlid.';
-} elseif ($request->email !== $user->email && User::findByEmail($request->email)) {
+} elseif ($email !== $user->email && User::findByEmail($email)) {
     $errors['email'] = 'Aquest email ja està registrat.';
 }
 
 // Password validation - only if provided
-if (!empty($request->password) && strlen($request->password) < 6) {
+if (!empty($password) && strlen($password) < 6) {
     $errors['password'] = 'La contrasenya ha de tenir almenys 6 caràcters.';
 }
 
 // Role validation
 $validRoles = ['user', 'admin'];
-if (empty($request->role) || !in_array($request->role, $validRoles)) {
+if (empty($role) || !in_array($role, $validRoles)) {
     $errors['role'] = 'El rol seleccionat no és vàlid.';
 }
 
 // If there are errors, redirect back with errors
 if (!empty($errors)) {
     back()->withErrors($errors)->withInput([
-        'username' => $request->username,
-        'email' => $request->email,
-        'role' => $request->role
+        'username' => $username,
+        'email' => $email,
+        'role' => $role
     ])->send();
     exit;
 }
 
 try {
     // Update user
-    $user->username = $request->username;
-    $user->email = $request->email;
-    
+    $user->username = $username;
+    $user->email = $email;
+
     // Only update password if provided
-    if (!empty($request->password)) {
-        $user->password = password_hash($request->password, PASSWORD_DEFAULT);
+    if (!empty($password)) {
+        $user->password = password_hash($password, PASSWORD_DEFAULT);
     }
-    
-    $user->role = $request->role;
+
+    $user->role = $role;
     $user->updated_at = date('Y-m-d H:i:s');
-    
+
     if ($user->save()) {
-        // Redirect to users list with success message
         redirect('/admin/users/index.php')->with('success', 'Usuari actualitzat correctament.')->send();
     } else {
-        // Redirect back with error
         back()->with('error', 'Error en actualitzar l\'usuari.')->withInput([
-            'username' => $request->username,
-            'email' => $request->email,
-            'role' => $request->role
+            'username' => $username,
+            'email' => $email,
+            'role' => $role
         ])->send();
     }
 } catch (\Exception $e) {
     Debug::log("Error updating user: " . $e->getMessage());
     back()->with('error', 'Error en actualitzar l\'usuari: ' . $e->getMessage())->withInput([
-        'username' => $request->username,
-        'email' => $request->email,
-        'role' => $request->role
+        'username' => $username,
+        'email' => $email,
+        'role' => $role
     ])->send();
 }
+ob_end_flush();

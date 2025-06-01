@@ -14,11 +14,11 @@ class ContactController {
     
     public function store(Request $request)
     {
+        
         // Validate request
         $errors = [];
-        
-        if (empty($request->notes)) {
-            $errors['notes'] = 'El missatge és obligatori.';
+        if (strlen(trim($request->consulta)) === 0) {
+        $errors['consulta'] = 'La consulta és obligatòria.';
         }
         
         // If user is not authenticated, validate name and email
@@ -39,24 +39,23 @@ class ContactController {
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'notes' => $request->notes
+                'consulta' => $request->consulta
             ])->send();
         }
         
         // Process the contact form
         if (Auth::check()) {
             // Get the client
-            $clientId = Auth::clientId();
-            $client = Client::findOrFail($clientId);
-            
-            // Update client's consultation
-            $currentConsulta = $client->consulta ?? '';
-            $newConsulta = empty($currentConsulta) ? 
-                $request->notes : 
-                $currentConsulta . ' | ' . $request->notes;
-                
-            $client->consulta = $newConsulta;
-            $client->save();
+            $client = Auth::user(); // o Auth::client(); según tu sistema
+
+    // Actualizar la consulta del cliente
+    $currentConsulta = $client->consulta ?? '';
+    $newConsulta = empty($currentConsulta)
+        ? $request->consulta
+        : $currentConsulta . ' | ' . $request->consulta;
+
+    $client->consulta = $newConsulta;
+    $client->save();
         } else {
             // Create a new client record or handle guest messages
             // This could be implemented based on business requirements
@@ -65,7 +64,7 @@ class ContactController {
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'message' => $request->notes,
+                'message' => $request->consulta,
                 'date' => date('Y-m-d H:i:s')
             ]);
             

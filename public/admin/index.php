@@ -1,11 +1,19 @@
 <?php
 require_once __DIR__ . '/../../bootstrap/bootstrap.php';
-
+if (headers_sent($file, $line)) {
+    die("Salida enviada en $file línea $line");
+}
 use App\Core\Auth;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Producte;
 use App\Models\Comanda;
+use App\Core\Request;
+
+$request = new Request();
+$request->middleware([
+    'xss'
+]);
 
 // Check if user is authenticated and is admin
 if (!Auth::check() || !Auth::isAdmin()) {

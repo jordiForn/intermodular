@@ -7,6 +7,18 @@ error_reporting(E_ALL);
 // Define the project root directory - use absolute path to avoid path resolution issues
 define('PROJECT_ROOT', realpath(dirname(__DIR__)));
 
+spl_autoload_register(function ($class) {
+    // Solo autoload para clases bajo el namespace App\
+    if (strpos($class, 'App\\') === 0) {
+        $baseDir = PROJECT_ROOT . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR;
+        $classPath = str_replace(['App\\', '\\'], ['', DIRECTORY_SEPARATOR], $class) . '.php';
+        $file = $baseDir . $classPath;
+        if (file_exists($file)) {
+            require_once $file;
+        }
+    }
+});
+
 // Create logs directory if it doesn't exist
 $logsDir = PROJECT_ROOT . DIRECTORY_SEPARATOR . 'logs';
 if (!is_dir($logsDir)) {

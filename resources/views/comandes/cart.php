@@ -193,5 +193,26 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    checkoutButton.addEventListener('click', function() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    if (cart.length === 0) return;
+
+    fetch('<?= BASE_URL ?>/comandes/sync-cart.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: 'cart_items=' + encodeURIComponent(JSON.stringify(cart))
+})
+    .then(res => res.text())
+    .then(() => {
+        <?php if (Auth::check()): ?>
+            window.location.href = '<?= BASE_URL ?>/comandes/checkout.php';
+        <?php else: ?>
+            window.location.href = '<?= BASE_URL ?>/auth/show-login.php?redirect_to=<?= urlencode(BASE_URL . "/comandes/checkout.php") ?>';
+        <?php endif; ?>
+    });
 });
+});
+
+
 </script>

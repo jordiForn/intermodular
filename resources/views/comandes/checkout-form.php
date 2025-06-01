@@ -7,7 +7,7 @@ use App\Http\Middlewares\Security\CsrfMiddleware;
     <h1 class="mb-4">Finalitzar compra</h1>
 
     <!-- Mostrar mensajes de error y éxito si existen -->
-    <?php include __DIR__ . '/../partials/messages.php'; ?>
+    <?php include __DIR__ . '/../partials/message.php'; ?>
     <?php include __DIR__ . '/../partials/errors.php'; ?>
 
     <div class="row">
@@ -20,6 +20,7 @@ use App\Http\Middlewares\Security\CsrfMiddleware;
                     <form id="checkout-form" action="<?= BASE_URL ?>/comandes/process-order.php" method="POST">
                         <?= CsrfMiddleware::tokenField(); ?>
                         
+                        <input type="hidden" name="cart_json" id="cart_json">
                         <input type="hidden" id="cart-items" name="cart_items" value="">
                         <input type="hidden" id="cart-total" name="total" value="">
                         
@@ -33,23 +34,19 @@ use App\Http\Middlewares\Security\CsrfMiddleware;
                             <input type="email" class="form-control" id="email" value="<?= htmlspecialchars($client->user()->email) ?>" readonly>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="tlf" class="form-label">Telèfon</label>
-                            <input type="text" class="form-control" id="tlf" name="tlf" value="<?= htmlspecialchars($client->tlf) ?>" required>
-                        </div>
                         
                         <div class="mb-3">
-                            <label for="direccio_enviament" class="form-label">Direcció d'enviament</label>
-                            <textarea class="form-control <?= isset($errors['direccio_enviament']) ? 'is-invalid' : '' ?>" id="direccio_enviament" name="direccio_enviament" rows="3" required><?= htmlspecialchars($client->getAdrecaCompleta() ?? '') ?></textarea>
-                            <?php if (isset($errors['direccio_enviament'])): ?>
-                                <div class="invalid-feedback"><?= $errors['direccio_enviament'] ?></div>
-                            <?php endif; ?>
-                        </div>
+    <label for="direccio_enviament" class="form-label">Direcció d'enviament</label>
+    <textarea class="form-control <?= isset($errors['direccio_enviament']) ? 'is-invalid' : '' ?>" id="direccio_enviament" name="direccio_enviament" rows="3" required><?= htmlspecialchars($oldInput['direccio_enviament'] ?? '') ?></textarea>
+    <?php if (isset($errors['direccio_enviament'])): ?>
+        <div class="invalid-feedback"><?= $errors['direccio_enviament'] ?></div>
+    <?php endif; ?>
+</div>
                         
                         <div class="mb-3">
-                            <label for="notes" class="form-label">Notes (opcional)</label>
-                            <textarea class="form-control" id="notes" name="notes" rows="2"></textarea>
-                        </div>
+    <label for="missatge" class="form-label">Missatge (opcional)</label>
+    <textarea class="form-control" id="missatge" name="missatge" rows="2"></textarea>
+</div>
                         
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-success" id="submit-order">
