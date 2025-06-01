@@ -101,7 +101,7 @@ class ComandaController
         $comanda->client_id = Auth::user()->client()->id;
         $comanda->data_comanda = date('Y-m-d H:i:s');
         $comanda->total = $request->total;
-        $comanda->estat = 'Pendent';
+        $comanda->estat = 'pendent';
         $comanda->direccio_enviament = $request->direccio_enviament;
         $comanda->insert();
         
@@ -357,7 +357,7 @@ class ComandaController
     $comanda->client_id = $client->id;
     $comanda->data_comanda = date('Y-m-d H:i:s');
     $comanda->total = $total;
-    $comanda->estat = 'Pendent';
+    $comanda->estat = 'pendent';
     $comanda->direccio_enviament = $request->direccio_enviament;
     // Si quieres guardar el missatge también en la comanda, añade:
     // $comanda->missatge = $nouMissatge;

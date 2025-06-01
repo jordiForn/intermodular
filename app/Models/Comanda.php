@@ -58,21 +58,21 @@ class Comanda extends Model
 
     public static function pendents(): QueryBuilder
     {
-        return self::where('estat', 'Pendent');
+        return self::whereRaw('LOWER(estat) = ?', ['pendent']);
     }
 
     public static function completades(): QueryBuilder
     {
-        return self::where('estat', 'Completat');
+        return self::whereRaw('LOWER(estat) = ?', ['completat']);
     }
 
     public static function enviades(): QueryBuilder
     {
-        return self::where('estat', 'Enviat');
+        return self::whereRaw('LOWER(estat) = ?', ['enviat']);
     }
 
     public static function cancelades(): QueryBuilder
     {
-        return self::where('estat', 'Cancel·lat');
+        return self::whereRaw('LOWER(estat) = ?', ['cancel·lat']);
     }
 }

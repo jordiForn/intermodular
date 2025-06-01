@@ -61,15 +61,26 @@ $html = '
                 <td>';
 
 // Determine status class and text
-$statusClass = 'bg-success';
-$statusText = 'Completada';
+$statusClass = 'bg-secondary';
+$statusText = htmlspecialchars($order->estat);
 
-if ($order->estat === 'pendent') {
-    $statusClass = 'bg-warning text-dark';
-    $statusText = 'Pendent';
-} elseif ($order->estat === 'cancel·lada') {
-    $statusClass = 'bg-danger';
-    $statusText = 'Cancel·lada';
+switch (mb_strtolower($order->estat)) {
+    case 'pendent':
+        $statusClass = 'bg-warning text-dark';
+        $statusText = 'Pendent';
+        break;
+    case 'enviat':
+        $statusClass = 'bg-info';
+        $statusText = 'Enviat';
+        break;
+    case 'completat':
+        $statusClass = 'bg-success';
+        $statusText = 'Completat';
+        break;
+    case 'cancel·lat':
+        $statusClass = 'bg-danger';
+        $statusText = 'Cancel·lat';
+        break;
 }
 
 $html .= '<span class="badge ' . $statusClass . '">' . $statusText . '</span>

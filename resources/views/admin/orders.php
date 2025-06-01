@@ -141,16 +141,25 @@
                                 $clientName = $client ? $client->nom : 'Client desconegut';
                                 
                                 // Determine status class
-                                $statusClass = 'bg-success';
-                                $statusText = 'Completada';
-                                
-                                if ($order->estat === 'pendent') {
-                                    $statusClass = 'bg-warning text-dark';
-                                    $statusText = 'Pendent';
-                                } elseif ($order->estat === 'cancel·lada') {
-                                    $statusClass = 'bg-danger';
-                                    $statusText = 'Cancel·lada';
-                                }
+                                switch (mb_strtolower($order->estat)) {
+    case 'pendent':
+        $statusClass = 'bg-warning text-dark';
+        $statusText = 'Pendent';
+        break;
+    case 'completat':
+    case 'completada':
+        $statusClass = 'bg-success';
+        $statusText = 'Completada';
+        break;
+    case 'cancel·lat':
+    case 'cancel·lada':
+        $statusClass = 'bg-danger';
+        $statusText = 'Cancel·lada';
+        break;
+    default:
+        $statusClass = 'bg-secondary';
+        $statusText = htmlspecialchars($order->estat);
+}
                             ?>
                             <tr data-status="<?= $order->estat ?>" class="border-bottom">
                                 <td class="px-3 py-3"><?= $order->id ?></td>

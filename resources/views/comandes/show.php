@@ -11,11 +11,26 @@
                     <p>
                         <strong>Estat:</strong> 
                         <span class="badge 
-                            <?= $comanda->estat === 'Completat' ? 'bg-success' : 
-                               ($comanda->estat === 'Pendent' ? 'bg-warning' : 
-                               ($comanda->estat === 'Enviat' ? 'bg-info' : 'bg-danger')) ?>">
-                            <?= htmlspecialchars($comanda->estat) ?>
-                        </span>
+    <?php
+        switch (mb_strtolower($comanda->estat)) {
+            case 'pendent':
+                echo 'bg-warning text-dark';
+                break;
+            case 'enviat':
+                echo 'bg-info';
+                break;
+            case 'completat':
+                echo 'bg-success';
+                break;
+            case 'cancel·lat':
+                echo 'bg-danger';
+                break;
+            default:
+                echo 'bg-secondary';
+        }
+    ?>">
+    <?= htmlspecialchars($comanda->estat) ?>
+</span>
                     </p>
                 </div>
                 <div class="col-md-6">

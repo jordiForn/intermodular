@@ -699,4 +699,7 @@ Class "App\Http\Middlewares\Security\CsrfMiddleware" not found
 #0 D:\xampp\htdocs\Intermodular\public\productes\destroy.php(12): App\Http\Middlewares\Middleware::role(Array)
 #1 {main}Call to undefined method App\Core\Auth::role()
 #0 D:\xampp\htdocs\Intermodular\public\productes\destroy.php(12): App\Http\Middlewares\Middleware::role(Array)
-#1 {main}
+#1 {main}La propiedad 'consulta' no está permitida en el modelo.
+#0 D:\xampp\htdocs\Intermodular\app\Http\Controllers\ContactController.php(57): App\Core\Model->__set('consulta', 'klk')
+#1 D:\xampp\htdocs\Intermodular\public\contact\store.php(28): App\Http\Controllers\ContactController->store(Object(App\Core\Request))
+#2 {main}
