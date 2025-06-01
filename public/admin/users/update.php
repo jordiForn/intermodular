@@ -6,11 +6,7 @@ use App\Core\Auth;
 use App\Core\Response;
 use App\Models\User;
 use App\Core\Debug;
-
-Debug::log('INICIO update.php USUARIOS', [
-    'POST' => $_POST,
-    'REQUEST_METHOD' => $_SERVER['REQUEST_METHOD']
-]);
+use App\Core\Request;
 
 // Check if user is authenticated and is an admin
 if (!Auth::check() || !Auth::isAdmin()) {
@@ -18,23 +14,24 @@ if (!Auth::check() || !Auth::isAdmin()) {
     exit;
 }
 
+$request = new Request();
 // Get user ID from POST
-$id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
+$id = (int)$request->input('id');
 
 // Find user
-Debug::log('Buscando usuario', ['id' => $id]);
+
 $user = User::find($id);
-Debug::log('Resultado de User::find', ['user' => $user]);
+
 if (!$user) {
     redirect('/admin/users/index.php')->with('error', 'Usuari no trobat.')->send();
     exit;
 }
 
 // Get form data
-$username = $_POST['username'] ?? '';
-$email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
-$role = $_POST['role'] ?? '';
+$username = $request->input('username', '');
+$email = $request->input('email', '');
+$password = $request->input('password', '');
+$role = $request->input('role', '');
 
 // Validate input
 $errors = [];

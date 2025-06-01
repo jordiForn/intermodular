@@ -16,8 +16,7 @@ if (!Auth::check() || !Auth::isAdmin()) {
 $request = new Request();
 
 // Get user ID from request
-$id = isset($request->id) ? (int)$request->id : 0;
-
+$id = (int)$request->id;
 // Find user
 $user = User::find($id);
 

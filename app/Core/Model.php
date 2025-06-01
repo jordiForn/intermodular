@@ -166,10 +166,10 @@ class Model
 
     public function delete(): bool
     {
-        $sql = "DELETE FROM " . static::$table . " WHERE id = :id";
-        $params = ['id' => $this->id];
-        return DB::delete($sql, $params) === 1;
-    }
+    $where = "id = :id";
+    $params = ['id' => $this->id];
+    return DB::delete(static::$table, $where, $params) === 1;
+}
     
     /**
      * Convert the model to an array

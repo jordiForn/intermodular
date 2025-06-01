@@ -22,7 +22,6 @@ if (!$userId) {
 try {
     // Get the user
     $user = User::find($userId);
-    \App\Core\Debug::log('Valor de $user en edit.php', ['user' => $user]);
     if (!$user) {
         request()->session()->setFlash('error', 'Usuari no trobat.');
         header('Location: ' . BASE_URL . '/admin/users/');
